@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Light background for the date tag -->
+    <solid android:color="#E5F9F0" />
+
+    <!-- Rounded pill corners -->
+    <corners android:radius="999dp" />
+
+    <!-- Small horizontal padding handled by the TextView's padding,
+         but you can keep some internal padding if needed -->
+    <padding
+        android:left="6dp"
+        android:top="2dp"
+        android:right="6dp"
+        android:bottom="2dp" />
+</shape>

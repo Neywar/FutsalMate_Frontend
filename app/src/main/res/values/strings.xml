@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FutsalMate</string>
+    <string name="title_activity_otp_verification">OtpVerificationActivity</string>
+</resources>

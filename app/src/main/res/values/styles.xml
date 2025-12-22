@@ -1,0 +1,17 @@
+<!-- In res/values/styles.xml or res/values/themes.xml -->
+<resources>
+    <!-- ... your existing theme ... -->
+
+    <style name="OtpBox" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/bg_otp_box_inactive</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">#111827</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>
