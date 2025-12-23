@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main"
     android:background="@android:color/white"
     android:padding="24dp"
     tools:context=".OtpVerificationActivity">
@@ -77,7 +78,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="We have sent the verification code to your mobile number +1 234 567 890."
+        android:text="We have sent the verification code to your email."
         android:textColor="#6B7280"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +135,15 @@
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <!-- Verify Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVerify"
