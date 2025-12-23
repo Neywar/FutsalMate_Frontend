@@ -11,12 +11,12 @@
         android:padding="24dp">
 
         <!-- Back arrow (optional toolbar area) -->
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/btnBack"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/ic_arrow_back" />-->
 
         <!-- Logo -->
 
