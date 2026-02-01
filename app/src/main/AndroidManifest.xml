@@ -15,7 +15,6 @@
         android:theme="@style/Theme.FutsalMate"
         android:usesCleartextTraffic="true">
 
-        <!-- Splash as launcher - ONLY this should be exported -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -26,31 +25,79 @@
             </intent-filter>
         </activity>
 
-        <!-- Login screen -->
         <activity
             android:name=".LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.FutsalMate" />
+            android:exported="false" />
 
-        <!-- SignUp screen -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".SignUpActivity"
-            android:exported="false"
-            android:theme="@style/Theme.FutsalMate" />
+            android:exported="false" />
 
-        <!-- OTP Verification screen -->
         <activity
             android:name=".OtpVerificationActivity"
             android:exported="false"
-            android:label="@string/title_activity_otp_verification"
-            android:theme="@style/Theme.FutsalMate" />
+            android:label="@string/title_activity_otp_verification" />
 
-        <!-- Dashboard screen -->
         <activity
-            android:name=".DashboardActivity"
-            android:exported="false"
-            android:theme="@style/Theme.FutsalMate"
-            />
+            android:name=".CourtsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CourtDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ConfirmationActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".RegisterTeamActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SelectTimeslotActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BookedDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VendorLoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VendorMainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AddCourtActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EditCourtActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VendorUserHistoryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VendorUserDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VendorCourtSuccessActivity"
+            android:exported="false" />
 
     </application>
 

@@ -10,10 +10,17 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/dashboard_bg</item>
     </style>
 
-    <!-- Note: Theme.AppCompat.Light.NoActionBar is provided by AppCompat library -->
-    <!-- No need to redefine it here - it's used directly in AndroidManifest.xml -->
+    <!-- Style for the PopupMenu background -->
+    <style name="DarkPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/card_bg</item>
+    </style>
+
+    <!-- Theme for the PopupMenu content (text color, etc) -->
+    <style name="DarkPopupMenuTheme" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:itemBackground">@color/card_bg</item>
+    </style>
 </resources>

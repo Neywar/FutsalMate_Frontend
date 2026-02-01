@@ -28,7 +28,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// IMPORTANT: Change this to extend AppCompatActivity
 public class OtpVerificationActivity extends AppCompatActivity {
 
     private EditText[] otpBoxes;
@@ -46,18 +45,14 @@ public class OtpVerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // This line tells the activity to use your XML layout file
         setContentView(R.layout.activity_otp_verification);
 
-//        // Get email from intent
         userEmail = getIntent().getStringExtra("USER_EMAIL");
         if (userEmail == null || userEmail.isEmpty()) {
             Toast.makeText(this, "Email not found. Please sign up again.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
 
         initializeViews();
         setupClickListeners();
@@ -70,7 +65,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
         btnVerify = findViewById(R.id.btnVerify);
         txtTimer = findViewById(R.id.txtTimer);
         resendContainer = findViewById(R.id.resendContainer);
-        progressBar = findViewById(R.id.progressBar); // Add ProgressBar to your layout if not present
+        progressBar = findViewById(R.id.progressBar);
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
@@ -163,24 +158,13 @@ public class OtpVerificationActivity extends AppCompatActivity {
     }
 
     private void verifyOtp(String otp) {
-        if (userEmail == null || userEmail.isEmpty()) {
-            Toast.makeText(this, "Email not found. Please sign up again.", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        // Disable button and show progress
         btnVerify.setEnabled(false);
         if (progressBar != null) {
             progressBar.setVisibility(View.VISIBLE);
         }
 
-        // Create OTP verify request
         OtpVerifyRequest otpRequest = new OtpVerifyRequest(userEmail, otp);
 
-        android.util.Log.d("OtpVerificationActivity", "Verifying OTP for email: " + userEmail);
-        
-        // Make API call
         Call<ApiResponse<Void>> call = RetrofitClient.getInstance().getApiService().verifyOtp(otpRequest);
         call.enqueue(new Callback<ApiResponse<Void>>() {
             @Override
@@ -190,49 +174,16 @@ public class OtpVerificationActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                 }
 
-                android.util.Log.d("OtpVerificationActivity", "OTP verification response code: " + response.code());
-                android.util.Log.d("OtpVerificationActivity", "Response isSuccessful: " + response.isSuccessful());
-
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<Void> apiResponse = response.body();
-                    android.util.Log.d("OtpVerificationActivity", "Response status: " + apiResponse.getStatus());
-                    android.util.Log.d("OtpVerificationActivity", "Response message: " + apiResponse.getMessage());
-                    
                     if ("success".equals(apiResponse.getStatus())) {
-                        Toast.makeText(OtpVerificationActivity.this,
-                                apiResponse.getMessage() != null ? apiResponse.getMessage() : "Verification Successful!",
-                                Toast.LENGTH_SHORT).show();
-
-                        // Navigate to Dashboard after successful OTP verification
-                        android.util.Log.d("OtpVerificationActivity", "OTP verified successfully, navigating to Dashboard");
-                        navigateToDashboard();
+                        Toast.makeText(OtpVerificationActivity.this, "Verification Successful!", Toast.LENGTH_SHORT).show();
+                        navigateToMain();
                     } else {
-                        android.util.Log.w("OtpVerificationActivity", "OTP verification failed with status: " + apiResponse.getStatus());
-                        Toast.makeText(OtpVerificationActivity.this,
-                                apiResponse.getMessage() != null ? apiResponse.getMessage() : "Invalid OTP. Please try again.",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OtpVerificationActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Handle error response
-                    android.util.Log.e("OtpVerificationActivity", "OTP verification failed. Code: " + response.code());
-                    if (response.code() == 403 || response.code() == 404) {
-                        String errorMsg = "Invalid or expired OTP.";
-                        if (response.body() != null && response.body().getMessage() != null) {
-                            errorMsg = response.body().getMessage();
-                        }
-                        android.util.Log.e("OtpVerificationActivity", "Error: " + errorMsg);
-                        Toast.makeText(OtpVerificationActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Try to parse error body
-                        try {
-                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
-                            android.util.Log.e("OtpVerificationActivity", "Error body: " + errorBody);
-                            Toast.makeText(OtpVerificationActivity.this, "Verification failed: " + errorBody, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            android.util.Log.e("OtpVerificationActivity", "Error parsing error body", e);
-                            Toast.makeText(OtpVerificationActivity.this, "Verification failed. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    Toast.makeText(OtpVerificationActivity.this, "Verification failed. Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -242,66 +193,31 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 if (progressBar != null) {
                     progressBar.setVisibility(View.GONE);
                 }
-                android.util.Log.e("OtpVerificationActivity", "Network error during OTP verification", t);
-                Toast.makeText(OtpVerificationActivity.this,
-                        "Network error: " + t.getMessage() + ". Check if backend is running.",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(OtpVerificationActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
     
-    private void navigateToDashboard() {
-        try {
-            Intent intent = new Intent(OtpVerificationActivity.this, DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            android.util.Log.e("OtpVerificationActivity", "Error navigating to Dashboard", e);
-            Toast.makeText(this, "Error opening dashboard: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+    private void navigateToMain() {
+        Intent intent = new Intent(OtpVerificationActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void resendOtp() {
-        if (userEmail == null || userEmail.isEmpty()) {
-            Toast.makeText(this, "Email not found. Please sign up again.", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        // Disable resend button
         resendContainer.setClickable(false);
-
-        // Create resend OTP request
         ResendOtpRequest resendRequest = new ResendOtpRequest(userEmail, false);
 
-        // Make API call
         Call<ApiResponse<Void>> call = RetrofitClient.getInstance().getApiService().resendOtp(resendRequest);
         call.enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse<Void> apiResponse = response.body();
-                    if ("success".equals(apiResponse.getStatus())) {
-                        Toast.makeText(OtpVerificationActivity.this,
-                                apiResponse.getMessage() != null ? apiResponse.getMessage() : "OTP sent successfully.",
-                                Toast.LENGTH_SHORT).show();
-                        startTimer();
-                    } else {
-                        Toast.makeText(OtpVerificationActivity.this,
-                                apiResponse.getMessage() != null ? apiResponse.getMessage() : "Failed to resend OTP.",
-                                Toast.LENGTH_SHORT).show();
-                        resendContainer.setClickable(true);
-                    }
+                    Toast.makeText(OtpVerificationActivity.this, "OTP sent successfully.", Toast.LENGTH_SHORT).show();
+                    startTimer();
                 } else {
-                    // Handle error response
-                    if (response.code() == 429) {
-                        Toast.makeText(OtpVerificationActivity.this, "Too many attempts. Please try again later.", Toast.LENGTH_SHORT).show();
-                    } else if (response.body() != null && response.body().getMessage() != null) {
-                        Toast.makeText(OtpVerificationActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(OtpVerificationActivity.this, "Failed to resend OTP. Please try again.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(OtpVerificationActivity.this, "Failed to resend OTP.", Toast.LENGTH_SHORT).show();
                     resendContainer.setClickable(true);
                 }
             }
@@ -309,9 +225,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
                 resendContainer.setClickable(true);
-                Toast.makeText(OtpVerificationActivity.this,
-                        "Network error: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpVerificationActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

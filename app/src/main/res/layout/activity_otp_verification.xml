@@ -2,23 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
-    android:background="@android:color/white"
+    android:background="@color/dashboard_bg"
     android:padding="24dp"
     tools:context=".OtpVerificationActivity">
 
     <!-- Back Arrow -->
-    <ImageView
+    <ImageButton
         android:id="@+id/imgBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
         android:contentDescription="Back"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#111827" />
+        app:tint="@color/white" />
 
     <!-- Title -->
     <TextView
@@ -26,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Verification"
-        android:textColor="#111827"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imgBack"
@@ -34,37 +35,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imgBack" />
 
-    <!-- Icon in a CardView for the background -->
-    <androidx.cardview.widget.CardView
+    <!-- Icon Section -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="64dp"
-        app:cardBackgroundColor="#E0F2F1"
-        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="24dp"
         app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/card_bg_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:contentDescription="Verification icon"
             android:src="@drawable/ic_email"
-            app:tint="#10B981" />
-    </androidx.cardview.widget.CardView>
+            app:tint="@color/bright_green" />
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Main Heading -->
     <TextView
         android:id="@+id/txtVerificationCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Verification Code"
-        android:textColor="#111827"
-        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,11 +78,11 @@
         android:id="@+id/txtSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="We have sent the verification code to your email."
-        android:textColor="#6B7280"
+        android:textColor="@color/text_grey"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,21 +92,21 @@
     <!-- OTP Input Fields -->
     <LinearLayout
         android:id="@+id/otpContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSubtitle">
 
-        <EditText android:id="@+id/otpBox1" style="@style/OtpBox" android:background="@drawable/selector_otp_box" />
-        <EditText android:id="@+id/otpBox2" style="@style/OtpBox" />
-        <EditText android:id="@+id/otpBox3" style="@style/OtpBox" />
-        <EditText android:id="@+id/otpBox4" style="@style/OtpBox" />
-        <EditText android:id="@+id/otpBox5" style="@style/OtpBox" />
-        <EditText android:id="@+id/otpBox6" style="@style/OtpBox" android:layout_marginEnd="0dp" />
+        <EditText android:id="@+id/otpBox1" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" />
+        <EditText android:id="@+id/otpBox2" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" />
+        <EditText android:id="@+id/otpBox3" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" />
+        <EditText android:id="@+id/otpBox4" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" />
+        <EditText android:id="@+id/otpBox5" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" />
+        <EditText android:id="@+id/otpBox6" style="@style/OtpBox" android:background="@drawable/bg_otp_box_inactive" android:backgroundTint="@color/card_bg" android:textColor="@color/white" android:layout_marginEnd="0dp" />
 
     </LinearLayout>
 
@@ -112,7 +115,7 @@
         android:id="@+id/resendContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Resend code in "
-            android:textColor="#6B7280"
+            android:textColor="@color/text_grey"
             android:textSize="14sp" />
 
         <TextView
@@ -131,32 +134,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:30"
-            android:textColor="#10B981"
+            android:textColor="@color/bright_green"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:visibility="gone"
+        android:indeterminateTint="@color/bright_green"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Verify Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVerify"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:backgroundTint="#10B981"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/bright_green"
         android:text="Verify"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
+        android:textColor="@color/dashboard_bg"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
         app:icon="@drawable/ic_arrow_forward"
         app:iconGravity="textEnd"
-        app:iconTint="@android:color/white"
+        app:iconTint="@color/dashboard_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

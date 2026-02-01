@@ -7,6 +7,10 @@ public class TokenManager {
     private static final String PREFS_NAME = "FutsalMatePrefs";
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_USER_EMAIL = "user_email";
+    private static final String KEY_USER_ROLE = "user_role";
+    
+    public static final String ROLE_PLAYER = "PLAYER";
+    public static final String ROLE_VENDOR = "VENDOR";
     
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -33,10 +37,20 @@ public class TokenManager {
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, null);
     }
+
+    public void saveUserRole(String role) {
+        editor.putString(KEY_USER_ROLE, role);
+        editor.apply();
+    }
+
+    public String getUserRole() {
+        return sharedPreferences.getString(KEY_USER_ROLE, ROLE_PLAYER);
+    }
     
     public void clearToken() {
         editor.remove(KEY_TOKEN);
         editor.remove(KEY_USER_EMAIL);
+        editor.remove(KEY_USER_ROLE);
         editor.apply();
     }
     
@@ -52,5 +66,3 @@ public class TokenManager {
         return null;
     }
 }
-
-
