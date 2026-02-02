@@ -93,44 +93,6 @@
             </LinearLayout>
 
             <!-- Rating Pill -->
-            <LinearLayout
-                android:id="@+id/llRatingPill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_vendor_card"
-                android:backgroundTint="#1F2937"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="6dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llTitleContainer">
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="Star rating"
-                    android:src="@drawable/ic_star" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="4.9"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="(248)"
-                    android:textColor="#9CA3AF"
-                    android:textSize="13sp" />
-            </LinearLayout>
 
             <!-- Business Details Card -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,10 +100,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="32dp"
                 android:background="@drawable/bg_vendor_card"
                 android:padding="20dp"
-                app:layout_constraintTop_toBottomOf="@id/llRatingPill">
+                tools:layout_editor_absoluteX="24dp"
+                tools:layout_editor_absoluteY="435dp">
 
                 <!-- Address -->
                 <FrameLayout

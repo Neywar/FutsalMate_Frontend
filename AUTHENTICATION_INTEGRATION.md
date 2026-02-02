@@ -149,3 +149,4 @@ Error messages are displayed to users via Toast notifications.
 - The app uses Bearer token authentication for protected endpoints
 
 
+

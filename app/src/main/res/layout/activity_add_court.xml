@@ -86,6 +86,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/etCourtName"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
@@ -96,12 +97,74 @@
                 android:textColorHint="#4B5563"
                 android:textSize="14sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.05"
+                    android:text="COURT LOCATION"
+                    android:textColor="#FACC15"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/btnSetCurrentLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="SET CURRENT ADDRESS"
+                    android:textColor="#FACC15"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/etCourtLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_vendor_input"
+                    android:hint="e.g. Kathmandu, Nepal"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_location"
+                    app:tint="#FACC15" />
+            </FrameLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:letterSpacing="0.05"
-                android:text="COST PER HOUR ($)"
+                android:text="COST PER HOUR (NPR)"
                 android:textColor="#FACC15"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -112,6 +175,7 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
+                    android:id="@+id/etCostPerHour"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_vendor_input"
@@ -219,6 +283,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFacilities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -236,6 +301,17 @@
                     app:chipIconTint="#000000"
                     android:textColor="#000000"
                     android:textStyle="bold" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Outdoor"
+                    app:chipBackgroundColor="#FACC15"
+                    app:chipIcon="@drawable/ic_check"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="#000000"
+                    android:textColor="#000000" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Action"
@@ -283,11 +359,25 @@
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FIFA Pro Turf"
+                    android:text="Internet"
                     app:chipBackgroundColor="#111827"
                     app:chipStrokeColor="#1F2937"
                     app:chipStrokeWidth="1dp"
-                    android:textColor="#9CA3AF" />
+                    android.textColor="#9CA3AF" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnAddFacility"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    app:chipIcon="@drawable/ic_add"
+                    app:chipIconTint="#FACC15"
+                    app:chipBackgroundColor="#111827"
+                    app:chipStrokeColor="#1F2937"
+                    app:chipStrokeWidth="1dp"
+                    android:textColor="#FACC15" />
+
             </com.google.android.material.chip.ChipGroup>
 
             <!-- Description Section -->
@@ -301,6 +391,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/etDescription"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginTop="12dp"
@@ -312,86 +403,44 @@
                 android:textColorHint="#4B5563"
                 android:textSize="14sp" />
 
-            <!-- Contact Info Section -->
+            <!-- Status Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Contact Info"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:letterSpacing="0.05"
-                android:text="PHONE NUMBER"
+                android:text="COURT STATUS"
                 android:textColor="#FACC15"
                 android:textSize="10sp"
                 android:textStyle="bold" />
 
-            <FrameLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_vendor_input"
-                    android:hint="+1 (555) 000-0000"
-                    android:inputType="phone"
-                    android:paddingStart="48dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#4B5563"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_phone" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:letterSpacing="0.05"
-                android:text="BOOKING EMAIL"
-                android:textColor="#FACC15"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="8dp"
+                app:boxBackgroundColor="#111827"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintEnabled="false">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
-
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerStatus"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_vendor_input"
-                    android:hint="bookings@courtname.com"
-                    android:inputType="textEmailAddress"
-                    android:paddingStart="48dp"
-                    android:paddingEnd="16dp"
+                    android:layout_height="56dp"
+                    android:background="@null"
+                    android:hint="Select Status"
+                    android:inputType="none"
+                    android:paddingHorizontal="16dp"
+                    android:text="Active"
                     android:textColor="@color/white"
                     android:textColorHint="#4B5563"
                     android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_email"
-                    app:tint="#FACC15" />
-            </FrameLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Publish Button -->
             <com.google.android.material.button.MaterialButton

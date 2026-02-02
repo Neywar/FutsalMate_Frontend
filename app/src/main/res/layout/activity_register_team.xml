@@ -86,6 +86,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:text="Phone Number"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_otp_box_inactive"
+                android:backgroundTint="@color/card_bg"
+                android:hint="e.g. 98xxxxxxxx"
+                android:inputType="phone"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/text_grey"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Team Bio/Description"
                 android:textColor="@color/text_grey"
                 android:textSize="12sp"
@@ -104,47 +126,41 @@
                 android:textColorHint="@color/text_grey"
                 android:textSize="14sp" />
 
-            <!-- Logistics Section -->
+            <!-- Preferred Courts Section -->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Home Location"
+                android:text="Preferred Courts"
                 android:textColor="@color/text_grey"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvPreferredCourts"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_otp_box_inactive"
                 android:backgroundTint="@color/card_bg"
+                android:drawableStart="@drawable/ic_location"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="16dp"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="16dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Select preferred courts"
+                android:textColor="@color/text_grey"
+                android:textSize="14sp"
+                app:drawableTint="@color/bright_green" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_location"
-                    app:tint="@color/bright_green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Search city or court name"
-                    android:textColor="@color/text_grey"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- Preferred Timeslots Section -->
+            <!-- Preferred Days Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Preferred Timeslots"
+                android:text="Preferred Days"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -161,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Mon Evening"
+                    android:text="Sunday"
                     android:textColor="@color/bright_green"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIcon="@drawable/ic_add"
@@ -174,7 +190,7 @@
                     style="@style/Widget.MaterialComponents.Chip.Entry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tue Evening"
+                    android:text="Monday"
                     android:textColor="@color/text_grey"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIconVisible="false"
@@ -186,7 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Sat Morning"
+                    android:text="Tuesday"
                     android:textColor="@color/bright_green"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIcon="@drawable/ic_add"
@@ -199,7 +215,7 @@
                     style="@style/Widget.MaterialComponents.Chip.Entry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sun Morning"
+                    android:text="Wednesday"
                     android:textColor="@color/text_grey"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIconVisible="false"
@@ -210,7 +226,7 @@
                     style="@style/Widget.MaterialComponents.Chip.Entry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fri Night"
+                    android:text="Thursday"
                     android:textColor="@color/text_grey"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIconVisible="false"
@@ -222,7 +238,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Weekends"
+                    android:text="Friday"
+                    android:textColor="@color/bright_green"
+                    app:chipBackgroundColor="@android:color/transparent"
+                    app:chipIcon="@drawable/ic_add"
+                    app:chipIconTint="@color/bright_green"
+                    app:chipIconVisible="true"
+                    app:chipStrokeColor="@color/bright_green"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Saturday"
                     android:textColor="@color/bright_green"
                     app:chipBackgroundColor="@android:color/transparent"
                     app:chipIcon="@drawable/ic_add"
