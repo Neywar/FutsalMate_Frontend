@@ -1,12 +1,15 @@
 package com.example.futsalmate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class RegisterTeamActivity extends AppCompatActivity {
 
@@ -14,6 +17,7 @@ public class RegisterTeamActivity extends AppCompatActivity {
     private String[] courtList;
     private boolean[] checkedCourts;
     private ArrayList<Integer> selectedCourts = new ArrayList<>();
+    private MaterialButton btnPublish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +25,15 @@ public class RegisterTeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_team);
 
         tvPreferredCourts = findViewById(R.id.tvPreferredCourts);
-        courtList = getResources().getStringArray(R.array.courts_array);
+        btnPublish = findViewById(R.id.btnPublish);
+        
+        // Use a fallback list if array resource is missing
+        try {
+            courtList = getResources().getStringArray(R.array.courts_array);
+        } catch (Exception e) {
+            courtList = new String[]{"Pro Arena", "West End Arena", "Stadium A", "Stadium B"};
+        }
+        
         checkedCourts = new boolean[courtList.length];
 
         tvPreferredCourts.setOnClickListener(v -> {
@@ -54,16 +66,19 @@ public class RegisterTeamActivity extends AppCompatActivity {
                 dialog.dismiss();
             });
 
-            builder.setNeutralButton("Clear All", (dialog, which) -> {
-                for (int i = 0; i < checkedCourts.length; i++) {
-                    checkedCourts[i] = false;
-                    selectedCourts.clear();
-                    tvPreferredCourts.setText("Select preferred courts");
-                }
-            });
-
             AlertDialog dialog = builder.create();
             dialog.show();
+        });
+
+        btnPublish.setOnClickListener(v -> {
+            // Simulation: Save team registration
+            Toast.makeText(this, "Team Registered Successfully!", Toast.LENGTH_SHORT).show();
+            
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("TEAM_REGISTERED", true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         });
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());

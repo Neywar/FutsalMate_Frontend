@@ -37,15 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnBack" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Help"
-            android:textColor="#4B5563"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/btnBack"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnBack" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -99,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:letterSpacing="0.05"
-                android:text="COST PER HOUR ($)"
+                android:text="COST PER HOUR (NPR)"
                 android:textColor="#FACC15"
                 android:textSize="10sp"
                 android:textStyle="bold" />
@@ -130,6 +121,74 @@
                     app:tint="#FACC15"
                     android:contentDescription="Currency Icon" />
             </FrameLayout>
+
+            <!-- Availability Time Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:letterSpacing="0.05"
+                android:text="AVAILABILITY TIME"
+                android:textColor="#FACC15"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Starts at:"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/tvEditStartTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_vendor_input"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="06:00 AM"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View android:layout_width="16dp" android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ends at:"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/tvEditEndTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_vendor_input"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="11:00 PM"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <!-- Media Section -->
             <TextView
@@ -311,91 +370,6 @@
                 android:textColor="@color/white"
                 android:textColorHint="#4B5563"
                 android:textSize="14sp" />
-
-            <!-- Contact Info Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Contact Info"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:letterSpacing="0.05"
-                android:text="PHONE NUMBER"
-                android:textColor="#FACC15"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
-
-                <EditText
-                    android:id="@+id/etEditPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_vendor_input"
-                    android:hint="+1 (555) 000-0000"
-                    android:inputType="phone"
-                    android:paddingStart="48dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#4B5563"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_phone"
-                    android:contentDescription="Phone icon" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:letterSpacing="0.05"
-                android:text="BOOKING EMAIL"
-                android:textColor="#FACC15"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
-
-                <EditText
-                    android:id="@+id/etEditEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_vendor_input"
-                    android:hint="bookings@courtname.com"
-                    android:inputType="textEmailAddress"
-                    android:paddingStart="48dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#4B5563"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_email"
-                    app:tint="#FACC15"
-                    android:contentDescription="Email icon" />
-            </FrameLayout>
 
             <!-- Update Button -->
             <com.google.android.material.button.MaterialButton

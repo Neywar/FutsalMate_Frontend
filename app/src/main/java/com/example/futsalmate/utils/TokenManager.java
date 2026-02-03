@@ -8,10 +8,11 @@ public class TokenManager {
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_ROLE = "user_role";
-
+    private static final String KEY_TEAM_REGISTERED = "team_registered";
+    
     public static final String ROLE_PLAYER = "PLAYER";
     public static final String ROLE_VENDOR = "VENDOR";
-
+    
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     
@@ -47,10 +48,20 @@ public class TokenManager {
         return sharedPreferences.getString(KEY_USER_ROLE, ROLE_PLAYER);
     }
 
+    public void setTeamRegistered(boolean registered) {
+        editor.putBoolean(KEY_TEAM_REGISTERED, registered);
+        editor.apply();
+    }
+
+    public boolean isTeamRegistered() {
+        return sharedPreferences.getBoolean(KEY_TEAM_REGISTERED, false);
+    }
+    
     public void clearToken() {
         editor.remove(KEY_TOKEN);
         editor.remove(KEY_USER_EMAIL);
         editor.remove(KEY_USER_ROLE);
+        editor.remove(KEY_TEAM_REGISTERED);
         editor.apply();
     }
     
@@ -66,6 +77,3 @@ public class TokenManager {
         return null;
     }
 }
-
-
-

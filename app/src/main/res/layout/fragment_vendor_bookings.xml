@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:paddingBottom="80dp">
 
             <!-- Horizontal Filters -->
             <HorizontalScrollView
@@ -220,6 +220,7 @@
 
             <!-- Bookings List -->
             <LinearLayout
+                android:id="@+id/bookingsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -227,11 +228,15 @@
 
                 <!-- Row 1 -->
                 <LinearLayout
+                    android:id="@+id/rowBooking1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
                         android:layout_width="0dp"
@@ -287,11 +292,15 @@
 
                 <!-- Row 2 -->
                 <LinearLayout
+                    android:id="@+id/rowBooking2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
                         android:layout_width="0dp"
@@ -339,126 +348,6 @@
                         android:paddingVertical="4dp"
                         android:text="PENDING"
                         android:textColor="#FACC15"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2937" />
-
-                <!-- Row 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:text="12:00 - 13:00"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Team Alpha"
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+1 555 123 444"
-                            android:textColor="#4B5563"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Court A"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_vendor_input"
-                        android:backgroundTint="#4010B981"
-                        android:gravity="center"
-                        android:paddingVertical="4dp"
-                        android:text="PAID"
-                        android:textColor="#10B981"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2937" />
-
-                <!-- Row 4 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:text="14:00 - 15:00"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sarah Chen"
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+1 333 999 000"
-                            android:textColor="#4B5563"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Court C"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_vendor_input"
-                        android:backgroundTint="#4010B981"
-                        android:gravity="center"
-                        android:paddingVertical="4dp"
-                        android:text="PAID"
-                        android:textColor="#10B981"
                         android:textSize="9sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -534,5 +423,17 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabManualBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="#FACC15"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="#000000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

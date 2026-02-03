@@ -164,92 +164,101 @@
                 android:textStyle="bold"
                 android:letterSpacing="0.05" />
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cgTimeSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                app:chipSpacingHorizontal="12dp"
+                app:chipSpacingVertical="12dp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <!-- 09:00 - 10:00 (Pre-booked) -->
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="START TIME"
-                        android:textColor="@color/text_grey"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:paddingHorizontal="16dp"
-                        android:gravity="center_vertical"
-                        android:elevation="1dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="18:00"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:background="@drawable/bg_tag_green"
-                            android:backgroundTint="#F59E0B"
-                            android:alpha="0.6"
-                            app:tint="@color/white" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text="09:00 - 10:00"
+                    android:enabled="false"
+                    app:chipBackgroundColor="@color/card_bg_light"
+                    android:textColor="@color/text_grey" />
 
-                <View android:layout_width="20dp" android:layout_height="1dp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="END TIME"
-                        android:textColor="@color/text_grey"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:paddingHorizontal="16dp"
-                        android:gravity="center_vertical"
-                        android:elevation="1dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="19:30"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:background="@drawable/bg_tag_green"
-                            android:backgroundTint="#F59E0B"
-                            android:alpha="0.6"
-                            app:tint="@color/white" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+                    android:text="10:00 - 11:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <!-- 11:00 - 12:00 (Pre-booked) -->
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11:00 - 12:00"
+                    android:enabled="false"
+                    app:chipBackgroundColor="@color/card_bg_light"
+                    android:textColor="@color/text_grey" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:00 - 13:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13:00 - 14:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <!-- 14:00 - 15:00 (Pre-booked) -->
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14:00 - 15:00"
+                    android:enabled="false"
+                    app:chipBackgroundColor="@color/card_bg_light"
+                    android:textColor="@color/text_grey" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15:00 - 16:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16:00 - 17:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="17:00 - 18:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18:00 - 19:00"
+                    app:chipBackgroundColor="@color/card_bg"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <!-- Booking Notes Section -->
             <TextView
@@ -425,7 +434,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Selected: 1.5 Hours — $45"
+            android:text="Selected: 1 Hour — $45"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"

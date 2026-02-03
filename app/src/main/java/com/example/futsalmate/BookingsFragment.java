@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Calendar;
+
 public class BookingsFragment extends Fragment {
 
     @Nullable
@@ -21,7 +23,9 @@ public class BookingsFragment extends Fragment {
 
         // Header Back button
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            if (getActivity() != null) getActivity().onBackPressed();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadFragment(new DashboardFragment(), R.id.nav_home);
+            }
         });
 
         // 1. Details button (Wembley Arena) -> BookedDetailsActivity
@@ -40,13 +44,13 @@ public class BookingsFragment extends Fragment {
         });
 
         // Setup 3-dot menus
-        view.findViewById(R.id.btnMenu1).setOnClickListener(this::showBookingMenu);
-        view.findViewById(R.id.btnMenu2).setOnClickListener(this::showBookingMenu);
+        view.findViewById(R.id.btnMenu1).setOnClickListener(v -> showBookingMenu(v, "Wembley Arena", 15, 10, 2024, 18, 0));
+        view.findViewById(R.id.btnMenu2).setOnClickListener(v -> showBookingMenu(v, "Stamford Bridge", 15, 10, 2024, 20, 0));
 
         return view;
     }
 
-    private void showBookingMenu(View view) {
+    private void showBookingMenu(View view, String courtName, int day, int month, int year, int hour, int minute) {
         ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.DarkPopupMenuTheme);
         PopupMenu popup = new PopupMenu(wrapper, view);
         popup.getMenu().add("Edit Booking");
@@ -54,15 +58,39 @@ public class BookingsFragment extends Fragment {
 
         popup.setOnMenuItemClickListener(item -> {
             if (item.getTitle().equals("Edit Booking")) {
-                Toast.makeText(getActivity(), "Edit Booking clicked", Toast.LENGTH_SHORT).show();
+                if (canModifyBooking(year, month, day, hour, minute)) {
+                    Intent intent = new Intent(getActivity(), SelectTimeslotActivity.class);
+                    intent.putExtra("EDIT_MODE", true);
+                    intent.putExtra("COURT_NAME", courtName);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Cannot edit booking within 2 hours of start time", Toast.LENGTH_LONG).show();
+                }
                 return true;
             } else if (item.getTitle().equals("Delete Booking")) {
-                Toast.makeText(getActivity(), "Delete Booking clicked", Toast.LENGTH_SHORT).show();
+                if (canModifyBooking(year, month, day, hour, minute)) {
+                    // Logic to delete the booking would go here
+                    view.setVisibility(View.GONE); // Visual feedback
+                    Toast.makeText(getActivity(), "Booking for " + courtName + " deleted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Cannot delete booking within 2 hours of start time", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
             return false;
         });
 
         popup.show();
+    }
+
+    private boolean canModifyBooking(int year, int month, int day, int hour, int minute) {
+        Calendar bookingTime = Calendar.getInstance();
+        bookingTime.set(year, month - 1, day, hour, minute);
+        
+        long currentTimeMillis = System.currentTimeMillis();
+        long bookingTimeMillis = bookingTime.getTimeInMillis();
+        
+        // Check if current time is more than 2 hours (2 * 60 * 60 * 1000 ms) before booking time
+        return (bookingTimeMillis - currentTimeMillis) > (2 * 60 * 60 * 1000);
     }
 }

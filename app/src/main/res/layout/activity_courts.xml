@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchContainer">
 
         <LinearLayout
@@ -117,10 +117,13 @@
                         android:layout_height="180dp">
 
                         <ImageView
+                            android:id="@+id/ivCourtPhoto1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_court_one" />
+                            android:src="@drawable/ic_court_one"
+                            android:clickable="true"
+                            android:focusable="true"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -212,7 +215,6 @@
                             android:layout_marginTop="12dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tvCourtName1"
-                            app:layout_constraintVertical_bias="1"
                             android:layout_marginBottom="16dp"
                             app:chipSpacingHorizontal="8dp"
                             android:paddingTop="20dp">
@@ -275,6 +277,7 @@
                             app:layout_constraintTop_toTopOf="@id/tvPrice1" />
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBookNow1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/bright_green"
@@ -310,10 +313,13 @@
                         android:layout_height="180dp">
 
                         <ImageView
+                            android:id="@+id/ivCourtPhoto2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_court_one" />
+                            android:src="@drawable/ic_court_one"
+                            android:clickable="true"
+                            android:focusable="true"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -467,193 +473,13 @@
                             app:layout_constraintTop_toTopOf="@id/tvPrice2" />
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBookNow2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/bright_green"
                             android:text="Book Now"
                             android:textAllCaps="false"
                             android:textColor="@color/dashboard_bg"
-                            android:textStyle="bold"
-                            app:cornerRadius="12dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Court Card 3 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="@color/card_bg_light"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_court_one" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="12dp"
-                            android:background="@drawable/bg_otp_box_active"
-                            android:backgroundTint="#9A3412"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="4dp"
-                            android:text="LIMITED SLOTS"
-                            android:textColor="@color/white"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
-
-                    </FrameLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvCourtName3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Champion Center"
-                            android:textColor="@color/white"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center_vertical"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvCourtName3">
-
-                            <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:src="@drawable/ic_location"
-                                app:tint="@color/text_grey" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="North Point • 5.0 km away"
-                                android:textColor="@color/text_grey"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="end"
-                            android:orientation="vertical"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_otp_box_active"
-                                android:backgroundTint="#064E3B"
-                                android:paddingHorizontal="8dp"
-                                android:paddingVertical="2dp"
-                                android:text="★ 4.9"
-                                android:textColor="@color/bright_green"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="210 reviews"
-                                android:textColor="@color/text_grey"
-                                android:textSize="9sp" />
-                        </LinearLayout>
-
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chipGroup3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvCourtName3"
-                            android:layout_marginBottom="16dp"
-                            app:chipSpacingHorizontal="8dp"
-                            android:paddingTop="20dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_otp_box_inactive"
-                                android:backgroundTint="@color/card_bg_light"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="4dp"
-                                android:text="Indoor"
-                                android:textColor="@color/text_grey"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_otp_box_inactive"
-                                android:backgroundTint="@color/card_bg_light"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="4dp"
-                                android:text="Shower"
-                                android:textColor="@color/text_grey"
-                                android:textSize="10sp" />
-                        </com.google.android.material.chip.ChipGroup>
-
-                        <TextView
-                            android:id="@+id/tvPrice3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:text="$50"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chipGroup3" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="/ hour"
-                            android:textColor="@color/text_grey"
-                            android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvPrice3"
-                            app:layout_constraintStart_toEndOf="@id/tvPrice3"
-                            app:layout_constraintTop_toTopOf="@id/tvPrice3" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/card_bg_light"
-                            android:text="Notify Me"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
                             android:textStyle="bold"
                             app:cornerRadius="12dp"
                             app:layout_constraintBottom_toBottomOf="parent"

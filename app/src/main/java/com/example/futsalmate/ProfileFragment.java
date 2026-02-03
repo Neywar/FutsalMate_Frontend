@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.example.futsalmate.utils.TokenManager;
 public class ProfileFragment extends Fragment {
 
     private TokenManager tokenManager;
+    private TextView tvName;
 
     @Nullable
     @Override
@@ -22,6 +24,34 @@ public class ProfileFragment extends Fragment {
 
         if (getContext() != null) {
             tokenManager = new TokenManager(getContext());
+        }
+
+        tvName = view.findViewById(R.id.tvName);
+
+        // My Team logic
+        View layoutMyTeam = view.findViewById(R.id.layoutMyTeam);
+        if (layoutMyTeam != null) {
+            layoutMyTeam.setOnClickListener(v -> {
+                startActivity(new Intent(getActivity(), EditTeamActivity.class));
+            });
+        }
+
+        // Edit Team Profile logic (Existing)
+        View layoutEditTeam = view.findViewById(R.id.layoutEditTeam);
+        View dividerTeam = view.findViewById(R.id.dividerTeam);
+
+        if (tokenManager != null && tokenManager.isTeamRegistered()) {
+            if (layoutEditTeam != null) layoutEditTeam.setVisibility(View.VISIBLE);
+            if (dividerTeam != null) dividerTeam.setVisibility(View.VISIBLE);
+        } else {
+            if (layoutEditTeam != null) layoutEditTeam.setVisibility(View.GONE);
+            if (dividerTeam != null) dividerTeam.setVisibility(View.GONE);
+        }
+
+        if (layoutEditTeam != null) {
+            layoutEditTeam.setOnClickListener(v -> {
+                startActivity(new Intent(getActivity(), EditTeamActivity.class));
+            });
         }
 
         // Navigation links
@@ -35,14 +65,21 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.layoutHelpCenter).setOnClickListener(v -> 
             Toast.makeText(getActivity(), "Help Center Clicked", Toast.LENGTH_SHORT).show());
 
-        // Back button
+        // Back button -> Redirect to Dashboard
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            if (getActivity() != null) getActivity().onBackPressed();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadFragment(new DashboardFragment(), R.id.nav_home);
+            }
         });
 
-        // Edit button
-        view.findViewById(R.id.btnEdit).setOnClickListener(v -> 
-            Toast.makeText(getActivity(), "Edit Profile Clicked", Toast.LENGTH_SHORT).show());
+        // Edit Profile button
+        view.findViewById(R.id.btnEdit).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            if (tvName != null) {
+                intent.putExtra("CURRENT_NAME", tvName.getText().toString());
+            }
+            startActivity(intent);
+        });
 
         // Logout logic
         view.findViewById(R.id.btnLogoutCard).setOnClickListener(v -> {

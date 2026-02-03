@@ -19,6 +19,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
+            android:contentDescription="Back"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +43,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
+            android:contentDescription="Edit"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +111,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:contentDescription="Bookings"
                         android:src="@drawable/ic_bookings"
                         app:tint="@color/bright_green" />
 
@@ -162,6 +165,51 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <!-- My Team -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutMyTeam"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:paddingHorizontal="16dp"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/ivIconTeam"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_otp_box_inactive"
+                            android:backgroundTint="#064E3B"
+                            android:padding="8dp"
+                            android:contentDescription="Team"
+                            android:src="@drawable/ic_futsal_ball"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/bright_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="My Team"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivIconTeam"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="Next"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/text_grey" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/card_bg_light" android:layout_marginHorizontal="16dp"/>
 
                     <!-- Change Password -->
@@ -179,6 +227,7 @@
                             android:background="@drawable/bg_otp_box_inactive"
                             android:backgroundTint="#064E3B"
                             android:padding="8dp"
+                            android:contentDescription="Security"
                             android:src="@drawable/ic_visibility"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -201,6 +250,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="Next"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -224,6 +274,7 @@
                             android:background="@drawable/bg_otp_box_inactive"
                             android:backgroundTint="#064E3B"
                             android:padding="8dp"
+                            android:contentDescription="Wallet"
                             android:src="@drawable/ic_wallet"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -231,6 +282,7 @@
                             app:tint="@color/bright_green" />
 
                         <TextView
+                            android:id="@+id/tvSpentLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -259,6 +311,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="Next"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -282,6 +335,7 @@
                             android:background="@drawable/bg_otp_box_inactive"
                             android:backgroundTint="#064E3B"
                             android:padding="8dp"
+                            android:contentDescription="Help"
                             android:src="@drawable/ic_edit"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -304,6 +358,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="Next"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -336,6 +391,7 @@
                         android:layout_height="36dp"
                         android:background="#450A0A"
                         android:padding="8dp"
+                        android:contentDescription="Logout"
                         android:src="@drawable/ic_setting"
                         android:rotation="180"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -364,9 +420,7 @@
                 android:layout_marginTop="32dp"
                 android:text="FUTSALMATE V2.5.0 PREMIUM"
                 android:textColor="@color/card_bg_light"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.1"/>
+                android:textSize="10sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

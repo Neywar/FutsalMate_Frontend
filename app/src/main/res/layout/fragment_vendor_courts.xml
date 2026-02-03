@@ -215,16 +215,42 @@
                         app:layout_constraintStart_toStartOf="@id/tvStatus1"
                         app:layout_constraintTop_toBottomOf="@id/tvCourtName1" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llAvailability1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toStartOf="@id/tvStatus1"
+                        app:layout_constraintTop_toBottomOf="@id/tvFeatures1">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_clock"
+                            app:tint="#FACC15" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="06:00 AM - 11:00 PM"
+                            android:textColor="#FACC15"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPrice1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="$50.00 / hr"
                         android:textColor="#FACC15"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@id/tvStatus1"
-                        app:layout_constraintTop_toBottomOf="@id/tvFeatures1" />
+                        app:layout_constraintTop_toBottomOf="@id/llAvailability1" />
 
                     <ImageView
                         android:id="@+id/ivEdit1"
@@ -316,16 +342,42 @@
                         app:layout_constraintStart_toStartOf="@id/tvStatus2"
                         app:layout_constraintTop_toBottomOf="@id/tvCourtName2" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llAvailability2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toStartOf="@id/tvStatus2"
+                        app:layout_constraintTop_toBottomOf="@id/tvFeatures2">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_clock"
+                            app:tint="#9CA3AF" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="08:00 AM - 10:00 PM"
+                            android:textColor="#9CA3AF"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPrice2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="$40.00 / hr"
                         android:textColor="#FACC15"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@id/tvStatus2"
-                        app:layout_constraintTop_toBottomOf="@id/tvFeatures2" />
+                        app:layout_constraintTop_toBottomOf="@id/llAvailability2" />
 
                     <ImageView
                         android:id="@+id/ivEdit2"
@@ -416,16 +468,42 @@
                         app:layout_constraintStart_toStartOf="@id/tvStatus3"
                         app:layout_constraintTop_toBottomOf="@id/tvCourtName3" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llAvailability3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toStartOf="@id/tvStatus3"
+                        app:layout_constraintTop_toBottomOf="@id/tvFeatures3">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_clock"
+                            app:tint="#FACC15" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="07:00 AM - 12:00 AM"
+                            android:textColor="#FACC15"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPrice3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="$55.00 / hr"
                         android:textColor="#FACC15"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@id/tvStatus3"
-                        app:layout_constraintTop_toBottomOf="@id/tvFeatures3" />
+                        app:layout_constraintTop_toBottomOf="@id/llAvailability3" />
 
                     <ImageView
                         android:id="@+id/ivEdit3"

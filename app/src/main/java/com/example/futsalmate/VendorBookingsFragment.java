@@ -1,10 +1,13 @@
 package com.example.futsalmate;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -46,7 +49,47 @@ public class VendorBookingsFragment extends Fragment {
             btnCalendar.setOnClickListener(v -> showDatePicker());
         }
 
+        // Manual Booking FAB
+        View fabManualBooking = view.findViewById(R.id.fabManualBooking);
+        if (fabManualBooking != null) {
+            fabManualBooking.setOnClickListener(v -> {
+                startActivity(new Intent(getActivity(), ManualBookingActivity.class));
+            });
+        }
+
+        // Setup Edit/Delete for existing rows
+        setupRowMenu(view.findViewById(R.id.rowBooking1), "Alex Rivera", "+1 234 567 890", "Court A");
+        setupRowMenu(view.findViewById(R.id.rowBooking2), "Marcus J.", "+1 987 654 321", "Court B");
+
         return view;
+    }
+
+    private void setupRowMenu(View row, String userName, String phone, String court) {
+        if (row == null) return;
+        row.setOnClickListener(v -> {
+            ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.DarkPopupMenuTheme);
+            PopupMenu popup = new PopupMenu(wrapper, v);
+            popup.getMenu().add("Edit Booking");
+            popup.getMenu().add("Delete Booking");
+
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().equals("Edit Booking")) {
+                    Intent intent = new Intent(getActivity(), ManualBookingActivity.class);
+                    intent.putExtra("EDIT_MODE", true);
+                    intent.putExtra("USER_NAME", userName);
+                    intent.putExtra("PHONE", phone);
+                    intent.putExtra("COURT", court);
+                    startActivity(intent);
+                    return true;
+                } else if (item.getTitle().equals("Delete Booking")) {
+                    row.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Booking deleted", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
+        });
     }
 
     private void showDatePicker() {
@@ -55,8 +98,6 @@ public class VendorBookingsFragment extends Fragment {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateDateLabel();
-            
-            // Simulation: Filter logic
             Toast.makeText(getContext(), "Filtering bookings for: " + tvSelectedDate.getText(), Toast.LENGTH_SHORT).show();
         };
 

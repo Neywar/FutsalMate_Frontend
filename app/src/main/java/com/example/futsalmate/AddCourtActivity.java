@@ -240,8 +240,8 @@ public class AddCourtActivity extends AppCompatActivity {
     private void addFacilityChip(String facilityName) {
         Chip newChip = new Chip(this);
         newChip.setText(facilityName);
-        newChip.setChipBackgroundColorResource(R.color.colorPrimary);
-        newChip.setTextColor(getResources().getColor(R.color.white));
+        newChip.setChipBackgroundColorResource(R.color.action_yellow);
+        newChip.setTextColor(getResources().getColor(R.color.black));
         newChip.setCloseIconVisible(true);
         newChip.setOnCloseIconClickListener(v -> chipGroupFacilities.removeView(newChip));
         chipGroupFacilities.addView(newChip, chipGroupFacilities.getChildCount() - 1);

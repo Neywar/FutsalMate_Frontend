@@ -17,10 +17,14 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        // btnBook click -> BookingsFragment (handled by MainActivity usually, but for now standard intent or callback)
-        // If we want to stay in Fragment world, we should talk to MainActivity.
-        // However, existing code used Intents. Let's keep it simple for now or use a listener.
-        
+        // Profile click -> switchToProfile
+        view.findViewById(R.id.ivProfile).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).switchToProfile();
+            }
+        });
+
+        // btnBook click -> BookingsFragment
         view.findViewById(R.id.btnBook).setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).switchToBookings();

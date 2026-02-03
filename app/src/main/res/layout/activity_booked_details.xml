@@ -48,13 +48,14 @@
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
+            android:id="@+id/receiptContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- QR Code Card -->
+            <!-- QR Code Card placeholder if needed, or other receipt info -->
 
             <!-- Venue Details Card -->
             <com.google.android.material.card.MaterialCardView
@@ -266,6 +267,7 @@
             <!-- Action Buttons -->
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownloadReceipt"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"

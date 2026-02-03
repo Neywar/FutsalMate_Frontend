@@ -75,18 +75,20 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // TEST CREDENTIALS BYPASS
-            if (email.equals("admin@futsalmate.com") && password.equals("password123")) {
+            // TEST CREDENTIALS BYPASS FOR OFFLINE TESTING
+            if (email.contains("@") && password.length() >= 6) {
                 tokenManager.saveToken("test_token_123");
                 tokenManager.saveUserEmail(email);
                 tokenManager.saveUserRole(TokenManager.ROLE_PLAYER);
                 
+                Toast.makeText(this, "Player Login Successful", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
                 return;
             }
 
-            performLogin(email, password);
+            // Fallback to real API call if needed (currently commented out to prioritize bypass)
+            // performLogin(email, password);
         });
 
         // Navigate to Sign Up
