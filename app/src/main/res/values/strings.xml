@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">FutsalMate</string>
-    <string name="title_activity_otp_verification">OtpVerificationActivity</string>
+    <string name="title_activity_otp_verification">OTP Verification</string>
     <string-array name="court_status_array">
         <item>Active</item>
         <item>Inactive</item>
@@ -11,5 +11,9 @@
         <item>Court C</item>
         <item>Court D</item>
         <item>Court E</item>
+    </string-array>
+    <string-array name="payment_methods_array">
+        <item>Cash</item>
+        <item>eSewa</item>
     </string-array>
 </resources>

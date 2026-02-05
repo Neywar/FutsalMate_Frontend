@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,8 +12,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.futsalmate.api.RetrofitClient;
+import com.example.futsalmate.api.models.ApiResponse;
+import com.example.futsalmate.api.models.Vendor;
+import com.example.futsalmate.api.models.LoginRequest;
 import com.example.futsalmate.utils.TokenManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VendorLoginActivity extends AppCompatActivity {
 
@@ -65,19 +77,12 @@ public class VendorLoginActivity extends AppCompatActivity {
                 edtVendorPassword.setError("Password is required");
                 return;
             }
-
-            // Simple validation simulation
-            if (email.contains("@") && password.length() >= 6) {
-                tokenManager.saveToken("test_vendor_token");
-                tokenManager.saveUserEmail(email);
-                tokenManager.saveUserRole(TokenManager.ROLE_VENDOR);
-
-                Toast.makeText(this, "Vendor Login Successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(VendorLoginActivity.this, VendorMainActivity.class));
-                finish();
-            } else {
-                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+            if (password.length() < 8) {
+                edtVendorPassword.setError("Password must be at least 8 characters");
+                return;
             }
+
+            performVendorLogin(email, password);
         });
 
         // Navigate to Change Password
@@ -94,8 +99,64 @@ public class VendorLoginActivity extends AppCompatActivity {
         // Placeholder for Vendor Sign Up
         if (txtVendorSignUp != null) {
             txtVendorSignUp.setOnClickListener(v -> {
-                Toast.makeText(this, "Vendor Sign Up coming soon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(VendorLoginActivity.this, SignUpActivity.class);
+                intent.putExtra("SIGNUP_TYPE", "vendor");
+                startActivity(intent);
             });
         }
+    }
+
+    private void performVendorLogin(String email, String password) {
+        btnVendorLogin.setEnabled(false);
+
+        LoginRequest request = new LoginRequest(email, password, false);
+        Call<ApiResponse<Vendor>> call = RetrofitClient.getInstance().getApiService().vendorLogin(request);
+
+        call.enqueue(new Callback<ApiResponse<Vendor>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Vendor>> call, Response<ApiResponse<Vendor>> response) {
+                btnVendorLogin.setEnabled(true);
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Vendor> apiResponse = response.body();
+                    if ("success".equalsIgnoreCase(apiResponse.getStatus())) {
+                        tokenManager.saveToken(apiResponse.getToken());
+                        tokenManager.saveUserEmail(email);
+                        tokenManager.saveUserRole(TokenManager.ROLE_VENDOR);
+
+                        Vendor vendor = apiResponse.getVendor();
+                        if (vendor != null) {
+                            tokenManager.saveVendorId(vendor.getId());
+                        }
+
+                        startActivity(new Intent(VendorLoginActivity.this, VendorMainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(VendorLoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(VendorLoginActivity.this, extractErrorMessage(response), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Vendor>> call, Throwable t) {
+                btnVendorLogin.setEnabled(true);
+                Toast.makeText(VendorLoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String extractErrorMessage(Response<?> response) {
+        if (response != null && response.errorBody() != null) {
+            try {
+                String errorJson = response.errorBody().string();
+                ApiResponse<?> apiError = new Gson().fromJson(errorJson, ApiResponse.class);
+                if (apiError != null && apiError.getMessage() != null) {
+                    return apiError.getMessage();
+                }
+            } catch (IOException ignored) {
+            }
+        }
+        return "Login failed. Please try again.";
     }
 }

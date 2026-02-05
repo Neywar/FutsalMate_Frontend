@@ -23,6 +23,9 @@ import com.example.futsalmate.api.models.ApiResponse;
 import com.example.futsalmate.api.models.SignupRequest;
 import com.example.futsalmate.api.models.User;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CheckBox cbTerms;
     private ImageView btnPasswordToggle, btnConfirmPasswordToggle;
+    private String signupType = "user";
     
     private boolean isPasswordVisible = false;
     private boolean isConfirmPasswordVisible = false;
@@ -45,6 +49,11 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        String typeExtra = getIntent().getStringExtra("SIGNUP_TYPE");
+        if (typeExtra != null && !typeExtra.trim().isEmpty()) {
+            signupType = typeExtra.trim().toLowerCase();
+        }
 
         // Initialize views
         btnBack = findViewById(R.id.btnBack);
@@ -69,13 +78,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Back Navigation
         btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            navigateBackToLogin();
             finish();
         });
 
         // Login Navigation
         txtLogin.setOnClickListener(v -> {
-            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            navigateBackToLogin();
             finish();
         });
 
@@ -138,12 +147,12 @@ public class SignUpActivity extends AppCompatActivity {
         boolean termsChecked = cbTerms.isChecked();
 
         boolean isValid = !TextUtils.isEmpty(fullName) &&
-                !TextUtils.isEmpty(email) &&
-                android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-                !TextUtils.isEmpty(password) &&
-                password.length() >= 6 &&
-                password.equals(confirmPassword) &&
-                termsChecked;
+            !TextUtils.isEmpty(email) &&
+            android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
+            !TextUtils.isEmpty(password) &&
+            password.length() >= 8 &&
+            password.equals(confirmPassword) &&
+            termsChecked;
 
         btnSignUp.setEnabled(isValid);
         btnSignUp.setAlpha(isValid ? 1.0f : 0.5f);
@@ -159,7 +168,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
         SignupRequest signupRequest = new SignupRequest(
-                fullName, email, password, confirmPassword, null, true, "user"
+            fullName, email, password, confirmPassword, null, true, signupType
         );
 
         Call<ApiResponse<User>> call = RetrofitClient.getInstance().getApiService().signup(signupRequest);
@@ -168,15 +177,21 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
                 if (progressBar != null) progressBar.setVisibility(View.GONE);
                 
-                if (response.isSuccessful()) {
-                    Toast.makeText(SignUpActivity.this, "Account created! Please verify your OTP.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, OtpVerificationActivity.class);
-                    intent.putExtra("USER_EMAIL", email);
-                    startActivity(intent);
-                    finish();
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<User> apiResponse = response.body();
+                    if ("success".equalsIgnoreCase(apiResponse.getStatus()) || "warning".equalsIgnoreCase(apiResponse.getStatus())) {
+                        Toast.makeText(SignUpActivity.this, apiResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(SignUpActivity.this, OtpVerificationActivity.class);
+                        intent.putExtra("USER_EMAIL", email);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        btnSignUp.setEnabled(true);
+                        Toast.makeText(SignUpActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     btnSignUp.setEnabled(true);
-                    Toast.makeText(SignUpActivity.this, "Signup failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, extractErrorMessage(response), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -187,5 +202,29 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void navigateBackToLogin() {
+        Intent intent;
+        if ("vendor".equalsIgnoreCase(signupType)) {
+            intent = new Intent(SignUpActivity.this, VendorLoginActivity.class);
+        } else {
+            intent = new Intent(SignUpActivity.this, LoginActivity.class);
+        }
+        startActivity(intent);
+    }
+
+    private String extractErrorMessage(Response<?> response) {
+        if (response != null && response.errorBody() != null) {
+            try {
+                String errorJson = response.errorBody().string();
+                ApiResponse<?> apiError = new Gson().fromJson(errorJson, ApiResponse.class);
+                if (apiError != null && apiError.getMessage() != null) {
+                    return apiError.getMessage();
+                }
+            } catch (IOException ignored) {
+            }
+        }
+        return "Signup failed. Please try again.";
     }
 }

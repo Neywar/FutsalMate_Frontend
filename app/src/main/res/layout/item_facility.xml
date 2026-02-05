@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingVertical="12dp">
+
+    <ImageView
+        android:id="@+id/ivFacilityIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_otp_box_inactive"
+        android:backgroundTint="@color/card_bg"
+        android:padding="10dp"
+        android:src="@drawable/ic_bookings"
+        app:tint="@color/bright_green" />
+
+    <TextView
+        android:id="@+id/tvFacilityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Facility"
+        android:textColor="@color/text_grey"
+        android:textSize="8sp"
+        android:textStyle="bold" />
+</LinearLayout>

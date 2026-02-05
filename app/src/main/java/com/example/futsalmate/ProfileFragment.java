@@ -10,12 +10,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.futsalmate.api.RetrofitClient;
+import com.example.futsalmate.api.models.User;
+import com.example.futsalmate.api.models.UserDashboardData;
+import com.example.futsalmate.api.models.UserDashboardResponse;
 import com.example.futsalmate.utils.TokenManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
     private TokenManager tokenManager;
     private TextView tvName;
+    private TextView tvTotalBookings;
 
     @Nullable
     @Override
@@ -27,6 +37,7 @@ public class ProfileFragment extends Fragment {
         }
 
         tvName = view.findViewById(R.id.tvName);
+        tvTotalBookings = view.findViewById(R.id.tvTotalBookings);
 
         // My Team logic
         View layoutMyTeam = view.findViewById(R.id.layoutMyTeam);
@@ -94,6 +105,51 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        loadProfileData();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadProfileData();
+    }
+
+    private void loadProfileData() {
+        if (tokenManager == null) {
+            return;
+        }
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().userDashboard(token)
+                .enqueue(new Callback<UserDashboardResponse>() {
+                    @Override
+                    public void onResponse(Call<UserDashboardResponse> call, Response<UserDashboardResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
+                            return;
+                        }
+                        bindProfile(response.body().getData());
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserDashboardResponse> call, Throwable t) {
+                        // silent fail
+                    }
+                });
+    }
+
+    private void bindProfile(UserDashboardData data) {
+        User user = data.getUser();
+        if (tvName != null) {
+            String name = user != null ? user.getFullName() : null;
+            tvName.setText(name != null && !name.trim().isEmpty() ? name : "Player");
+        }
+        if (tvTotalBookings != null) {
+            tvTotalBookings.setText(String.valueOf(data.getTotalBookings()));
+        }
     }
 }

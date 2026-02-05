@@ -71,44 +71,11 @@
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/filtersContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_vendor_button"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
-                        android:text="All Courts"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:background="@drawable/bg_vendor_card"
-                        android:backgroundTint="#1F2937"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
-                        android:text="Court A"
-                        android:textColor="#9CA3AF"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:background="@drawable/bg_vendor_card"
-                        android:backgroundTint="#1F2937"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
-                        android:text="Court B"
-                        android:textColor="#9CA3AF"
-                        android:textStyle="bold" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -132,6 +99,7 @@
                     app:tint="#FACC15" />
 
                 <EditText
+                    android:id="@+id/etSearchBookings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -216,6 +184,16 @@
                     android:textColor="#4B5563"
                     android:textSize="10sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:gravity="end"
+                    android:text="ACTION"
+                    android:textColor="#4B5563"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Bookings List -->
@@ -226,135 +204,18 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp">
 
-                <!-- Row 1 -->
-                <LinearLayout
-                    android:id="@+id/rowBooking1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:text="09:00 - 10:00"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Alex Rivera"
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+1 234 567 890"
-                            android:textColor="#4B5563"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Court A"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_vendor_input"
-                        android:backgroundTint="#4010B981"
-                        android:gravity="center"
-                        android:paddingVertical="4dp"
-                        android:text="PAID"
-                        android:textColor="#10B981"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2937" />
-
-                <!-- Row 2 -->
-                <LinearLayout
-                    android:id="@+id/rowBooking2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:text="10:00 - 11:30"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Marcus J."
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+1 987 654 321"
-                            android:textColor="#4B5563"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Court B"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_vendor_input"
-                        android:backgroundTint="#40FACC15"
-                        android:gravity="center"
-                        android:paddingVertical="4dp"
-                        android:text="PENDING"
-                        android:textColor="#FACC15"
-                        android:textSize="9sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1F2937" />
-
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvEmptyBookings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="No bookings found"
+                android:textColor="#6B7280"
+                android:textSize="13sp"
+                android:visibility="gone" />
 
             <!-- Bottom Summary Card -->
             <com.google.android.material.card.MaterialCardView
@@ -392,24 +253,18 @@
                         app:layout_constraintTop_toBottomOf="@id/lblTotal">
 
                         <TextView
+                            android:id="@+id/tvTodayTotalAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$420.00"
+                            android:text="Rs.0.00"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="↗ +12%"
-                            android:textColor="#10B981"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvBookingsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="12 Bookings"

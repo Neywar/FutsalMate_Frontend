@@ -8,6 +8,11 @@ public class TokenManager {
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_ROLE = "user_role";
+    private static final String KEY_VENDOR_ID = "vendor_id";
+    private static final String KEY_VENDOR_NAME = "vendor_name";
+    private static final String KEY_VENDOR_PHONE = "vendor_phone";
+    private static final String KEY_VENDOR_EMAIL = "vendor_email";
+    private static final String KEY_VENDOR_ADDRESS = "vendor_address";
     private static final String KEY_TEAM_REGISTERED = "team_registered";
     
     public static final String ROLE_PLAYER = "PLAYER";
@@ -44,6 +49,51 @@ public class TokenManager {
         editor.apply();
     }
 
+    public void saveVendorId(int vendorId) {
+        editor.putInt(KEY_VENDOR_ID, vendorId);
+        editor.apply();
+    }
+
+    public void saveVendorName(String name) {
+        editor.putString(KEY_VENDOR_NAME, name);
+        editor.apply();
+    }
+
+    public String getVendorName() {
+        return sharedPreferences.getString(KEY_VENDOR_NAME, null);
+    }
+
+    public void saveVendorPhone(String phone) {
+        editor.putString(KEY_VENDOR_PHONE, phone);
+        editor.apply();
+    }
+
+    public String getVendorPhone() {
+        return sharedPreferences.getString(KEY_VENDOR_PHONE, null);
+    }
+
+    public void saveVendorEmail(String email) {
+        editor.putString(KEY_VENDOR_EMAIL, email);
+        editor.apply();
+    }
+
+    public String getVendorEmail() {
+        return sharedPreferences.getString(KEY_VENDOR_EMAIL, null);
+    }
+
+    public void saveVendorAddress(String address) {
+        editor.putString(KEY_VENDOR_ADDRESS, address);
+        editor.apply();
+    }
+
+    public String getVendorAddress() {
+        return sharedPreferences.getString(KEY_VENDOR_ADDRESS, null);
+    }
+
+    public int getVendorId() {
+        return sharedPreferences.getInt(KEY_VENDOR_ID, -1);
+    }
+
     public String getUserRole() {
         return sharedPreferences.getString(KEY_USER_ROLE, ROLE_PLAYER);
     }
@@ -61,6 +111,11 @@ public class TokenManager {
         editor.remove(KEY_TOKEN);
         editor.remove(KEY_USER_EMAIL);
         editor.remove(KEY_USER_ROLE);
+        editor.remove(KEY_VENDOR_ID);
+        editor.remove(KEY_VENDOR_NAME);
+        editor.remove(KEY_VENDOR_PHONE);
+        editor.remove(KEY_VENDOR_EMAIL);
+        editor.remove(KEY_VENDOR_ADDRESS);
         editor.remove(KEY_TEAM_REGISTERED);
         editor.apply();
     }

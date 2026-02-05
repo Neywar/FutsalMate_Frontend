@@ -26,4 +26,7 @@
     <color name="action_grey">#334155</color>
     <color name="logout_red">#991B1B</color>
     <color name="logout_bg">#2D1A1A</color>
+    <color name="gray_border">#1F2937</color>
+    <color name="gray_text">#9CA3AF</color>
+    <color name="chip_bg_unselected">#111827</color>
 </resources>

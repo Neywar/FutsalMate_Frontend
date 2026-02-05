@@ -138,6 +138,7 @@
                                 app:drawableStartCompat="@drawable/ic_bookings"
                                 app:drawableTint="@color/text_grey" />
                             <TextView
+                                android:id="@+id/tvBookingDateValue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -163,6 +164,7 @@
                                 app:drawableStartCompat="@drawable/ic_clock"
                                 app:drawableTint="@color/text_grey" />
                             <TextView
+                                android:id="@+id/tvBookingTimeValue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -182,6 +184,7 @@
                         app:layout_constraintTop_toBottomOf="@id/llDateTime" />
 
                     <TextView
+                        android:id="@+id/tvBookingStatusTag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -197,21 +200,11 @@
                         app:layout_constraintTop_toBottomOf="@id/divider" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Ref: #WEM-10482"
-                        android:textColor="@color/text_grey"
-                        android:textSize="9sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider" />
-
-                    <TextView
+                        android:id="@+id/tvBookingPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="£45.00"
+                        android:text="Rs.1500"
                         android:textColor="@color/bright_green"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -227,44 +220,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_circle_light"
-                        android:backgroundTint="@color/bright_green"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_person"
-                        app:tint="@color/dashboard_bg" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:text="User Details"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_arrow_back"
-                        android:rotation="270"
-                        app:tint="@color/text_grey" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                app:cardCornerRadius="16dp"/>
 
             <!-- Action Buttons -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEditBooking"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/bright_green"
+                    android:text="Edit Booking"
+                    android:textAllCaps="false"
+                    android:textColor="@color/dashboard_bg"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_edit"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconTint="@color/dashboard_bg" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteBooking"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/logout_red"
+                    android:text="Delete"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_delete"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconTint="@color/white" />
+
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDownloadReceipt"

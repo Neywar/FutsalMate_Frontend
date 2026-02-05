@@ -76,6 +76,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ivArenaLogo">
 
                 <TextView
+                    android:id="@+id/tvVendorName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -167,6 +168,7 @@
                 </FrameLayout>
 
                 <TextView
+                    android:id="@+id/tvVendorPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -198,6 +200,7 @@
                 </FrameLayout>
 
                 <TextView
+                    android:id="@+id/tvVendorEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -264,7 +267,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MON - FRI"
+                        android:text="Opening Time"
                         android:textColor="#FACC15"
                         android:textSize="11sp"
                         android:textStyle="bold" />
@@ -273,7 +276,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="08:00 - 23:00"
+                        android:text="07:00 AM"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -292,7 +295,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SAT - SUN"
+                        android:text="Closing Time"
                         android:textColor="#FACC15"
                         android:textSize="11sp"
                         android:textStyle="bold" />
@@ -301,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="07:00 - 01:00"
+                        android:text="09:00 PM"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -309,6 +312,11 @@
             </LinearLayout>
 
             <!-- Premium Amenities Section -->
+<!--            <TextView-->
+<!--                android:id="@+id/lblAmenities"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="24dp"-->
             <TextView
                 android:id="@+id/lblAmenities"
                 android:layout_width="wrap_content"
@@ -323,125 +331,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llHours" />
 
-            <LinearLayout
-                android:id="@+id/llAmenities"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipFacilities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/lblAmenities">
-
-                <!-- Parking -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_vendor_card"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Parking icon"
-                        android:src="@drawable/ic_parking" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="PARKING"
-                        android:textColor="#9CA3AF"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Wi-Fi -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_vendor_card"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Wi-Fi icon"
-                        android:src="@drawable/ic_wifi" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="WI-FI"
-                        android:textColor="#9CA3AF"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Showers -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_vendor_card"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Showers icon"
-                        android:src="@drawable/ic_shower" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="SHOWERS"
-                        android:textColor="#9CA3AF"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Gear -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_vendor_card"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Gear icon"
-                        android:src="@drawable/ic_futsal_ball"
-                        app:tint="#FACC15" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="GEAR"
-                        android:textColor="#9CA3AF"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </LinearLayout>
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp"
+                app:layout_constraintTop_toBottomOf="@id/lblAmenities" />
 
             <!-- Action Buttons -->
             <com.google.android.material.button.MaterialButton
@@ -460,7 +358,7 @@
                 app:iconGravity="textStart"
                 app:iconPadding="16dp"
                 app:iconTint="#000000"
-                app:layout_constraintTop_toBottomOf="@id/llAmenities" />
+                app:layout_constraintTop_toBottomOf="@id/chipFacilities" />
 
             <LinearLayout
                 android:id="@+id/llActionsGrid"

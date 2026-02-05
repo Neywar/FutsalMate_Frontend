@@ -51,6 +51,54 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Filters -->
+            <LinearLayout
+                android:id="@+id/bookingFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterUpcoming"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="Upcoming"
+                    android:textAllCaps="false"
+                    android:textColor="@color/bright_green"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/bright_green" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterCurrent"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="Current"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_grey"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/text_grey" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFilterPast"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="Past"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_grey"
+                    app:cornerRadius="16dp"
+                    app:strokeColor="@color/text_grey" />
+
+            </LinearLayout>
+
             <!-- Upcoming Bookings Section -->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -58,6 +106,7 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tvUpcomingHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="UPCOMING BOOKINGS"
@@ -66,535 +115,102 @@
                     android:textStyle="bold"
                     android:letterSpacing="0.05"/>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerBookings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvUpcomingHeader"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false" />
+
+                <LinearLayout
+                    android:id="@+id/pastTableHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvUpcomingHeader"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/card_bg"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:text="S.N"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:text="Court"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.1"
+                        android:text="Date"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.2"
+                        android:text="Time"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="Status"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="Method"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerPastTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pastTableHeader"
+                    android:layout_marginTop="6dp"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvBookingsEmpty"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/bg_otp_box_active"
-                    android:backgroundTint="#065F46"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
-                    android:text="2 Active"
-                    android:textColor="@color/bright_green"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:layout_below="@id/tvUpcomingHeader"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="No upcoming bookings"
+                    android:textColor="@color/text_grey"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
             </RelativeLayout>
-
-            <!-- Upcoming Card 1: Paid -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="@color/card_bg_light"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/ivArena1"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_court_one"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical"
-                            app:layout_constraintEnd_toStartOf="@id/tvStatusPaid"
-                            app:layout_constraintStart_toEndOf="@id/ivArena1"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Wembley Arena - Court 4"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Empire Way, Wembley HA9 0WS, United Kingdom"
-                                android:textColor="@color/text_grey"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tvStatusPaid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_otp_box_inactive"
-                            android:backgroundTint="@color/status_paid"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp"
-                            android:text="PAID"
-                            android:textColor="@color/bright_green"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="@color/card_bg_light" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@drawable/ic_bookings"
-                                app:tint="@color/text_grey" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:text="Sat, Oct 12 • 18:00 - 19:00"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="£45.00"
-                            android:textColor="@color/bright_green"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDetails1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/bright_green"
-                            android:text="Details"
-                            android:textAllCaps="false"
-                            android:textColor="@color/dashboard_bg"
-                            android:textStyle="bold"
-                            app:cornerRadius="12dp"
-                            app:icon="@drawable/ic_edit"
-                            app:iconSize="16dp"
-                            app:iconTint="@color/dashboard_bg" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMenu1"
-                            style="@style/Widget.MaterialComponents.Button.Icon"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/card_bg_light"
-                            app:cornerRadius="12dp"
-                            app:icon="@drawable/ic_more_vert"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:iconTint="@color/white" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Upcoming Card 2: Pending -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="@color/card_bg_light"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/ivArena2"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_court_one"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical"
-                            app:layout_constraintEnd_toStartOf="@id/tvStatusPending"
-                            app:layout_constraintStart_toEndOf="@id/ivArena2"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Stamford Bridge Pitch B"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Fulham Rd., London SW6 1HS, United Kingdom"
-                                android:textColor="@color/text_grey"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tvStatusPending"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_otp_box_inactive"
-                            android:backgroundTint="@color/status_pending"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp"
-                            android:text="PENDING"
-                            android:textColor="@color/action_yellow"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="@color/card_bg_light" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@drawable/ic_bookings"
-                                app:tint="@color/text_grey" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
-                                android:text="Tue, Oct 15 • 20:00 - 21:00"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="£55.00"
-                            android:textColor="@color/action_yellow"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDetails2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/action_yellow"
-                            android:text="Details"
-                            android:textAllCaps="false"
-                            android:textColor="@color/dashboard_bg"
-                            android:textStyle="bold"
-                            app:cornerRadius="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnMenu2"
-                            style="@style/Widget.MaterialComponents.Button.Icon"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="@color/card_bg_light"
-                            app:cornerRadius="12dp"
-                            app:icon="@drawable/ic_more_vert"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:iconTint="@color/white" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Past Bookings Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="PAST BOOKINGS"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05"/>
-
-            <!-- Past Card 1: Paid -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="20dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/ivArena3"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_court_one"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical"
-                        app:layout_constraintEnd_toStartOf="@id/tvStatusPaid2"
-                        app:layout_constraintStart_toEndOf="@id/ivArena3"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="The Emirates - Zone 1"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hornsey Rd, London N7 7AJ, United Kingdom"
-                            android:textColor="@color/text_grey"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvStatusPaid2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/status_paid"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:text="PAID"
-                        android:textColor="@color/bright_green"
-                        android:textSize="9sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivArena3">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_bookings"
-                            app:tint="@color/text_grey" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Oct 05 • £40.00"
-                            android:textColor="@color/text_grey"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnReceipt1"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:backgroundTint="@color/status_paid"
-                        android:paddingHorizontal="12dp"
-                        android:text="Receipt"
-                        android:textAllCaps="false"
-                        android:textColor="@color/bright_green"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="8dp"
-                        app:icon="@drawable/ic_edit"
-                        app:iconSize="12dp"
-                        app:iconTint="@color/bright_green"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Past Card 2: Cancelled -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="20dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/ivArena4"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_court_one"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical"
-                        app:layout_constraintEnd_toStartOf="@id/tvStatusCancelled"
-                        app:layout_constraintStart_toEndOf="@id/ivArena4"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pikachu Turf"
-                            android:textColor="@color/text_grey"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="North Circular Rd, London NW10 0JH"
-                            android:textColor="@color/text_grey"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvStatusCancelled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/status_cancelled"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:text="CANCELLED"
-                        android:textColor="@color/text_grey"
-                        android:textSize="9sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivArena4">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:src="@drawable/ic_bookings"
-                            app:tint="@color/text_grey" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Sep 28 • £35.00"
-                            android:textColor="@color/text_grey"
-                            android:textSize="11sp"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:foregroundTint="@color/text_grey"/>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Refunded"
-                        android:textColor="#991B1B"
-                        android:textSize="11sp"
-                        android:textStyle="italic"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -37,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tvBookingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Booking Details"
@@ -45,6 +46,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvCourtHeaderInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ARENA STADIUM • COURT 2"
@@ -80,185 +82,149 @@
             android:padding="20dp">
 
             <!-- Select Date Section -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SELECT DATE"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SELECT DATE"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.05" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="October 2024"
-                    android:textColor="@color/bright_green"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <!-- Custom Calendar View -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="14dp"
+                app:strokeColor="@color/card_bg_light"
+                app:strokeWidth="1dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="MO" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="TU" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="WE" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="TH" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="FR" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="SA" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="SU" android:gravity="center" android:textColor="@color/text_grey" android:textSize="10sp" android:textStyle="bold"/>
-                </LinearLayout>
+                    android:padding="14dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="21" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="22" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="23" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="24" android:gravity="center" android:textColor="@color/dashboard_bg" android:textStyle="bold" android:background="@drawable/bg_otp_box_active" android:backgroundTint="@color/bright_green" android:layout_margin="2dp" android:elevation="4dp"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="25" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="26" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="27" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivDateIcon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_otp_box_inactive"
+                        android:backgroundTint="@color/card_bg_light"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_calendar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:tint="@color/bright_green" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="28" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="29" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="30" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="31" android:gravity="center" android:textColor="@color/white" android:textStyle="bold"/>
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="1" android:gravity="center" android:textColor="@color/card_bg_light" />
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="2" android:gravity="center" android:textColor="@color/card_bg_light" />
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="44dp" android:text="3" android:gravity="center" android:textColor="@color/card_bg_light" />
-                </LinearLayout>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/ivDateIcon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Selected Date"
+                            android:textColor="@color/text_grey"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tvMonthLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="October 2024"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Select Time Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="SELECT TIME"
+                android:text="SELECT TIME SLOT"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.05" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/cgTimeSlots"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:chipSpacingHorizontal="12dp"
-                app:chipSpacingVertical="12dp">
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- 09:00 - 10:00 (Pre-booked) -->
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="09:00 - 10:00"
-                    android:enabled="false"
-                    app:chipBackgroundColor="@color/card_bg_light"
-                    android:textColor="@color/text_grey" />
+                    android:text="Tap a slot to continue"
+                    android:textColor="@color/text_grey"
+                    android:textSize="11sp" />
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10:00 - 11:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
+                    android:layout_marginStart="16dp"
+                    android:orientation="horizontal">
 
-                <!-- 11:00 - 12:00 (Pre-booked) -->
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_otp_box_inactive"
+                        android:backgroundTint="@color/card_bg"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:text="Available"
+                        android:textColor="@color/bright_green"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_otp_box_inactive"
+                        android:backgroundTint="@color/card_bg_light"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:text="Booked"
+                        android:textColor="@color/text_grey"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/card_bg_light"
+                app:strokeWidth="1dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cgTimeSlots"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="11:00 - 12:00"
-                    android:enabled="false"
-                    app:chipBackgroundColor="@color/card_bg_light"
-                    android:textColor="@color/text_grey" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="12:00 - 13:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="13:00 - 14:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-                <!-- 14:00 - 15:00 (Pre-booked) -->
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="14:00 - 15:00"
-                    android:enabled="false"
-                    app:chipBackgroundColor="@color/card_bg_light"
-                    android:textColor="@color/text_grey" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="15:00 - 16:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="16:00 - 17:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="17:00 - 18:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:00 - 19:00"
-                    app:chipBackgroundColor="@color/card_bg"
-                    android:textColor="@color/white" />
-
-            </com.google.android.material.chip.ChipGroup>
+                    android:padding="12dp"
+                    app:singleSelection="true"
+                    app:chipSpacingHorizontal="10dp"
+                    app:chipSpacingVertical="10dp" />
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Booking Notes Section -->
             <TextView
@@ -272,6 +238,7 @@
                 android:letterSpacing="0.05" />
 
             <EditText
+                android:id="@+id/etBookingNotes"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
@@ -296,6 +263,7 @@
                 android:letterSpacing="0.05" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEsewa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -351,6 +319,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

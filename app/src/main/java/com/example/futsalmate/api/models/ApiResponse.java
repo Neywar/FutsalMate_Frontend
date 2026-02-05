@@ -8,6 +8,7 @@ public class ApiResponse<T> {
     private String message;
     private T data;
     private User user;
+    private Vendor vendor;
     private String token;
     
     @SerializedName("errors")
@@ -49,6 +50,14 @@ public class ApiResponse<T> {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 
     public String getToken() {

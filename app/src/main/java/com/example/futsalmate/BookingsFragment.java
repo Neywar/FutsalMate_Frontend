@@ -1,25 +1,89 @@
 package com.example.futsalmate;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Calendar;
+import com.example.futsalmate.adapters.BookingsAdapter;
+import com.example.futsalmate.adapters.PastBookingsTableAdapter;
+import com.example.futsalmate.api.RetrofitClient;
+import com.example.futsalmate.api.models.Booking;
+import com.example.futsalmate.api.models.PastBookingsResponse;
+import com.example.futsalmate.api.models.UpcomingBookingsResponse;
+import com.example.futsalmate.api.models.ViewBookingResponse;
+import com.example.futsalmate.utils.TokenManager;
+import com.google.android.material.button.MaterialButton;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BookingsFragment extends Fragment {
+
+    private TokenManager tokenManager;
+    private BookingsAdapter adapter;
+    private PastBookingsTableAdapter pastAdapter;
+    private RecyclerView recyclerBookings;
+    private RecyclerView recyclerPastTable;
+    private TextView tvBookingsEmpty;
+    private TextView tvActiveCount;
+    private TextView tvUpcomingHeader;
+    private View pastTableHeader;
+    private MaterialButton btnFilterUpcoming;
+    private MaterialButton btnFilterCurrent;
+    private MaterialButton btnFilterPast;
+    private BookingFilter currentFilter = BookingFilter.UPCOMING;
+    private final List<Booking> bookings = new ArrayList<>();
+
+    private enum BookingFilter {
+        UPCOMING,
+        CURRENT,
+        PAST
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bookings, container, false);
+
+        tokenManager = new TokenManager(requireContext());
+        recyclerBookings = view.findViewById(R.id.recyclerBookings);
+        recyclerPastTable = view.findViewById(R.id.recyclerPastTable);
+        tvBookingsEmpty = view.findViewById(R.id.tvBookingsEmpty);
+        tvUpcomingHeader = view.findViewById(R.id.tvUpcomingHeader);
+        pastTableHeader = view.findViewById(R.id.pastTableHeader);
+        btnFilterUpcoming = view.findViewById(R.id.btnFilterUpcoming);
+        btnFilterCurrent = view.findViewById(R.id.btnFilterCurrent);
+        btnFilterPast = view.findViewById(R.id.btnFilterPast);
+
+        recyclerBookings.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new BookingsAdapter(this::openBookingDetails);
+        recyclerBookings.setAdapter(adapter);
+
+        if (recyclerPastTable != null) {
+            recyclerPastTable.setLayoutManager(new LinearLayoutManager(requireContext()));
+            pastAdapter = new PastBookingsTableAdapter();
+            recyclerPastTable.setAdapter(pastAdapter);
+        }
 
         // Header Back button
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
@@ -28,69 +92,322 @@ public class BookingsFragment extends Fragment {
             }
         });
 
-        // 1. Details button (Wembley Arena) -> BookedDetailsActivity
-        view.findViewById(R.id.btnDetails1).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), BookedDetailsActivity.class));
-        });
+        if (btnFilterUpcoming != null) {
+            btnFilterUpcoming.setOnClickListener(v -> selectFilter(BookingFilter.UPCOMING));
+        }
+        if (btnFilterCurrent != null) {
+            btnFilterCurrent.setOnClickListener(v -> selectFilter(BookingFilter.CURRENT));
+        }
+        if (btnFilterPast != null) {
+            btnFilterPast.setOnClickListener(v -> selectFilter(BookingFilter.PAST));
+        }
 
-        // 2. Details button (Stamford Bridge) -> BookedDetailsActivity
-        view.findViewById(R.id.btnDetails2).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), BookedDetailsActivity.class));
-        });
-
-        // 3. Receipt button (The Emirates) -> BookedDetailsActivity
-        view.findViewById(R.id.btnReceipt1).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), BookedDetailsActivity.class));
-        });
-
-        // Setup 3-dot menus
-        view.findViewById(R.id.btnMenu1).setOnClickListener(v -> showBookingMenu(v, "Wembley Arena", 15, 10, 2024, 18, 0));
-        view.findViewById(R.id.btnMenu2).setOnClickListener(v -> showBookingMenu(v, "Stamford Bridge", 15, 10, 2024, 20, 0));
+        selectFilter(BookingFilter.UPCOMING);
 
         return view;
     }
 
-    private void showBookingMenu(View view, String courtName, int day, int month, int year, int hour, int minute) {
-        ContextThemeWrapper wrapper = new ContextThemeWrapper(getActivity(), R.style.DarkPopupMenuTheme);
-        PopupMenu popup = new PopupMenu(wrapper, view);
-        popup.getMenu().add("Edit Booking");
-        popup.getMenu().add("Delete Booking");
-
-        popup.setOnMenuItemClickListener(item -> {
-            if (item.getTitle().equals("Edit Booking")) {
-                if (canModifyBooking(year, month, day, hour, minute)) {
-                    Intent intent = new Intent(getActivity(), SelectTimeslotActivity.class);
-                    intent.putExtra("EDIT_MODE", true);
-                    intent.putExtra("COURT_NAME", courtName);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "Cannot edit booking within 2 hours of start time", Toast.LENGTH_LONG).show();
-                }
-                return true;
-            } else if (item.getTitle().equals("Delete Booking")) {
-                if (canModifyBooking(year, month, day, hour, minute)) {
-                    // Logic to delete the booking would go here
-                    view.setVisibility(View.GONE); // Visual feedback
-                    Toast.makeText(getActivity(), "Booking for " + courtName + " deleted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Cannot delete booking within 2 hours of start time", Toast.LENGTH_LONG).show();
-                }
-                return true;
-            }
-            return false;
-        });
-
-        popup.show();
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (recyclerBookings != null) {
+            selectFilter(currentFilter);
+        }
     }
 
-    private boolean canModifyBooking(int year, int month, int day, int hour, int minute) {
-        Calendar bookingTime = Calendar.getInstance();
-        bookingTime.set(year, month - 1, day, hour, minute);
-        
-        long currentTimeMillis = System.currentTimeMillis();
-        long bookingTimeMillis = bookingTime.getTimeInMillis();
-        
-        // Check if current time is more than 2 hours (2 * 60 * 60 * 1000 ms) before booking time
-        return (bookingTimeMillis - currentTimeMillis) > (2 * 60 * 60 * 1000);
+    private void selectFilter(BookingFilter filter) {
+        currentFilter = filter;
+        applyFilterUi();
+        adapter.setBookings(new ArrayList<>());
+        if (pastAdapter != null) {
+            pastAdapter.setBookings(new ArrayList<>());
+        }
+        switch (filter) {
+            case UPCOMING:
+                loadUpcomingBookings();
+                break;
+            case CURRENT:
+                loadCurrentBookings();
+                break;
+            case PAST:
+                loadPastBookings();
+                break;
+        }
+    }
+
+    private void applyFilterUi() {
+        int activeColor = ContextCompat.getColor(requireContext(), R.color.bright_green);
+        int inactiveColor = ContextCompat.getColor(requireContext(), R.color.text_grey);
+        if (btnFilterUpcoming != null) {
+            int color = currentFilter == BookingFilter.UPCOMING ? activeColor : inactiveColor;
+            btnFilterUpcoming.setTextColor(color);
+            btnFilterUpcoming.setStrokeColor(ColorStateList.valueOf(color));
+        }
+        if (btnFilterCurrent != null) {
+            int color = currentFilter == BookingFilter.CURRENT ? activeColor : inactiveColor;
+            btnFilterCurrent.setTextColor(color);
+            btnFilterCurrent.setStrokeColor(ColorStateList.valueOf(color));
+        }
+        if (btnFilterPast != null) {
+            int color = currentFilter == BookingFilter.PAST ? activeColor : inactiveColor;
+            btnFilterPast.setTextColor(color);
+            btnFilterPast.setStrokeColor(ColorStateList.valueOf(color));
+        }
+        if (tvUpcomingHeader != null) {
+            String header = currentFilter == BookingFilter.UPCOMING
+                    ? "UPCOMING BOOKINGS"
+                    : currentFilter == BookingFilter.CURRENT ? "CURRENT BOOKINGS" : "PAST BOOKINGS";
+            tvUpcomingHeader.setText(header);
+            tvUpcomingHeader.setTextColor(currentFilter == BookingFilter.PAST ? inactiveColor : activeColor);
+        }
+        if (pastTableHeader != null) {
+            pastTableHeader.setVisibility(currentFilter == BookingFilter.PAST ? View.VISIBLE : View.GONE);
+        }
+        if (recyclerPastTable != null) {
+            recyclerPastTable.setVisibility(currentFilter == BookingFilter.PAST ? View.VISIBLE : View.GONE);
+        }
+        if (recyclerBookings != null) {
+            recyclerBookings.setVisibility(currentFilter == BookingFilter.PAST ? View.GONE : View.VISIBLE);
+        }
+        if (tvBookingsEmpty != null) {
+            String empty = currentFilter == BookingFilter.UPCOMING
+                    ? "No upcoming bookings"
+                    : currentFilter == BookingFilter.CURRENT ? "No current bookings" : "No past bookings";
+            tvBookingsEmpty.setText(empty);
+        }
+    }
+
+    private void loadUpcomingBookings() {
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(getActivity(), "Please login again.", Toast.LENGTH_SHORT).show();
+            showEmpty();
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().upcomingBookings(token)
+                .enqueue(new Callback<UpcomingBookingsResponse>() {
+                    @Override
+                    public void onResponse(Call<UpcomingBookingsResponse> call, Response<UpcomingBookingsResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            showEmpty();
+                            return;
+                        }
+                        List<Booking> upcoming = filterUpcoming(response.body().getUpcomingBookings());
+                        bookings.clear();
+                        if (upcoming != null) {
+                            bookings.addAll(upcoming);
+                        }
+                        adapter.setBookings(bookings);
+                        updateCountLabel(bookings.size());
+                        toggleEmpty(bookings.isEmpty());
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpcomingBookingsResponse> call, Throwable t) {
+                        showEmpty();
+                    }
+                });
+    }
+
+    private void loadCurrentBookings() {
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(getActivity(), "Please login again.", Toast.LENGTH_SHORT).show();
+            showEmpty();
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().upcomingBookings(token)
+                .enqueue(new Callback<UpcomingBookingsResponse>() {
+                    @Override
+                    public void onResponse(Call<UpcomingBookingsResponse> call, Response<UpcomingBookingsResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            showEmpty();
+                            return;
+                        }
+                        List<Booking> current = filterCurrent(response.body().getUpcomingBookings());
+                        bookings.clear();
+                        if (current != null) {
+                            bookings.addAll(current);
+                        }
+                        adapter.setBookings(bookings);
+                        updateCountLabel(bookings.size());
+                        toggleEmpty(bookings.isEmpty());
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpcomingBookingsResponse> call, Throwable t) {
+                        showEmpty();
+                    }
+                });
+    }
+
+    private void loadPastBookings() {
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(getActivity(), "Please login again.", Toast.LENGTH_SHORT).show();
+            showEmpty();
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().pastBookings(token)
+                .enqueue(new Callback<PastBookingsResponse>() {
+                    @Override
+                    public void onResponse(Call<PastBookingsResponse> call, Response<PastBookingsResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            showEmpty();
+                            return;
+                        }
+                        List<Booking> past = filterPast(response.body().getPastBookings());
+                        bookings.clear();
+                        if (past != null) {
+                            bookings.addAll(past);
+                        }
+                        if (pastAdapter != null) {
+                            pastAdapter.setBookings(bookings);
+                        }
+                        updateCountLabel(bookings.size());
+                        toggleEmpty(bookings.isEmpty());
+                    }
+
+                    @Override
+                    public void onFailure(Call<PastBookingsResponse> call, Throwable t) {
+                        showEmpty();
+                    }
+                });
+    }
+
+    private void openBookingDetails(Booking booking) {
+        if (booking == null) {
+            return;
+        }
+        Intent intent = new Intent(getActivity(), BookedDetailsActivity.class);
+        intent.putExtra("booking_id", booking.getId());
+        intent.putExtra("booking_date", booking.getDate());
+        intent.putExtra("booking_start", booking.getStartTime());
+        intent.putExtra("booking_end", booking.getEndTime());
+        intent.putExtra("booking_status", booking.getStatus());
+        intent.putExtra("booking_payment_status", booking.getPaymentStatus());
+        if (booking.getCourt() != null) {
+            intent.putExtra("court_name", booking.getCourt().getCourtName());
+            intent.putExtra("court_location", booking.getCourt().getLocation());
+            intent.putExtra("court_price", booking.getCourt().getPrice());
+        }
+        intent.putExtra("booking_filter", currentFilter.name());
+        startActivity(intent);
+    }
+
+    private void updateCountLabel(int count) {
+        if (tvActiveCount != null) {
+            String label = currentFilter == BookingFilter.UPCOMING
+                    ? "Upcoming"
+                    : currentFilter == BookingFilter.CURRENT ? "Current" : "Past";
+            tvActiveCount.setText(count + " " + label);
+        }
+    }
+
+    private void toggleEmpty(boolean empty) {
+        if (recyclerBookings != null && currentFilter != BookingFilter.PAST) {
+            recyclerBookings.setVisibility(empty ? View.GONE : View.VISIBLE);
+        }
+        if (recyclerPastTable != null && currentFilter == BookingFilter.PAST) {
+            recyclerPastTable.setVisibility(empty ? View.GONE : View.VISIBLE);
+        }
+        if (pastTableHeader != null && currentFilter == BookingFilter.PAST) {
+            pastTableHeader.setVisibility(empty ? View.GONE : View.VISIBLE);
+        }
+        if (tvBookingsEmpty != null) {
+            tvBookingsEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void showEmpty() {
+        updateCountLabel(0);
+        toggleEmpty(true);
+    }
+
+    private List<Booking> filterUpcoming(List<Booking> source) {
+        if (source == null || source.isEmpty()) return source;
+        List<Booking> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        for (Booking booking : source) {
+            LocalDate date = parseDate(booking != null ? booking.getDate() : null);
+            LocalTime start = parseTime(booking != null ? booking.getStartTime() : null);
+            if (date == null) continue;
+            if (date.isAfter(today)) {
+                result.add(booking);
+            } else if (date.isEqual(today) && start != null && start.isAfter(now)) {
+                result.add(booking);
+            }
+        }
+        return result;
+    }
+
+    private List<Booking> filterCurrent(List<Booking> source) {
+        if (source == null || source.isEmpty()) return source;
+        List<Booking> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        for (Booking booking : source) {
+            LocalDate date = parseDate(booking != null ? booking.getDate() : null);
+            LocalTime start = parseTime(booking != null ? booking.getStartTime() : null);
+            LocalTime end = parseTime(booking != null ? booking.getEndTime() : null);
+            if (date == null || start == null || end == null) continue;
+            if (date.isEqual(today) && (start.equals(now) || start.isBefore(now)) && end.isAfter(now)) {
+                result.add(booking);
+            }
+        }
+        return result;
+    }
+
+    private List<Booking> filterPast(List<Booking> source) {
+        if (source == null || source.isEmpty()) return source;
+        List<Booking> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        for (Booking booking : source) {
+            LocalDate date = parseDate(booking != null ? booking.getDate() : null);
+            LocalTime end = parseTime(booking != null ? booking.getEndTime() : null);
+            if (date == null) continue;
+            if (date.isBefore(today)) {
+                result.add(booking);
+            } else if (date.isEqual(today) && end != null && !end.isAfter(now)) {
+                result.add(booking);
+            }
+        }
+        return result;
+    }
+
+    private LocalDate parseDate(String date) {
+        if (date == null || date.trim().isEmpty()) return null;
+        try {
+            return LocalDate.parse(date.trim());
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private LocalTime parseTime(String time) {
+        if (time == null || time.trim().isEmpty()) return null;
+        String trimmed = time.trim();
+        int dotIndex = trimmed.indexOf('.');
+        if (dotIndex > 0) {
+            trimmed = trimmed.substring(0, dotIndex);
+        }
+        DateTimeFormatter[] formatters = new DateTimeFormatter[] {
+                DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault()),
+                DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()),
+                DateTimeFormatter.ofPattern("H:mm:ss", Locale.getDefault()),
+                DateTimeFormatter.ofPattern("H:mm", Locale.getDefault())
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                return LocalTime.parse(trimmed, formatter);
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
     }
 }

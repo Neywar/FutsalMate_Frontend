@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:background="@color/card_bg_light">
+
+    <TextView
+        android:id="@+id/tvPastSn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.6"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvPastCourt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.6"
+        android:text="Court"
+        android:textColor="@color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvPastDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.1"
+        android:text="2026-02-05"
+        android:textColor="@color/text_grey"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvPastTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="10:00-11:00"
+        android:textColor="@color/text_grey"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvPastStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:text="Paid"
+        android:textColor="@color/bright_green"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvPastMethod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:text="eSewa"
+        android:textColor="@color/text_grey"
+        android:textSize="10sp" />
+
+</LinearLayout>

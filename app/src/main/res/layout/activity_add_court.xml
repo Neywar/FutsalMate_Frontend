@@ -220,7 +220,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Starts at:"
+                        android:text="Opening Time:"
                         android:textColor="#9CA3AF"
                         android:textSize="10sp" />
                     <TextView
@@ -231,7 +231,7 @@
                         android:background="@drawable/bg_vendor_input"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:text="06:00 AM"
+                        android:text="00:00 AM"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:clickable="true"
@@ -248,7 +248,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ends at:"
+                        android:text="Closing Time:"
                         android:textColor="#9CA3AF"
                         android:textSize="10sp" />
                     <TextView
@@ -363,29 +363,29 @@
                 app:chipSpacingVertical="0dp">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipIndoor"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Indoor"
-                    app:chipBackgroundColor="#FACC15"
-                    app:chipIcon="@drawable/ic_check"
-                    app:chipIconEnabled="true"
-                    app:chipIconTint="#000000"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
+                    app:chipBackgroundColor="#111827"
+                    app:chipStrokeColor="#1F2937"
+                    app:chipStrokeWidth="1dp"
+                    android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipOutdoor"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Outdoor"
-                    app:chipBackgroundColor="#FACC15"
-                    app:chipIcon="@drawable/ic_check"
-                    app:chipIconEnabled="true"
-                    app:chipIconTint="#000000"
-                    android:textColor="#000000" />
+                    app:chipBackgroundColor="#111827"
+                    app:chipStrokeColor="#1F2937"
+                    app:chipStrokeWidth="1dp"
+                    android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipParking"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -396,6 +396,7 @@
                     android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipShowers"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -406,18 +407,18 @@
                     android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLockerRooms"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Locker Rooms"
-                    app:chipBackgroundColor="#FACC15"
-                    app:chipIcon="@drawable/ic_check"
-                    app:chipIconEnabled="true"
-                    app:chipIconTint="#000000"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
+                    app:chipBackgroundColor="#111827"
+                    app:chipStrokeColor="#1F2937"
+                    app:chipStrokeWidth="1dp"
+                    android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCafeteria"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -428,6 +429,7 @@
                     android:textColor="#9CA3AF" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipInternet"
                     style="@style/Widget.MaterialComponents.Chip.Action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

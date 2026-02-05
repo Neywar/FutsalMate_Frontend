@@ -18,6 +18,9 @@ import com.example.futsalmate.api.models.LoginRequest;
 import com.example.futsalmate.api.models.User;
 import com.example.futsalmate.utils.TokenManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,21 +77,12 @@ public class LoginActivity extends AppCompatActivity {
                 edtPassword.setError("Password is required");
                 return;
             }
-
-            // TEST CREDENTIALS BYPASS FOR OFFLINE TESTING
-            if (email.contains("@") && password.length() >= 6) {
-                tokenManager.saveToken("test_token_123");
-                tokenManager.saveUserEmail(email);
-                tokenManager.saveUserRole(TokenManager.ROLE_PLAYER);
-                
-                Toast.makeText(this, "Player Login Successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+            if (password.length() < 8) {
+                edtPassword.setError("Password must be at least 8 characters");
                 return;
             }
 
-            // Fallback to real API call if needed (currently commented out to prioritize bypass)
-            // performLogin(email, password);
+            performLogin(email, password);
         });
 
         // Navigate to Sign Up
@@ -121,18 +115,18 @@ public class LoginActivity extends AppCompatActivity {
                 btnLogin.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<User> apiResponse = response.body();
-                    if ("success".equals(apiResponse.getStatus())) {
+                    if ("success".equalsIgnoreCase(apiResponse.getStatus())) {
                         tokenManager.saveToken(apiResponse.getToken());
                         tokenManager.saveUserEmail(email);
                         tokenManager.saveUserRole(TokenManager.ROLE_PLAYER);
-                        
+
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, extractErrorMessage(response), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -142,5 +136,19 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String extractErrorMessage(Response<?> response) {
+        if (response != null && response.errorBody() != null) {
+            try {
+                String errorJson = response.errorBody().string();
+                ApiResponse<?> apiError = new Gson().fromJson(errorJson, ApiResponse.class);
+                if (apiError != null && apiError.getMessage() != null) {
+                    return apiError.getMessage();
+                }
+            } catch (IOException ignored) {
+            }
+        }
+        return "Login failed. Please try again.";
     }
 }

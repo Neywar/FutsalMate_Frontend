@@ -18,10 +18,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.futsalmate.api.RetrofitClient;
+import com.example.futsalmate.api.models.ApiResponse;
+import com.example.futsalmate.api.models.EditProfileRequest;
+import com.example.futsalmate.api.models.User;
+import com.example.futsalmate.api.models.UserDashboardResponse;
 import com.example.futsalmate.utils.TokenManager;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -81,26 +89,14 @@ public class EditProfileActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.btnBack);
 
         // Load existing data
-        etEditName.setText("Alex Rivera");
-        etEditPhone.setText("9841234567");
-        etEditEmail.setText(tokenManager.getUserEmail());
+        loadProfileData();
 
         btnBack.setOnClickListener(v -> finish());
 
         btnChangePhoto.setOnClickListener(v -> showImagePickerDialog());
         ivEditAvatar.setOnClickListener(v -> showImagePickerDialog());
 
-        btnSaveProfile.setOnClickListener(v -> {
-            String newName = etEditName.getText().toString().trim();
-            if (newName.isEmpty()) {
-                etEditName.setError("Name cannot be empty");
-                return;
-            }
-            
-            // Logic to save profile changes locally or to API
-            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+        btnSaveProfile.setOnClickListener(v -> saveProfile());
     }
 
     private void showImagePickerDialog() {
@@ -128,5 +124,84 @@ public class EditProfileActivity extends AppCompatActivity {
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(intent);
+    }
+
+    private void loadProfileData() {
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(this, "Please login again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().userDashboard(token)
+                .enqueue(new Callback<UserDashboardResponse>() {
+                    @Override
+                    public void onResponse(Call<UserDashboardResponse> call, Response<UserDashboardResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
+                            return;
+                        }
+                        User user = response.body().getData().getUser();
+                        if (user != null) {
+                            if (user.getFullName() != null) {
+                                etEditName.setText(user.getFullName());
+                            }
+                            if (user.getPhone() != null) {
+                                etEditPhone.setText(user.getPhone());
+                            }
+                            if (user.getEmail() != null) {
+                                etEditEmail.setText(user.getEmail());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserDashboardResponse> call, Throwable t) {
+                        // silent fail
+                    }
+                });
+    }
+
+    private void saveProfile() {
+        String newName = etEditName.getText().toString().trim();
+        String newPhone = etEditPhone.getText().toString().trim();
+        String newEmail = etEditEmail.getText().toString().trim();
+
+        if (newName.isEmpty()) {
+            etEditName.setError("Name cannot be empty");
+            return;
+        }
+        if (newEmail.isEmpty()) {
+            etEditEmail.setError("Email is required");
+            return;
+        }
+
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(this, "Please login again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        EditProfileRequest request = new EditProfileRequest(newName, newEmail, newPhone.isEmpty() ? null : newPhone);
+        RetrofitClient.getInstance().getApiService().editProfile(token, request)
+                .enqueue(new Callback<ApiResponse<User>>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Toast.makeText(EditProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ApiResponse<User> body = response.body();
+                        if (body.getUser() != null && body.getUser().getEmail() != null) {
+                            tokenManager.saveUserEmail(body.getUser().getEmail());
+                        }
+                        Toast.makeText(EditProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
+                        Toast.makeText(EditProfileActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

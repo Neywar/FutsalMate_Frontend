@@ -55,25 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_circle_light"
-                            android:backgroundTint="#40000000"
-                            android:src="@drawable/ic_edit"
-                            app:tint="@color/white" />
-
-                        <ImageButton
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="12dp"
-                            android:background="@drawable/bg_circle_light"
-                            android:backgroundTint="#40000000"
-                            android:src="@drawable/ic_person"
-                            app:tint="@color/white" />
-                    </LinearLayout>
+                        android:orientation="horizontal"/>
                 </RelativeLayout>
 
                 <TextView
@@ -143,6 +125,7 @@
                         app:tint="@color/text_grey" />
 
                     <TextView
+                        android:id="@+id/tvCourtLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -151,33 +134,6 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_otp_box_active"
-                    android:backgroundTint="@color/bright_green"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="STARTING"
-                        android:textColor="@color/dashboard_bg"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rs.1200"
-                        android:textColor="@color/dashboard_bg"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
             </RelativeLayout>
 
             <!-- Manager Section -->
@@ -219,6 +175,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvManagerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Alex Rodriguez"
@@ -228,6 +185,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnContactVendor"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:backgroundTint="@color/card_bg_light"
@@ -257,6 +215,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvCourtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -284,6 +243,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tvPriceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rs.1200"
@@ -348,231 +308,24 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <GridLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFacilities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:alignmentMode="alignMargins"
-                android:columnCount="4"
-                android:rowCount="2">
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4" />
 
-                <!-- Amenity item helper layout -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="SHOWERS"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="PARKING"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="CAFE"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="WIFI"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="AC"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="LOCKERS"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_bookings"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="FIRST AID"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_otp_box_inactive"
-                        android:backgroundTint="@color/card_bg"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_edit"
-                        app:tint="@color/bright_green" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="MORE"
-                        android:textColor="@color/text_grey"
-                        android:textSize="8sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </GridLayout>
+            <TextView
+                android:id="@+id/tvFacilitiesEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="No facilities listed"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
