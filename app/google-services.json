@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "161435460340",
+    "project_id": "futsalmateapp",
+    "storage_bucket": "futsalmateapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161435460340:android:c1a00702d0c83cd4d0b4a1",
+        "android_client_info": {
+          "package_name": "com.example.futsalmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVFk4NRSlB1W0FXEjpQFJGMArkeRUvblk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
