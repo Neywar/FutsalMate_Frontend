@@ -9,18 +9,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.button.MaterialButton;
-import android.app.AlertDialog;
-import android.widget.ImageView;
 
 import com.example.futsalmate.api.RetrofitClient;
 import com.example.futsalmate.api.models.CourtDetail;
 import com.example.futsalmate.api.models.CourtDetailResponse;
+import com.example.futsalmate.adapters.CourtImagesPagerAdapter;
 import com.example.futsalmate.adapters.FacilitiesAdapter;
 import com.example.futsalmate.utils.TokenManager;
-import com.bumptech.glide.Glide;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +33,9 @@ public class CourtDetailsActivity extends AppCompatActivity {
     private TextView tvCourtLocation;
     private TextView tvCourtDescription;
     private TextView tvPriceValue;
-    private TextView tvStartingPrice;
     private TextView tvManagerName;
-    private ImageView ivCourtHeader;
+    private ViewPager2 vpCourtImages;
+    private TextView tvPhotoCount;
     private String vendorPhone;
     private int selectedCourtId = -1;
     private String selectedCourtName;
@@ -48,6 +45,7 @@ public class CourtDetailsActivity extends AppCompatActivity {
     private RecyclerView rvFacilities;
     private TextView tvFacilitiesEmpty;
     private FacilitiesAdapter facilitiesAdapter;
+    private CourtImagesPagerAdapter imagesPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +58,22 @@ public class CourtDetailsActivity extends AppCompatActivity {
         tvCourtDescription = findViewById(R.id.tvCourtDescription);
         tvPriceValue = findViewById(R.id.tvPriceValue);
         tvManagerName = findViewById(R.id.tvManagerName);
-        ivCourtHeader = findViewById(R.id.ivCourtHeader);
+        vpCourtImages = findViewById(R.id.vpCourtImages);
+        tvPhotoCount = findViewById(R.id.tvPhotoCount);
         rvFacilities = findViewById(R.id.rvFacilities);
         tvFacilitiesEmpty = findViewById(R.id.tvFacilitiesEmpty);
+
+        if (vpCourtImages != null) {
+            imagesPagerAdapter = new CourtImagesPagerAdapter();
+            vpCourtImages.setAdapter(imagesPagerAdapter);
+            vpCourtImages.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    updatePhotoCount(position);
+                }
+            });
+        }
 
         if (rvFacilities != null) {
             rvFacilities.setLayoutManager(new GridLayoutManager(this, 4));
@@ -123,21 +134,12 @@ public class CourtDetailsActivity extends AppCompatActivity {
         if (courtLocation != null && tvCourtLocation != null) {
             tvCourtLocation.setText(courtLocation);
         }
-        if (courtPrice != null) {
-            if (tvPriceValue != null) {
-                tvPriceValue.setText("Rs." + courtPrice);
-            }
-            if (tvStartingPrice != null) {
-                tvStartingPrice.setText("Rs." + courtPrice);
-            }
+        if (courtPrice != null && tvPriceValue != null) {
+            tvPriceValue.setText("Rs." + courtPrice);
         }
-        if (ivCourtHeader != null && courtImage != null) {
-            Glide.with(this)
-                    .load(resolveImageUrl(courtImage))
-                    .placeholder(R.drawable.ic_court_one)
-                    .error(R.drawable.ic_court_one)
-                    .centerCrop()
-                    .into(ivCourtHeader);
+        if (vpCourtImages != null && imagesPagerAdapter != null && courtImage != null) {
+            imagesPagerAdapter.setImagesFromRaw(courtImage);
+            updatePhotoCount(0);
         }
 
         if (courtId > 0) {
@@ -215,22 +217,15 @@ public class CourtDetailsActivity extends AppCompatActivity {
         if (tvPriceValue != null) {
             tvPriceValue.setText("Rs." + priceText);
         }
-        if (tvStartingPrice != null) {
-            tvStartingPrice.setText("Rs." + priceText);
-        }
         if (tvManagerName != null && detail.getVendor() != null && detail.getVendor().getName() != null) {
             tvManagerName.setText(detail.getVendor().getName());
         }
         if (detail.getVendor() != null) {
             vendorPhone = detail.getVendor().getPhone();
         }
-        if (ivCourtHeader != null && detail.getImage() != null) {
-            Glide.with(this)
-                    .load(resolveImageUrl(detail.getImage()))
-                    .placeholder(R.drawable.ic_court_one)
-                    .error(R.drawable.ic_court_one)
-                    .centerCrop()
-                    .into(ivCourtHeader);
+        if (vpCourtImages != null && imagesPagerAdapter != null && detail.getImage() != null) {
+            imagesPagerAdapter.setImagesFromRaw(detail.getImage());
+            updatePhotoCount(0);
         }
         openingTime = detail.getOpeningTime();
         closingTime = detail.getClosingTime();
@@ -288,42 +283,40 @@ public class CourtDetailsActivity extends AppCompatActivity {
         return cleaned.trim();
     }
 
+    private void updatePhotoCount(int position) {
+        if (tvPhotoCount == null || imagesPagerAdapter == null) return;
+        int total = imagesPagerAdapter.getImageCount();
+        if (total <= 0) {
+            tvPhotoCount.setVisibility(View.GONE);
+            return;
+        }
+        tvPhotoCount.setVisibility(View.VISIBLE);
+        int current = position + 1;
+        tvPhotoCount.setText(current + "/" + total + " PHOTOS");
+    }
+
     private void showVendorPhone() {
-        String phone = vendorPhone != null && !vendorPhone.isEmpty() ? vendorPhone : "Phone not available";
-        new AlertDialog.Builder(this)
-                .setTitle("Vendor Contact")
-                .setMessage(phone)
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .show();
+        if (vendorPhone == null || vendorPhone.trim().isEmpty()) {
+            Toast.makeText(this, "Phone number not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Clean phone number (remove spaces, dashes, etc.)
+        String phoneNumber = vendorPhone.trim().replaceAll("[\\s\\-\\(\\)]", "");
+        
+        // Ensure phone number starts with tel: protocol
+        if (!phoneNumber.startsWith("tel:")) {
+            phoneNumber = "tel:" + phoneNumber;
+        }
+        
+        // Open phone dialer
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+        dialIntent.setData(android.net.Uri.parse(phoneNumber));
+        try {
+            startActivity(dialIntent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, "Phone dialer not available", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private String resolveImageUrl(String image) {
-        if (image == null || image.isEmpty()) {
-            return null;
-        }
-        String cleaned = extractFirstImage(image);
-        if (cleaned == null || cleaned.isEmpty()) {
-            return null;
-        }
-        if (cleaned.startsWith("http://") || cleaned.startsWith("https://")) {
-            return cleaned;
-        }
-        return "https://futsalmateapp.sameem.in.net/" + cleaned.replaceFirst("^/+", "");
-    }
-
-    private String extractFirstImage(String image) {
-        String trimmed = image.trim();
-        if (trimmed.startsWith("[")) {
-            try {
-                JSONArray array = new JSONArray(trimmed);
-                if (array.length() > 0) {
-                    return array.optString(0, null);
-                }
-                return null;
-            } catch (JSONException e) {
-                return null;
-            }
-        }
-        return trimmed;
-    }
 }

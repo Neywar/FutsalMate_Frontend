@@ -1,11 +1,13 @@
 package com.example.futsalmate;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.webkit.WebResourceRequest;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ public class EsewaPaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_esewa_payment);
 
         WebView webView = findViewById(R.id.webViewEsewa);
+        ProgressBar progressBar = findViewById(R.id.progressEsewa);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -29,19 +32,6 @@ public class EsewaPaymentActivity extends AppCompatActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(EsewaPaymentActivity.this, "Payment page error: " + description, Toast.LENGTH_SHORT).show();
-            }
-        });
 
         String paymentUrl = getIntent().getStringExtra("payment_url");
         String amount = formatAmount(getIntent().getDoubleExtra("amount", 0));
@@ -55,6 +45,46 @@ public class EsewaPaymentActivity extends AppCompatActivity {
         String failureUrl = getIntent().getStringExtra("failure_url");
         String signedFieldNames = getIntent().getStringExtra("signed_field_names");
         String signature = getIntent().getStringExtra("signature");
+        final int bookingId = getIntent().getIntExtra("BOOKING_ID", -1);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                if (successUrl != null && url != null && url.startsWith(successUrl)) {
+                    // After backend validates payment, navigate to confirmation screen.
+                    Intent intent = new Intent(EsewaPaymentActivity.this, ConfirmationActivity.class);
+                    if (bookingId > 0) {
+                        intent.putExtra("BOOKING_ID", bookingId);
+                    }
+                    startActivity(intent);
+                    finish();
+                } else if (failureUrl != null && url != null && url.startsWith(failureUrl)) {
+                    Toast.makeText(EsewaPaymentActivity.this, "Payment failed or cancelled.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Toast.makeText(EsewaPaymentActivity.this, "Payment page error: " + description, Toast.LENGTH_SHORT).show();
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
 
         if (paymentUrl == null || paymentUrl.trim().isEmpty()) {
             Toast.makeText(this, "Payment URL missing", Toast.LENGTH_SHORT).show();

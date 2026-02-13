@@ -63,7 +63,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
         holder.tvPrice.setText("Rs. " + price);
         holder.tvTime.setText(formatTime(booking.getDate(), booking.getStartTime(), booking.getEndTime()));
 
-        bindStatus(holder.tvStatus, booking.getStatus(), booking.getPaymentStatus());
+        bindStatus(holder.tvStatus, booking.getStatus());
         loadImage(holder.ivCourt, booking.getCourt() != null ? booking.getCourt().getImage() : null);
 
         holder.btnDetails.setOnClickListener(v -> {
@@ -99,13 +99,13 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
         }
     }
 
-    private void bindStatus(TextView tvStatus, String status, String paymentStatus) {
+    private void bindStatus(TextView tvStatus, String status) {
         if (tvStatus == null) return;
         String label = status != null ? status : "Pending";
         int bg = R.color.status_pending;
         int fg = R.color.action_yellow;
-        if ("Confirmed".equalsIgnoreCase(status) || "Paid".equalsIgnoreCase(paymentStatus)) {
-            label = "PAID";
+        if ("Confirmed".equalsIgnoreCase(status)) {
+            label = "CONFIRMED";
             bg = R.color.status_paid;
             fg = R.color.bright_green;
         } else if ("Cancelled".equalsIgnoreCase(status) || "Rejected".equalsIgnoreCase(status)) {
@@ -147,15 +147,17 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
             trimmed = trimmed.substring(0, dotIndex);
         }
         DateTimeFormatter[] formatters = new DateTimeFormatter[] {
-                DateTimeFormatter.ofPattern("HH:mm:ss"),
-                DateTimeFormatter.ofPattern("HH:mm"),
-                DateTimeFormatter.ofPattern("H:mm:ss"),
-                DateTimeFormatter.ofPattern("H:mm")
+            DateTimeFormatter.ofPattern("HH:mm:ss"),
+            DateTimeFormatter.ofPattern("HH:mm"),
+            DateTimeFormatter.ofPattern("H:mm:ss"),
+            DateTimeFormatter.ofPattern("H:mm"),
+            DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()),
+            DateTimeFormatter.ofPattern("h:mm a", Locale.getDefault())
         };
         for (DateTimeFormatter formatter : formatters) {
             try {
                 LocalTime parsed = LocalTime.parse(trimmed, formatter);
-                return parsed.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()));
+            return parsed.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()));
             } catch (Exception ignored) {
             }
         }

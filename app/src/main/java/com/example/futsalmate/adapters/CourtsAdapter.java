@@ -1,15 +1,17 @@
 package com.example.futsalmate.adapters;
 
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.futsalmate.R;
 import com.example.futsalmate.api.models.Court;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.button.MaterialButton;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
@@ -83,7 +85,7 @@ public class CourtsAdapter extends RecyclerView.Adapter<CourtsAdapter.CourtViewH
         TextView tvCourtLocation;
         TextView tvCourtPrice;
         MaterialButton btnBookNow;
-        LinearLayout facilitiesContainer;
+        ChipGroup facilitiesContainer;
 
         CourtViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +98,7 @@ public class CourtsAdapter extends RecyclerView.Adapter<CourtsAdapter.CourtViewH
         }
     }
 
-    private void bindFacilities(LinearLayout container, List<String> facilities) {
+    private void bindFacilities(ChipGroup container, List<String> facilities) {
         if (container == null) return;
         container.removeAllViews();
         if (facilities == null || facilities.isEmpty()) {
@@ -106,23 +108,7 @@ public class CourtsAdapter extends RecyclerView.Adapter<CourtsAdapter.CourtViewH
         int max = Math.min(facilities.size(), 4);
         for (int i = 0; i < max; i++) {
             String facility = cleanFacility(facilities.get(i));
-            TextView chip = new TextView(container.getContext());
-            chip.setText(facility);
-            chip.setTextSize(10);
-            chip.setTextColor(container.getContext().getColor(R.color.text_grey));
-            chip.setBackgroundResource(R.drawable.bg_facility_chip);
-            int paddingH = dpToPx(container, 10);
-            int paddingV = dpToPx(container, 4);
-            chip.setPadding(paddingH, paddingV, paddingH, paddingV);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            if (i > 0) {
-                params.setMarginStart(dpToPx(container, 8));
-            }
-            chip.setLayoutParams(params);
+            Chip chip = createFacilityChip(container, facility);
             container.addView(chip);
         }
     }
@@ -152,7 +138,7 @@ public class CourtsAdapter extends RecyclerView.Adapter<CourtsAdapter.CourtViewH
         return facilities;
     }
 
-    private int dpToPx(LinearLayout container, int dp) {
+    private int dpToPx(ViewGroup container, int dp) {
         float density = container.getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
@@ -197,5 +183,20 @@ public class CourtsAdapter extends RecyclerView.Adapter<CourtsAdapter.CourtViewH
             }
         }
         return trimmed;
+    }
+
+    private Chip createFacilityChip(ViewGroup container, String facility) {
+        Chip chip = new Chip(container.getContext());
+        chip.setText(facility);
+        chip.setClickable(false);
+        chip.setCheckable(false);
+        chip.setTextColor(container.getContext().getColor(R.color.text_grey));
+        chip.setTextSize(10);
+        chip.setChipBackgroundColor(ColorStateList.valueOf(container.getContext().getColor(R.color.card_bg_light)));
+        chip.setChipStrokeWidth(0f);
+        int paddingH = dpToPx(container, 10);
+        int paddingV = dpToPx(container, 4);
+        chip.setPadding(paddingH, paddingV, paddingH, paddingV);
+        return chip;
     }
 }

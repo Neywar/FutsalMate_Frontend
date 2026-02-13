@@ -19,9 +19,9 @@
             android:id="@+id/ivProfile"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/ic_profile"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 
@@ -91,6 +91,7 @@
                 app:strokeWidth="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/promoRegisterContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="20dp">
@@ -157,6 +158,60 @@
                         app:strokeColor="@color/bright_green" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/promoManageContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:alpha="0.1"
+                        android:src="@drawable/ic_star"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/bright_green" />
+
+                    <TextView
+                        android:id="@+id/tvPromoManageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your team is live"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPromoManageDesc"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Keep your profile fresh to attract better matchups."
+                        android:textColor="@color/text_grey"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvPromoManageTitle" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageTeamPromo"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingHorizontal="24dp"
+                        android:text="Edit Team Profile"
+                        android:textAllCaps="false"
+                        android:textColor="@color/bright_green"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvPromoManageDesc"
+                        app:strokeColor="@color/bright_green" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Section Header: Find Opponents -->
@@ -199,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="center"
-                android:text="No teams found"
+                android:text="No other teams found yet"
                 android:textColor="@color/text_grey"
                 android:textSize="12sp"
                 android:visibility="gone" />

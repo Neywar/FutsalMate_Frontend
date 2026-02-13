@@ -58,7 +58,8 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/ic_1"
+                android:src="@drawable/ic_person"
+                android:background="@android:color/transparent"
                 app:civ_border_color="#FACC15"
                 app:civ_border_width="3dp" />
 
@@ -67,17 +68,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="David Chen"
+                android:text="—"
                 android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvUserDetailVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Verified Player"
-                android:textColor="#FACC15"
+                android:text="Unverified Player"
+                android:textColor="#9CA3AF"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -114,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="+1 234 567 890"
+                    android:text="—"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@id/ivIconPhone"
@@ -145,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="david.chen@email.com"
+                    android:text="—"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@id/ivIconEmail"
@@ -181,17 +183,19 @@
                     android:orientation="vertical"
                     android:padding="16dp">
                     <TextView
+                        android:id="@+id/tvInsightLeftValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="24"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvInsightLeftLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Matches"
+                        android:text="Total Bookings"
                         android:textColor="#9CA3AF"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -206,17 +210,19 @@
                     android:orientation="vertical"
                     android:padding="16dp">
                     <TextView
+                        android:id="@+id/tvInsightRightValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4.8"
+                        android:text="Rs. 0.00"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvInsightRightLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Player Rating"
+                        android:text="Total Spent"
                         android:textColor="#9CA3AF"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -235,8 +241,8 @@
                     android:id="@+id/btnCallUser"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:backgroundTint="#E71A05"
-                    android:text="Block User"
+                    android:backgroundTint="#CDD7CD"
+                    android:text="Call User"
                     android:textAllCaps="false"
                     android:textColor="#000000"
                     android:textSize="16sp"

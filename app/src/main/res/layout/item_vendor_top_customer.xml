@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootTopCustomer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivTopCustomer"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_person"
+        android:background="@android:color/transparent"
+        app:civ_border_color="#374151"
+        app:civ_border_width="1dp" />
+
+    <TextView
+        android:id="@+id/tvTopCustomerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxWidth="80dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="—"
+        android:textColor="#9CA3AF"
+        android:textSize="12sp" />
+</LinearLayout>

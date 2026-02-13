@@ -61,12 +61,14 @@
             app:tint="@color/text_grey" />
 
         <EditText
+            android:id="@+id/etSearchCourts"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
+            android:autofillHints=""
             android:background="@android:color/transparent"
-            android:hint="Search city, area or court name"
+            android:hint="Search court name"
             android:paddingVertical="8dp"
             android:textColor="@color/white"
             android:textColorHint="@color/text_grey"

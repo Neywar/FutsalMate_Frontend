@@ -17,7 +17,20 @@ import java.util.Locale;
 
 public class CommunityTeamsAdapter extends RecyclerView.Adapter<CommunityTeamsAdapter.TeamViewHolder> {
 
+    public interface OnTeamClickListener {
+        void onTeamClick(CommunityTeam team);
+    }
+
     private final List<CommunityTeam> teams = new ArrayList<>();
+    private final OnTeamClickListener listener;
+
+    public CommunityTeamsAdapter(OnTeamClickListener listener) {
+        this.listener = listener;
+    }
+
+    public CommunityTeamsAdapter() {
+        this(null);
+    }
 
     public void setTeams(List<CommunityTeam> items) {
         teams.clear();
@@ -41,6 +54,11 @@ public class CommunityTeamsAdapter extends RecyclerView.Adapter<CommunityTeamsAd
         holder.tvPreferredCourt.setText(team != null && team.getPreferredCourts() != null ? team.getPreferredCourts() : "Any court");
         holder.tvPreferredDays.setText(formatDays(team));
         holder.tvDescription.setText(team != null && team.getDescription() != null ? team.getDescription() : "");
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onTeamClick(team);
+            }
+        });
     }
 
     @Override

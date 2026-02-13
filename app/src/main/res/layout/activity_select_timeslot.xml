@@ -56,15 +56,6 @@
                 android:letterSpacing="0.05" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_setting"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -242,6 +233,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
+                android:autofillHints=""
                 android:background="@drawable/bg_otp_box_inactive"
                 android:backgroundTint="@color/card_bg"
                 android:gravity="top"

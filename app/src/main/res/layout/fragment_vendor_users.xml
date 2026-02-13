@@ -74,16 +74,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvSeeAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="See all"
-                    android:textColor="#FACC15"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
             </RelativeLayout>
 
             <HorizontalScrollView
@@ -93,120 +83,22 @@
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/topCustomersContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Customer 1 -->
-                    <LinearLayout
-                        android:id="@+id/customer1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivTopCustomer1"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:src="@drawable/ic_1"
-                            app:civ_border_color="#FACC15"
-                            app:civ_border_width="2dp" />
-
-                        <TextView
-                            android:id="@+id/tvTopCustomerName1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Alex R."
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Customer 2 -->
-                    <LinearLayout
-                        android:id="@+id/customer2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivTopCustomer2"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:src="@drawable/ic_2"
-                            app:civ_border_color="#374151"
-                            app:civ_border_width="1dp" />
-
-                        <TextView
-                            android:id="@+id/tvTopCustomerName2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Jordan"
-                            android:textColor="#9CA3AF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Customer 3 -->
-                    <LinearLayout
-                        android:id="@+id/customer3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivTopCustomer3"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:src="@drawable/ic_1"
-                            app:civ_border_color="#374151"
-                            app:civ_border_width="1dp" />
-
-                        <TextView
-                            android:id="@+id/tvTopCustomerName3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Sam T."
-                            android:textColor="#9CA3AF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Customer 4 -->
-                    <LinearLayout
-                        android:id="@+id/customer4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivTopCustomer4"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:src="@drawable/ic_2"
-                            app:civ_border_color="#374151"
-                            app:civ_border_width="1dp" />
-
-                        <TextView
-                            android:id="@+id/tvTopCustomerName4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Casey M."
-                            android:textColor="#9CA3AF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:orientation="horizontal" />
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tvEmptyTopCustomers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="No customers yet"
+                android:textColor="#6B7280"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <!-- Search Bar -->
             <LinearLayout
@@ -219,20 +111,25 @@
                 android:paddingHorizontal="16dp">
 
                 <ImageView
-                    android:id="@+id/btnFilter"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:contentDescription="Search"
                     android:src="@drawable/ic_search"
                     app:tint="#4B5563" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/etSearchCustomers"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Search by player name"
-                    android:textColor="#4B5563"
-                    android:textSize="14sp" />
+                    android:autofillHints=""
+                    android:background="@android:color/transparent"
+                    android:hint="Search by player name"
+                    android:textColor="@color/white"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch" />
             </LinearLayout>
 
             <TextView
@@ -244,242 +141,22 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Activity Card 1 -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardRecent1"
+            <LinearLayout
+                android:id="@+id/recentActivityContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/tvEmptyRecentActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#000000"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="#FACC15"
-                app:strokeWidth="1dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivUser1"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvUserName1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="David Chen"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/ivUser1"
-                        app:layout_constraintTop_toTopOf="@id/ivUser1" />
-
-                    <TextView
-                        android:id="@+id/tvPitch1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pitch A • Main Arena"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@id/tvUserName1"
-                        app:layout_constraintTop_toBottomOf="@id/tvUserName1" />
-
-                    <TextView
-                        android:id="@+id/tvStatus1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_vendor_button"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="PAID"
-                        android:textColor="#000000"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/llDate1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivUser1">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:contentDescription="Booking date"
-                            android:src="@drawable/ic_bookings"
-                            app:tint="#9CA3AF" />
-
-                        <TextView
-                            android:id="@+id/tvDate1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Oct 24, 2023 • 6:00 PM"
-                            android:textColor="#9CA3AF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btnViewHistory1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="View History"
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="4dp"
-                            android:contentDescription="Next"
-                            android:src="@drawable/ic_arrow_forward"
-                            app:tint="#FACC15" />
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Activity Card 2 (Pending) -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardRecent2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#000000"
-                app:cardCornerRadius="20dp"
-                app:strokeColor="#FACC15"
-                app:strokeWidth="1dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivUser2"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvUserName2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Sarah Jenkins"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/ivUser2"
-                        app:layout_constraintTop_toTopOf="@id/ivUser2" />
-
-                    <TextView
-                        android:id="@+id/tvPitch2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pitch C • Training Zone"
-                        android:textColor="#FACC15"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@id/tvUserName2"
-                        app:layout_constraintTop_toBottomOf="@id/tvUserName2" />
-
-                    <TextView
-                        android:id="@+id/tvStatus2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_vendor_card"
-                        android:backgroundTint="#000000"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="PENDING"
-                        android:textColor="#FACC15"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/llDate2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivUser2">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:contentDescription="Booking date"
-                            android:src="@drawable/ic_bookings"
-                            app:tint="#9CA3AF" />
-
-                        <TextView
-                            android:id="@+id/tvDate2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Oct 24, 2023 • 4:30 PM"
-                            android:textColor="#9CA3AF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btnViewHistory2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="View History"
-                            android:textColor="#FACC15"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginStart="4dp"
-                            android:contentDescription="Next"
-                            android:src="@drawable/ic_arrow_forward"
-                            app:tint="#FACC15" />
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:gravity="center"
+                android:text="No recent activity"
+                android:textColor="#6B7280"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

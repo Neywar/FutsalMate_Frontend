@@ -3,15 +3,15 @@
     android:shape="rectangle">
 
     <!-- Dark card background -->
-    <solid android:color="#101827" />
+    <solid android:color="#112321" />
 
     <!-- Rounded corners -->
-    <corners android:radius="16dp" />
+    <corners android:radius="20dp" />
 
     <!-- Optional light border -->
     <stroke
-        android:width="0.5dp"
-        android:color="#1F2933" />
+        android:width="1dp"
+        android:color="#1B2F2B" />
 
     <!-- Inner padding so content is not against the edges -->
     <padding

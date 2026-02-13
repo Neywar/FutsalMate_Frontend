@@ -11,8 +11,11 @@ public class VendorCustomer {
     private String email;
     private String phone;
 
-    @SerializedName("profile_photo")
+    @SerializedName(value = "profile_photo", alternate = {"profile_photo_url"})
     private String profilePhoto;
+
+    @SerializedName("email_verified_at")
+    private String emailVerifiedAt;
 
     private VendorCustomerStats statistics;
 
@@ -62,5 +65,13 @@ public class VendorCustomer {
 
     public void setStatistics(VendorCustomerStats statistics) {
         this.statistics = statistics;
+    }
+
+    public String getEmailVerifiedAt() {
+        return emailVerifiedAt;
+    }
+
+    public void setEmailVerifiedAt(String emailVerifiedAt) {
+        this.emailVerifiedAt = emailVerifiedAt;
     }
 }

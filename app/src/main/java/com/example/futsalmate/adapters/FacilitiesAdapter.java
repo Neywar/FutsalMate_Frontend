@@ -43,7 +43,27 @@ public class FacilitiesAdapter extends RecyclerView.Adapter<FacilitiesAdapter.Fa
     public void onBindViewHolder(@NonNull FacilityViewHolder holder, int position) {
         String facility = facilities.get(position);
         holder.tvFacilityName.setText(facility.toUpperCase(Locale.US));
-        holder.ivFacilityIcon.setImageResource(R.drawable.ic_bookings);
+
+        int iconRes = R.drawable.ic_bookings;
+        String key = facility.toLowerCase(Locale.US);
+        if (key.contains("indoor")) {
+            iconRes = R.drawable.ic_courts;
+        } else if (key.contains("outdoor")) {
+            iconRes = R.drawable.ic_location;
+        } else if (key.contains("parking")) {
+            iconRes = R.drawable.ic_parking;
+        } else if (key.contains("shower")) {
+            iconRes = R.drawable.ic_shower;
+        } else if (key.contains("locker")) {
+            iconRes = R.drawable.ic_lock;
+        } else if (key.contains("wifi") || key.contains("internet")) {
+            iconRes = R.drawable.ic_wifi;
+        } else if (key.contains("cafeteria") || key.contains("cafe")) {
+            iconRes = R.drawable.ic_wallet;
+        } else if (key.contains("turf")) {
+            iconRes = R.drawable.ic_futsal_ball;
+        }
+        holder.ivFacilityIcon.setImageResource(iconRes);
     }
 
     @Override

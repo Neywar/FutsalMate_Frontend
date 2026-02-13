@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.futsalmate.api.RetrofitClient;
 import com.example.futsalmate.api.models.User;
 import com.example.futsalmate.api.models.UserDashboardData;
 import com.example.futsalmate.api.models.UserDashboardResponse;
+import com.example.futsalmate.api.models.CommunityTeam;
+import com.example.futsalmate.api.models.ShowTeamsResponse;
 import com.example.futsalmate.utils.TokenManager;
+
+import java.io.File;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +32,8 @@ public class ProfileFragment extends Fragment {
     private TokenManager tokenManager;
     private TextView tvName;
     private TextView tvTotalBookings;
+    private TextView tvMyTeamSubtitle;
+    private ImageView ivAvatar;
 
     @Nullable
     @Override
@@ -38,32 +46,17 @@ public class ProfileFragment extends Fragment {
 
         tvName = view.findViewById(R.id.tvName);
         tvTotalBookings = view.findViewById(R.id.tvTotalBookings);
+        ivAvatar = view.findViewById(R.id.ivAvatar);
 
         // My Team logic
         View layoutMyTeam = view.findViewById(R.id.layoutMyTeam);
         if (layoutMyTeam != null) {
             layoutMyTeam.setOnClickListener(v -> {
-                startActivity(new Intent(getActivity(), EditTeamActivity.class));
+                startActivity(new Intent(getActivity(), TeamsActivity.class));
             });
         }
 
-        // Edit Team Profile logic (Existing)
-        View layoutEditTeam = view.findViewById(R.id.layoutEditTeam);
-        View dividerTeam = view.findViewById(R.id.dividerTeam);
-
-        if (tokenManager != null && tokenManager.isTeamRegistered()) {
-            if (layoutEditTeam != null) layoutEditTeam.setVisibility(View.VISIBLE);
-            if (dividerTeam != null) dividerTeam.setVisibility(View.VISIBLE);
-        } else {
-            if (layoutEditTeam != null) layoutEditTeam.setVisibility(View.GONE);
-            if (dividerTeam != null) dividerTeam.setVisibility(View.GONE);
-        }
-
-        if (layoutEditTeam != null) {
-            layoutEditTeam.setOnClickListener(v -> {
-                startActivity(new Intent(getActivity(), EditTeamActivity.class));
-            });
-        }
+        // Edit Team section removed from layout
 
         // Navigation links
         view.findViewById(R.id.layoutChangePassword).setOnClickListener(v -> {
@@ -106,6 +99,8 @@ public class ProfileFragment extends Fragment {
         });
 
         loadProfileData();
+        loadCachedAvatar();
+        loadTeamSummary();
 
         return view;
     }
@@ -114,6 +109,8 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadProfileData();
+        loadCachedAvatar();
+        loadTeamSummary();
     }
 
     private void loadProfileData() {
@@ -142,14 +139,96 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
+    private void loadTeamSummary() {
+        if (tokenManager == null) {
+            return;
+        }
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            if (tvMyTeamSubtitle != null) {
+                tvMyTeamSubtitle.setText("Login to manage your team.");
+            }
+            return;
+        }
+
+        RetrofitClient.getInstance().getApiService().showTeams(token)
+                .enqueue(new Callback<ShowTeamsResponse>() {
+                    @Override
+                    public void onResponse(Call<ShowTeamsResponse> call, Response<ShowTeamsResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            if (tvMyTeamSubtitle != null) {
+                                tvMyTeamSubtitle.setText("Could not load team.");
+                            }
+                            return;
+                        }
+                        java.util.List<CommunityTeam> teams = response.body().getCommunities();
+                        if (tvMyTeamSubtitle != null) {
+                            if (teams != null && !teams.isEmpty()) {
+                                CommunityTeam first = teams.get(0);
+                                String name = first.getTeamName();
+                                tvMyTeamSubtitle.setText(name != null && !name.trim().isEmpty()
+                                        ? name
+                                        : "Team registered");
+                            } else {
+                                tvMyTeamSubtitle.setText("No team yet. Tap to create.");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ShowTeamsResponse> call, Throwable t) {
+                        if (tvMyTeamSubtitle != null) {
+                            tvMyTeamSubtitle.setText("Could not load team.");
+                        }
+                    }
+                });
+    }
+
     private void bindProfile(UserDashboardData data) {
         User user = data.getUser();
         if (tvName != null) {
             String name = user != null ? user.getFullName() : null;
             tvName.setText(name != null && !name.trim().isEmpty() ? name : "Player");
+            if (tokenManager != null && name != null && !name.trim().isEmpty()) {
+                tokenManager.saveUserName(name);
+            }
         }
         if (tvTotalBookings != null) {
             tvTotalBookings.setText(String.valueOf(data.getTotalBookings()));
         }
+        if (user != null && user.getProfilePhotoUrl() != null && tokenManager != null) {
+            tokenManager.saveUserAvatar(user.getProfilePhotoUrl());
+            loadAvatar(user.getProfilePhotoUrl());
+        }
+    }
+
+    private void loadCachedAvatar() {
+        if (tokenManager == null) {
+            return;
+        }
+        String cached = tokenManager.getUserAvatar();
+        if (cached != null && !cached.trim().isEmpty()) {
+            loadAvatar(cached);
+        }
+    }
+
+    private void loadAvatar(String value) {
+        if (ivAvatar == null || value == null || value.trim().isEmpty()) {
+            return;
+        }
+        Object source = normalizeAvatarSource(value);
+        Glide.with(this)
+                .load(source)
+                .placeholder(R.drawable.ic_1)
+                .error(R.drawable.ic_1)
+                .into(ivAvatar);
+    }
+
+    private Object normalizeAvatarSource(String value) {
+        String trimmed = value.trim();
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("content://") || trimmed.startsWith("file://")) {
+            return trimmed;
+        }
+        return new File(trimmed);
     }
 }

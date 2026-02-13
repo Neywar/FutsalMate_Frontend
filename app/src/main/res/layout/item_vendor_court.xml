@@ -3,36 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="12dp"
     app:cardBackgroundColor="#111827"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
     app:strokeColor="#1F2937"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivCourtImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_court_one"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/RoundedImageView" />
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            app:strokeColor="#FACC15"
+            app:strokeWidth="1dp" />
 
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:background="@drawable/bg_vendor_input"
-            android:backgroundTint="#40FACC15"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="2dp"
+            android:backgroundTint="#1F2937"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
             android:text="ACTIVE"
             android:textColor="#FACC15"
             android:textSize="9sp"
@@ -44,10 +47,12 @@
             android:id="@+id/tvCourtName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Stadium A - Pro Indoor"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvStatus"
@@ -57,10 +62,12 @@
             android:id="@+id/tvLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:drawableStart="@drawable/ic_location"
             android:drawablePadding="4dp"
-            android:drawableTint="#9CA3AF"
+            android:drawableTint="#6B7280"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Bharatpur"
             android:textColor="#9CA3AF"
             android:textSize="11sp"
@@ -68,33 +75,43 @@
             app:layout_constraintStart_toStartOf="@id/tvStatus"
             app:layout_constraintTop_toBottomOf="@id/tvCourtName" />
 
-        <TextView
-            android:id="@+id/tvPrice"
+        <LinearLayout
+            android:id="@+id/priceContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Rs. 1500"
-            android:textColor="#FACC15"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_vendor_input"
+            android:backgroundTint="#1F2937"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
             app:layout_constraintStart_toStartOf="@id/tvStatus"
-            app:layout_constraintTop_toBottomOf="@id/tvLocation" />
+            app:layout_constraintTop_toBottomOf="@id/tvLocation">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="/hour"
-            android:textColor="#9CA3AF"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvPrice"
-            app:layout_constraintStart_toEndOf="@id/tvPrice" />
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rs. 1500"
+                android:textColor="#FACC15"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="/hour"
+                android:textColor="#9CA3AF"
+                android:textSize="10sp" />
+        </LinearLayout>
 
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="27dp"
             android:background="#1F2937"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +120,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
+            android:gravity="end"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,30 +131,42 @@
                 android:id="@+id/btnEdit"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Edit"
+                android:text="Edit Court"
                 android:textAllCaps="false"
                 android:textColor="#FACC15"
-                android:textSize="12sp"
-                app:cornerRadius="8dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconSize="16dp"
+                app:iconTint="#FACC15"
                 app:strokeColor="#FACC15"
-                app:strokeWidth="1dp" />
+                app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDelete"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:text="Delete"
                 android:textAllCaps="false"
                 android:textColor="#EF4444"
-                android:textSize="12sp"
-                app:cornerRadius="8dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconSize="16dp"
+                app:iconTint="#EF4444"
                 app:strokeColor="#EF4444"
-                app:strokeWidth="1dp" />
+                app:strokeWidth="1.5dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

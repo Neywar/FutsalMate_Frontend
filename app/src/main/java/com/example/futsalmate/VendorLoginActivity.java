@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class VendorLoginActivity extends AppCompatActivity {
 
     private EditText edtVendorEmail, edtVendorPassword;
@@ -82,7 +84,14 @@ public class VendorLoginActivity extends AppCompatActivity {
                 return;
             }
 
-            performVendorLogin(email, password);
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        String fcmToken = null;
+                        if (task.isSuccessful()) {
+                            fcmToken = task.getResult();
+                        }
+                        performVendorLogin(email, password, fcmToken);
+                    });
         });
 
         // Navigate to Change Password
@@ -106,10 +115,10 @@ public class VendorLoginActivity extends AppCompatActivity {
         }
     }
 
-    private void performVendorLogin(String email, String password) {
+    private void performVendorLogin(String email, String password, String fcmToken) {
         btnVendorLogin.setEnabled(false);
 
-        LoginRequest request = new LoginRequest(email, password, false);
+        LoginRequest request = new LoginRequest(email, password, false, fcmToken);
         Call<ApiResponse<Vendor>> call = RetrofitClient.getInstance().getApiService().vendorLogin(request);
 
         call.enqueue(new Callback<ApiResponse<Vendor>>() {
@@ -127,6 +136,20 @@ public class VendorLoginActivity extends AppCompatActivity {
                         if (vendor != null) {
                             tokenManager.saveVendorId(vendor.getId());
                         }
+
+                        // Register FCM token after successful vendor login as well
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(task -> {
+                                    if (!task.isSuccessful()) {
+                                        return;
+                                    }
+                                    String fcmToken = task.getResult();
+                                    if (fcmToken == null || fcmToken.isEmpty()) {
+                                        return;
+                                    }
+                                    tokenManager.saveFcmToken(fcmToken);
+                                    // Backend will read and store this FCM token via a separate call if needed.
+                                });
 
                         startActivity(new Intent(VendorLoginActivity.this, VendorMainActivity.class));
                         finish();

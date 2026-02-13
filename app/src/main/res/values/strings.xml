@@ -16,4 +16,29 @@
         <item>Cash</item>
         <item>eSewa</item>
     </string-array>
+    <string-array name="payment_status_array">
+        <item>Pending</item>
+        <item>Paid</item>
+        <item>Unpaid</item>
+    </string-array>
+    <string name="back_button">Back button</string>
+    <string name="blocked_users">Blocked Users</string>
+    <string name="edit_profile">EDIT Profile</string>
+    <string name="payouts">PAYOUTS</string>
+    <string name="statistics">STATISTICS</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="open_maps">OPEN MAPS</string>
+    <string name="full_name">Full Name</string>
+    <string name="full_name_caps">FULL NAME</string>
+    <string name="enter_full_name">Enter your full name</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="profile_photo">Profile photo</string>
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name="edit_vendor_profile">Edit Vendor Profile</string>
+    <string name="phone_number">PHONE NUMBER</string>
+    <string name="location">LOCATION</string>
+    <string name="email_address">EMAIL ADDRESS</string>
+    <string name="city_area">City, Area</string>
+    <string name="phone_placeholder">98XXXXXXXX</string>
+    <string name="save_changes">Save Changes</string>
 </resources>

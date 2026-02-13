@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ public class VendorCourtsFragment extends Fragment {
     private TextView btnFilterAll, btnFilterActive, btnFilterInactive;
     private List<Court> allCourts = new ArrayList<>();
     private String currentFilter = "all"; // "all", "active", "inactive"
+    private String searchQuery = "";
 
     @Nullable
     @Override
@@ -67,6 +70,9 @@ public class VendorCourtsFragment extends Fragment {
         adapter = new VendorCourtsAdapter(requireContext(), new VendorCourtsAdapter.OnCourtActionListener() {
             @Override
             public void onEditCourt(Court court) {
+                // Use AddCourtActivity in edit mode so that
+                // all fields (hours, facilities, images) and
+                // the proper updateCourt API are reused.
                 Intent intent = new Intent(requireContext(), AddCourtActivity.class);
                 intent.putExtra("court_data", court);
                 startActivity(intent);
@@ -78,6 +84,16 @@ public class VendorCourtsFragment extends Fragment {
             }
         });
         recyclerViewCourts.setAdapter(adapter);
+
+        // Back button
+        View btnBack = view.findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                if (getActivity() instanceof VendorMainActivity) {
+                    ((VendorMainActivity) getActivity()).switchToDashboard();
+                }
+            });
+        }
 
         View btnSearch = view.findViewById(R.id.btnSearch);
         View searchContainer = view.findViewById(R.id.searchContainer);
@@ -101,6 +117,26 @@ public class VendorCourtsFragment extends Fragment {
                     etSearch.setText("");
                 }
                 searchContainer.setVisibility(View.GONE);
+                searchQuery = "";
+                applyFilter();
+            });
+        }
+
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    searchQuery = s != null ? s.toString().trim() : "";
+                    applyFilter();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
             });
         }
 
@@ -174,11 +210,24 @@ public class VendorCourtsFragment extends Fragment {
         List<Court> filteredCourts = new ArrayList<>();
         
         for (Court court : allCourts) {
-            if (currentFilter.equals("all")) {
+            boolean matchesStatus = currentFilter.equals("all")
+                    || (currentFilter.equals("active") && "active".equalsIgnoreCase(court.getStatus()))
+                    || (currentFilter.equals("inactive") && !"active".equalsIgnoreCase(court.getStatus()));
+
+            if (!matchesStatus) {
+                continue;
+            }
+
+            if (searchQuery.isEmpty()) {
                 filteredCourts.add(court);
-            } else if (currentFilter.equals("active") && "active".equalsIgnoreCase(court.getStatus())) {
-                filteredCourts.add(court);
-            } else if (currentFilter.equals("inactive") && !"active".equalsIgnoreCase(court.getStatus())) {
+                continue;
+            }
+
+            String name = court.getCourtName() != null ? court.getCourtName() : "";
+            String location = court.getLocation() != null ? court.getLocation() : "";
+            String queryLower = searchQuery.toLowerCase();
+
+            if (name.toLowerCase().contains(queryLower) || location.toLowerCase().contains(queryLower)) {
                 filteredCourts.add(court);
             }
         }

@@ -151,10 +151,12 @@
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardNextScheduledGame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_vendor_card"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/badgeUpcoming"
@@ -329,173 +331,10 @@
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/courtStatusContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Pitch 1 Card (Occupied) -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_vendor_card_gold"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvPitch1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PITCH 1"
-                            android:textColor="#FACC15"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_vendor_button"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="OCCUPIED"
-                            android:textColor="#000000"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/lblCurrentPlayer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="CURRENT PLAYER"
-                            android:textColor="#4B5563"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvPitch1" />
-
-                        <TextView
-                            android:id="@+id/tvPlayerName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Alessandro Nesta"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblCurrentPlayer" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_vertical"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvPlayerName">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@drawable/ic_hourglass"
-                                app:tint="#FACC15" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="22m left"
-                                android:textColor="#FACC15"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- Pitch 2 Card (Available) -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_vendor_card"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvPitch2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PITCH 2"
-                            android:textColor="#4B5563"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_vendor_input"
-                            android:backgroundTint="#111827"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="AVAILABLE"
-                            android:textColor="#FACC15"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/lblStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="STATUS"
-                            android:textColor="#4B5563"
-                            android:textSize="9sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvPitch2" />
-
-                        <TextView
-                            android:id="@+id/tvStatusDesc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Ready for play"
-                            android:textColor="#FACC15"
-                            android:textSize="15sp"
-                            android:textStyle="italic"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/lblStatus" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_vertical"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvStatusDesc">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@drawable/ic_check"
-                                app:tint="#4B5563" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:text="Open Slot"
-                                android:textColor="#4B5563"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
+                    android:orientation="horizontal" />
             </HorizontalScrollView>
 
             <!-- Bottom Small Cards (Jobs/Users) -->
@@ -540,10 +379,11 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvSlotsLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="● 8 slots left"
+                        android:text="● 0 slots left"
                         android:textColor="#FACC15"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -616,9 +456,8 @@
                     android:id="@+id/tvEarningsValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="268dp"
-                    android:layout_marginTop="20dp"
-                    android:text="$12,450.00"
+                    android:layout_marginTop="8dp"
+                    android:text="Rs. 0.00"
                     android:textColor="@color/white"
                     android:textSize="28sp"
                     android:textStyle="bold"
@@ -753,153 +592,6 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Court Usage Analytics"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!-- Tab Selector -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_vendor_card"
-                android:backgroundTint="#1F2937"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="DAY"
-                    android:textColor="#9CA3AF"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_vendor_card"
-                    android:backgroundTint="#000000"
-                    android:gravity="center"
-                    android:text="WEEK"
-                    android:textColor="#FACC15"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="MONTH"
-                    android:textColor="#9CA3AF"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Utilization Bar Chart Card -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_vendor_card"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/tvUtilLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Weekly Utilization"
-                    android:textColor="#FACC15"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvUtilValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="85% Avg"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvUtilLabel" />
-
-                <TextView
-                    android:id="@+id/tvUtilValueDelta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+3% vs last week"
-                    android:textColor="#10B981"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tvUtilValue"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!-- Bar Chart -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="24dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tvUtilValue">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal|bottom"
-                        android:orientation="vertical">
-                        <View android:layout_width="48dp" android:layout_height="140dp" android:background="#FACC15" android:alpha="0.2"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="C-A" android:textColor="#FACC15" android:textSize="10sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal|bottom"
-                        android:orientation="vertical">
-                        <View android:layout_width="48dp" android:layout_height="110dp" android:background="#FACC15" android:alpha="0.2"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="C-B" android:textColor="#FACC15" android:textSize="10sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal|bottom"
-                        android:orientation="vertical">
-                        <View android:layout_width="48dp" android:layout_height="130dp" android:background="#FACC15" android:alpha="0.2"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="C-C" android:textColor="#FACC15" android:textSize="10sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal|bottom"
-                        android:orientation="vertical">
-                        <View android:layout_width="48dp" android:layout_height="145dp" android:background="#FACC15" android:alpha="0.2"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="C-D" android:textColor="#FACC15" android:textSize="10sp"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

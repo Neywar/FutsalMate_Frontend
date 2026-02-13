@@ -15,6 +15,7 @@ import com.example.futsalmate.api.RetrofitClient;
 import com.example.futsalmate.api.models.BookCourtRequest;
 import com.example.futsalmate.api.models.BookCourtResponse;
 import com.example.futsalmate.api.models.BookPaymentInfo;
+import com.example.futsalmate.api.models.Booking;
 import com.example.futsalmate.api.models.BookedTimesResponse;
 import com.example.futsalmate.api.models.CourtDetail;
 import com.example.futsalmate.api.models.CourtDetailBooking;
@@ -315,7 +316,7 @@ public class SelectTimeslotActivity extends AppCompatActivity {
     }
 
     private String formatSlot(LocalTime start, LocalTime end) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault());
         return start.format(formatter) + " - " + end.format(formatter);
     }
 
@@ -427,8 +428,11 @@ public class SelectTimeslotActivity extends AppCompatActivity {
             return courtPrice;
         }
         try {
-            LocalTime start = LocalTime.parse(selectedStartTime, DateTimeFormatter.ofPattern("HH:mm"));
-            LocalTime end = LocalTime.parse(selectedEndTime, DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime start = parseLocalTime(selectedStartTime);
+            LocalTime end = parseLocalTime(selectedEndTime);
+            if (start == null || end == null) {
+                return courtPrice;
+            }
             long minutes = Duration.between(start, end).toMinutes();
             if (minutes <= 0) {
                 return courtPrice;
@@ -491,9 +495,15 @@ public class SelectTimeslotActivity extends AppCompatActivity {
             Toast.makeText(this, "Booking failed", Toast.LENGTH_SHORT).show();
             return;
         }
+        Booking booking = response.getBooking();
+
         if ("Cash".equalsIgnoreCase(selectedPayment) || response.getPayment() == null) {
             Toast.makeText(this, response.getMessage() != null ? response.getMessage() : "Booking confirmed", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ConfirmationActivity.class));
+            Intent intent = new Intent(this, ConfirmationActivity.class);
+            if (booking != null) {
+                intent.putExtra("BOOKING_ID", booking.getId());
+            }
+            startActivity(intent);
             return;
         }
 
@@ -504,6 +514,9 @@ public class SelectTimeslotActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, EsewaPaymentActivity.class);
+        if (booking != null) {
+            intent.putExtra("BOOKING_ID", booking.getId());
+        }
         intent.putExtra("payment_url", payment.getPaymentUrl());
         intent.putExtra("amount", payment.getAmount() != null ? payment.getAmount() : 0);
         intent.putExtra("tax_amount", payment.getTaxAmount() != null ? payment.getTaxAmount() : 0);

@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 public class TokenManager {
     private static final String PREFS_NAME = "FutsalMatePrefs";
     private static final String KEY_TOKEN = "auth_token";
+    private static final String KEY_FCM_TOKEN = "fcm_token";
     private static final String KEY_USER_EMAIL = "user_email";
+    private static final String KEY_USER_NAME = "user_name";
+    private static final String KEY_USER_AVATAR = "user_avatar";
     private static final String KEY_USER_ROLE = "user_role";
     private static final String KEY_VENDOR_ID = "vendor_id";
     private static final String KEY_VENDOR_NAME = "vendor_name";
@@ -34,6 +37,15 @@ public class TokenManager {
     public String getToken() {
         return sharedPreferences.getString(KEY_TOKEN, null);
     }
+
+    public void saveFcmToken(String token) {
+        editor.putString(KEY_FCM_TOKEN, token);
+        editor.apply();
+    }
+
+    public String getFcmToken() {
+        return sharedPreferences.getString(KEY_FCM_TOKEN, null);
+    }
     
     public void saveUserEmail(String email) {
         editor.putString(KEY_USER_EMAIL, email);
@@ -42,6 +54,16 @@ public class TokenManager {
     
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, null);
+    }
+
+    public void saveUserName(String name) {
+        editor.putString(KEY_USER_NAME, name);
+        editor.apply();
+    }
+
+    public void saveUserAvatar(String avatarPath) {
+        editor.putString(KEY_USER_AVATAR, avatarPath);
+        editor.apply();
     }
 
     public void saveUserRole(String role) {
@@ -109,7 +131,10 @@ public class TokenManager {
     
     public void clearToken() {
         editor.remove(KEY_TOKEN);
+        editor.remove(KEY_FCM_TOKEN);
         editor.remove(KEY_USER_EMAIL);
+        editor.remove(KEY_USER_NAME);
+        editor.remove(KEY_USER_AVATAR);
         editor.remove(KEY_USER_ROLE);
         editor.remove(KEY_VENDOR_ID);
         editor.remove(KEY_VENDOR_NAME);
@@ -130,5 +155,13 @@ public class TokenManager {
             return "Bearer " + token;
         }
         return null;
+    }
+
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USER_NAME, null);
+    }
+
+    public String getUserAvatar() {
+        return sharedPreferences.getString(KEY_USER_AVATAR, null);
     }
 }

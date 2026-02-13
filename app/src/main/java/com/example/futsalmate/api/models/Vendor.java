@@ -12,6 +12,9 @@ public class Vendor {
     @SerializedName("owner_name")
     private String ownerName;
 
+    @SerializedName("profile_photo")
+    private String profilePhoto;
+
     public int getId() {
         return id;
     }
@@ -58,5 +61,13 @@ public class Vendor {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }

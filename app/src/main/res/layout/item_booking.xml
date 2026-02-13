@@ -23,6 +23,7 @@
                 android:id="@+id/ivBookingCourt"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_court_one"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +93,7 @@
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_bookings"
                     app:tint="@color/text_grey" />
 

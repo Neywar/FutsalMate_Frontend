@@ -2,6 +2,9 @@ package com.example.futsalmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +47,24 @@ public class CourtsActivity extends AppCompatActivity {
         ImageButton btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
+        }
+
+        // Search by court name only
+        EditText etSearch = findViewById(R.id.etSearchCourts);
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String query = s != null ? s.toString().trim().toLowerCase() : "";
+                    applySearchFilter(query);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
         }
 
         loadCourts();
@@ -101,6 +122,20 @@ public class CourtsActivity extends AppCompatActivity {
                         Toast.makeText(CourtsActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void applySearchFilter(String query) {
+        if (query == null) query = "";
+        query = query.toLowerCase();
+
+        List<Court> filtered = new ArrayList<>();
+        for (Court court : courts) {
+            String name = court.getCourtName() != null ? court.getCourtName().toLowerCase() : "";
+            if (name.contains(query)) {
+                filtered.add(court);
+            }
+        }
+        adapter.setCourts(filtered);
     }
 
     private void openCourtDetails(Court court) {

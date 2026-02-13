@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
@@ -82,7 +84,15 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            performLogin(email, password);
+            // Get FCM token before login so backend receives it immediately
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        String fcmToken = null;
+                        if (task.isSuccessful()) {
+                            fcmToken = task.getResult();
+                        }
+                        performLogin(email, password, fcmToken);
+                    });
         });
 
         // Navigate to Sign Up
@@ -103,10 +113,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void performLogin(String email, String password) {
+    private void performLogin(String email, String password, String fcmToken) {
         btnLogin.setEnabled(false);
         
-        LoginRequest loginRequest = new LoginRequest(email, password, false);
+        LoginRequest loginRequest = new LoginRequest(email, password, false, fcmToken);
         Call<ApiResponse<User>> call = RetrofitClient.getInstance().getApiService().login(loginRequest);
         
         call.enqueue(new Callback<ApiResponse<User>>() {
@@ -119,6 +129,20 @@ public class LoginActivity extends AppCompatActivity {
                         tokenManager.saveToken(apiResponse.getToken());
                         tokenManager.saveUserEmail(email);
                         tokenManager.saveUserRole(TokenManager.ROLE_PLAYER);
+
+                        // Register FCM token after successful login
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(task -> {
+                                    if (!task.isSuccessful()) {
+                                        return;
+                                    }
+                                    String fcmToken = task.getResult();
+                                    if (fcmToken == null || fcmToken.isEmpty()) {
+                                        return;
+                                    }
+                                    tokenManager.saveFcmToken(fcmToken);
+                                    // Backend will read and store this FCM token via a separate call if needed.
+                                });
 
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();

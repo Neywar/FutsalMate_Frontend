@@ -42,6 +42,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -154,6 +155,30 @@ public class AddCourtActivity extends AppCompatActivity {
         
         currentLatitude = editingCourt.getLatitude();
         currentLongitude = editingCourt.getLongitude();
+
+        // Prefill opening and closing times from court (stored as HH:00:00)
+        String openingTime = editingCourt.getOpeningTime();
+        String closingTime = editingCourt.getClosingTime();
+        java.text.SimpleDateFormat dbFormat = new java.text.SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        java.text.SimpleDateFormat uiFormat = new java.text.SimpleDateFormat("h a", Locale.getDefault());
+
+        try {
+            if (openingTime != null && !openingTime.isEmpty() && !openingTime.equals("null")) {
+                java.util.Date openDate = dbFormat.parse(openingTime);
+                if (openDate != null) {
+                    tvStartTime.setText(uiFormat.format(openDate));
+                }
+            }
+        } catch (Exception ignored) {}
+
+        try {
+            if (closingTime != null && !closingTime.isEmpty() && !closingTime.equals("null")) {
+                java.util.Date closeDate = dbFormat.parse(closingTime);
+                if (closeDate != null) {
+                    tvEndTime.setText(uiFormat.format(closeDate));
+                }
+            }
+        } catch (Exception ignored) {}
         
         // Parse and select facilities
         List<String> facilities = editingCourt.getFacilities();
@@ -161,6 +186,18 @@ public class AddCourtActivity extends AppCompatActivity {
             for (String facility : facilities) {
                 facility = facility.trim().replace("\"", "");
                 selectFacilityChip(facility);
+            }
+        }
+
+        // Prefill existing images (show first one or two as previews)
+        String imageData = editingCourt.getImage();
+        if (imageData != null && !imageData.isEmpty()) {
+            String[] imageUrls = extractImageUrls(imageData);
+            if (imageUrls.length > 0) {
+                loadImageIntoPreview(imageUrls[0], ivPreview1);
+            }
+            if (imageUrls.length > 1) {
+                loadImageIntoPreview(imageUrls[1], ivPreview2);
             }
         }
     }
@@ -330,15 +367,20 @@ public class AddCourtActivity extends AppCompatActivity {
     }
 
     private void displayPhoto(Bitmap bitmap) {
+        if (courtImages.size() >= 8) {
+            Toast.makeText(this, "You can upload up to 8 photos only.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         courtImages.add(bitmap);
-        if (currentPhotoSlot == 1) {
+
+        // Show in first two preview slots, but still upload all selected images
+        if (ivPreview1.getDrawable() == null) {
             ivPreview1.setImageBitmap(bitmap);
             ivPreview1.setVisibility(View.VISIBLE);
-            currentPhotoSlot = 2;
-        } else {
+        } else if (ivPreview2.getDrawable() == null) {
             ivPreview2.setImageBitmap(bitmap);
             ivPreview2.setVisibility(View.VISIBLE);
-            currentPhotoSlot = 1;
         }
     }
 
@@ -448,14 +490,21 @@ public class AddCourtActivity extends AppCompatActivity {
         RequestBody descriptionBody = RequestBody.create(MediaType.parse("text/plain"), description != null ? description : "");
         RequestBody statusBody = RequestBody.create(MediaType.parse("text/plain"), status);
         
-        // Get opening and closing times in "HH:MM AM/PM" format
-        String openingTime = tvStartTime.getText().toString();
-        String closingTime = tvEndTime.getText().toString();
-        
-        RequestBody openingTimeBody = RequestBody.create(MediaType.parse("text/plain"), 
-                !openingTime.equals("Start Time") ? openingTime : "");
-        RequestBody closingTimeBody = RequestBody.create(MediaType.parse("text/plain"), 
-                !closingTime.equals("End Time") ? closingTime : "");
+        // Normalize opening/closing times to server format "g A" (e.g., "1 PM").
+        String openingTime = normalizeTimeToApiFormat(tvStartTime.getText().toString());
+        String closingTime = normalizeTimeToApiFormat(tvEndTime.getText().toString());
+
+        if (openingTime == null || closingTime == null) {
+            btnPublish.setEnabled(true);
+            if (progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+            Toast.makeText(this, "Please select valid opening and closing times", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        RequestBody openingTimeBody = RequestBody.create(MediaType.parse("text/plain"), openingTime);
+        RequestBody closingTimeBody = RequestBody.create(MediaType.parse("text/plain"), closingTime);
         
         // Convert facilities list to JSON string
         StringBuilder facilitiesJson = new StringBuilder("[");
@@ -608,22 +657,79 @@ public class AddCourtActivity extends AppCompatActivity {
         });
     }
     
-    private String extractFirstImageUrl(String imageJson) {
+    private String[] extractImageUrls(String imageJson) {
         try {
-            // Remove outer quotes and parse JSON array
             String cleaned = imageJson.replace("\\\\", "\\").replace("\\/", "/");
             if (cleaned.startsWith("[\"")) {
                 cleaned = cleaned.substring(2, cleaned.length() - 2);
                 String[] images = cleaned.split("\",\"");
-                if (images.length > 0) {
-                    String imagePath = images[0].replace("\\", "").replace("\"", "");
-                    return "https://futsalmateapp.sameem.in.net" + imagePath;
+                for (int i = 0; i < images.length; i++) {
+                    String path = images[i].replace("\\", "").replace("\"", "");
+                    images[i] = "https://futsalmateapp.sameem.in.net" + path;
                 }
+                return images;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new String[0];
+    }
+
+    private String normalizeTimeToApiFormat(String timeText) {
+        if (timeText == null) {
+            return null;
+        }
+        String trimmed = timeText.trim();
+        if (trimmed.isEmpty() || "Start Time".equalsIgnoreCase(trimmed) || "End Time".equalsIgnoreCase(trimmed)) {
+            return null;
+        }
+
+        String[] patterns = {
+                "h a",
+                "h:mm a",
+                "hh:mm a",
+                "HH:mm",
+                "HH:mm:ss"
+        };
+
+        for (String pattern : patterns) {
+            try {
+                java.text.SimpleDateFormat inputFormat = new java.text.SimpleDateFormat(pattern, Locale.US);
+                inputFormat.setLenient(false);
+                java.util.Date parsed = inputFormat.parse(trimmed);
+                if (parsed != null) {
+                    java.text.SimpleDateFormat outputFormat = new java.text.SimpleDateFormat("h a", Locale.US);
+                    return outputFormat.format(parsed).toUpperCase(Locale.US);
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
         return null;
+    }
+
+    private String extractFirstImageUrl(String imageJson) {
+        String[] urls = extractImageUrls(imageJson);
+        return urls.length > 0 ? urls[0] : null;
+    }
+
+    private void loadImageIntoPreview(String urlString, ImageView target) {
+        if (target == null) return;
+        new Thread(() -> {
+            try {
+                URL url = new URL(urlString);
+                java.io.InputStream inputStream = url.openStream();
+                final android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(inputStream);
+                target.post(() -> {
+                    if (bitmap != null) {
+                        target.setImageBitmap(bitmap);
+                        target.setVisibility(View.VISIBLE);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
     
     private File createImageFile(Bitmap bitmap, String filename) throws IOException {

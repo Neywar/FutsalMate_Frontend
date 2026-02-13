@@ -9,6 +9,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.futsalmate.api.RetrofitClient;
+import com.example.futsalmate.api.models.ApiResponse;
+import com.example.futsalmate.utils.TokenManager;
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private boolean isCurrentPasswordVisible = false;
@@ -28,6 +37,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         ImageView ivToggleNew = findViewById(R.id.ivToggleNew);
         ImageView ivToggleConfirm = findViewById(R.id.ivToggleConfirm);
         Button btnUpdatePassword = findViewById(R.id.btnUpdatePassword);
+
+        TokenManager tokenManager = new TokenManager(this);
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -66,8 +77,44 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 return;
             }
 
-            Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show();
-            finish();
+            String token = tokenManager.getAuthHeader();
+            if (token == null) {
+                Toast.makeText(this, "Please login again.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            JsonObject body = new JsonObject();
+            body.addProperty("current_password", currentPw);
+            body.addProperty("new_password", newPw);
+            body.addProperty("new_password_confirmation", confirmPw);
+
+            btnUpdatePassword.setEnabled(false);
+
+            RetrofitClient.getInstance().getApiService()
+                    .changePassword(token, body)
+                    .enqueue(new Callback<ApiResponse<Void>>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                            btnUpdatePassword.setEnabled(true);
+                            if (response.isSuccessful() && response.body() != null) {
+                                ApiResponse<Void> api = response.body();
+                                if ("success".equalsIgnoreCase(api.getStatus())) {
+                                    Toast.makeText(ChangePasswordActivity.this, api.getMessage() != null ? api.getMessage() : "Password changed successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Toast.makeText(ChangePasswordActivity.this, api.getMessage() != null ? api.getMessage() : "Failed to change password", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(ChangePasswordActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                            btnUpdatePassword.setEnabled(true);
+                            Toast.makeText(ChangePasswordActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
     }
 

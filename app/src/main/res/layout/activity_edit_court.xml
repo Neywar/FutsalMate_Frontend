@@ -78,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
+                android:autofillHints=""
                 android:background="@drawable/bg_vendor_input"
                 android:hint="e.g. Pro Arena Pitch 1"
                 android:paddingHorizontal="16dp"
@@ -104,6 +105,7 @@
                     android:id="@+id/etEditCost"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:autofillHints=""
                     android:background="@drawable/bg_vendor_input"
                     android:hint="0.00"
                     android:inputType="numberDecimal"
@@ -363,6 +365,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginTop="12dp"
+                android:autofillHints=""
                 android:background="@drawable/bg_vendor_input"
                 android:gravity="top|start"
                 android:hint="Describe your court..."
@@ -370,6 +373,46 @@
                 android:textColor="@color/white"
                 android:textColorHint="#4B5563"
                 android:textSize="14sp" />
+
+            <!-- Status Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:letterSpacing="0.05"
+                android:text="COURT STATUS"
+                android:textColor="#FACC15"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:boxBackgroundColor="#111827"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:autofillHints=""
+                    android:background="@null"
+                    android:hint="Select Status"
+                    android:inputType="none"
+                    android:paddingHorizontal="16dp"
+                    android:text="Active"
+                    android:textColor="@color/white"
+                    android:textColorHint="#4B5563"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Update Button -->
             <com.google.android.material.button.MaterialButton
@@ -383,29 +426,10 @@
                 android:textColor="#000000"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"
-                app:icon="@drawable/ic_edit"
                 app:iconGravity="textStart"
                 app:iconPadding="12dp"
                 app:iconTint="#000000" />
 
-            <!-- Delete Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDeleteCourt"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:text="DELETE COURT"
-                android:textAllCaps="true"
-                android:textColor="#EF4444"
-                android:textStyle="bold"
-                app:cornerRadius="16dp"
-                app:strokeColor="#1F2937"
-                app:icon="@drawable/ic_delete"
-                app:iconGravity="textStart"
-                app:iconPadding="12dp"
-                app:iconTint="#EF4444" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

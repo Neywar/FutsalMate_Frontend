@@ -19,6 +19,9 @@ public class Booking {
 
     private String payment;
 
+    @SerializedName("notes")
+    private String notes;
+
     @SerializedName("customer_name")
     private String customerName;
 
@@ -82,6 +85,14 @@ public class Booking {
 
     public void setPayment(String payment) {
         this.payment = payment;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getCustomerName() {

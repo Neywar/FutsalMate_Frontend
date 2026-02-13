@@ -103,15 +103,17 @@ public class PastBookingsTableAdapter extends RecyclerView.Adapter<PastBookingsT
             trimmed = trimmed.substring(0, dotIndex);
         }
         DateTimeFormatter[] formatters = new DateTimeFormatter[] {
-                DateTimeFormatter.ofPattern("HH:mm:ss"),
-                DateTimeFormatter.ofPattern("HH:mm"),
-                DateTimeFormatter.ofPattern("H:mm:ss"),
-                DateTimeFormatter.ofPattern("H:mm")
+            DateTimeFormatter.ofPattern("HH:mm:ss"),
+            DateTimeFormatter.ofPattern("HH:mm"),
+            DateTimeFormatter.ofPattern("H:mm:ss"),
+            DateTimeFormatter.ofPattern("H:mm"),
+            DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()),
+            DateTimeFormatter.ofPattern("h:mm a", Locale.getDefault())
         };
         for (DateTimeFormatter formatter : formatters) {
             try {
                 LocalTime parsed = LocalTime.parse(trimmed, formatter);
-                return parsed.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()));
+            return parsed.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()));
             } catch (Exception ignored) {
             }
         }

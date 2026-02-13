@@ -2,12 +2,14 @@ package com.example.futsalmate;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -22,6 +24,7 @@ import com.example.futsalmate.api.RetrofitClient;
 import com.example.futsalmate.api.models.ApiResponse;
 import com.example.futsalmate.api.models.Booking;
 import com.example.futsalmate.api.models.VendorBookingsData;
+import com.example.futsalmate.api.models.ViewBookingResponse;
 import com.example.futsalmate.utils.TokenManager;
 
 import retrofit2.Call;
@@ -110,6 +113,15 @@ public class VendorBookingsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh bookings whenever we return to this fragment so that
+        // payment_status (and other fields) reflect the latest changes
+        // made from VendorBookingDetailsActivity.
+        loadVendorBookings();
+    }
+
     private void loadVendorBookings() {
         String token = tokenManager.getAuthHeader();
         if (token == null) {
@@ -166,16 +178,21 @@ public class VendorBookingsFragment extends Fragment {
     }
 
     private void buildDateFilters() {
-        if (filtersContainer == null) return;
+        if (!isAdded() || filtersContainer == null) return;
         filtersContainer.removeAllViews();
 
         addFilterChip("Today");
         addFilterChip("Upcoming");
         addFilterChip("All");
+        addFilterChip("Manual");
     }
 
     private void addFilterChip(String label) {
-        TextView chip = new TextView(requireContext());
+        if (!isAdded()) return;
+        android.content.Context ctx = getContext();
+        if (ctx == null) return;
+
+        TextView chip = new TextView(ctx);
         chip.setText(label);
         chip.setPadding(40, 20, 40, 20);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -197,18 +214,20 @@ public class VendorBookingsFragment extends Fragment {
     }
 
     private void refreshFilterStyles() {
-        if (filtersContainer == null) return;
+        if (!isAdded() || filtersContainer == null) return;
+        android.content.Context ctx = getContext();
+        if (ctx == null) return;
         for (int i = 0; i < filtersContainer.getChildCount(); i++) {
             View child = filtersContainer.getChildAt(i);
             if (child instanceof TextView) {
                 TextView chip = (TextView) child;
                 boolean selected = chip.getText().toString().equals(selectedDateFilter);
                 if (selected) {
-                    chip.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_vendor_button));
+                    chip.setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_vendor_button));
                     chip.setBackgroundTintList(null);
                     chip.setTextColor(Color.parseColor("#000000"));
                 } else {
-                    chip.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_vendor_card));
+                    chip.setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_vendor_card));
                     chip.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#1F2937")));
                     chip.setTextColor(Color.parseColor("#9CA3AF"));
                 }
@@ -228,8 +247,16 @@ public class VendorBookingsFragment extends Fragment {
                 continue;
             }
 
-            if (!matchesDateFilter(booking.getDate(), selectedDate)) {
-                continue;
+            // Manual filter: show only bookings where user_id is null
+            if ("Manual".equals(selectedDateFilter)) {
+                if (booking.getUser() != null) {
+                    continue;
+                }
+            } else {
+                // For other filters, apply date filtering
+                if (!matchesDateFilter(booking.getDate(), selectedDate)) {
+                    continue;
+                }
             }
 
             if (!query.isEmpty()) {
@@ -268,6 +295,7 @@ public class VendorBookingsFragment extends Fragment {
             }
         }
 
+        // Manual filter is handled separately in applyFilters()
         return false;
     }
 
@@ -294,17 +322,23 @@ public class VendorBookingsFragment extends Fragment {
             TextView tvUser = row.findViewById(R.id.tvBookingUser);
             TextView tvPhone = row.findViewById(R.id.tvBookingPhone);
             TextView tvCourt = row.findViewById(R.id.tvBookingCourt);
-            TextView tvStatus = row.findViewById(R.id.tvBookingStatus);
+            View bookingStatusContainer = row.findViewById(R.id.bookingStatusContainer);
+            ImageView ivBookingStatus = row.findViewById(R.id.ivBookingStatus);
+            TextView tvPaymentStatus = row.findViewById(R.id.tvBookingPaymentStatus);
             ImageButton btnBookingActions = row.findViewById(R.id.btnBookingActions);
 
-            tvTime.setText(formatTimeRange(booking.getStartTime(), booking.getEndTime()));
+            tvTime.setText(formatDateTimeRange(booking));
             tvUser.setText(getBookingName(booking));
             tvPhone.setText(getBookingPhone(booking));
             tvCourt.setText(booking.getCourt() != null ? booking.getCourt().getCourtName() : "-");
 
-            String statusText = getStatusText(booking);
-            tvStatus.setText(statusText);
-            applyStatusStyle(tvStatus, statusText);
+            applyBookingStatusIcon(bookingStatusContainer, ivBookingStatus, booking != null ? booking.getStatus() : null);
+
+            if (tvPaymentStatus != null) {
+                String paymentStatusText = getPaymentStatusText(booking);
+                tvPaymentStatus.setText(paymentStatusText);
+                applyStatusStyle(tvPaymentStatus, paymentStatusText);
+            }
 
             if (btnBookingActions != null) {
                 boolean showActions = shouldShowActions(booking);
@@ -315,6 +349,8 @@ public class VendorBookingsFragment extends Fragment {
                     btnBookingActions.setOnClickListener(null);
                 }
             }
+
+            row.setOnClickListener(v -> openBookingDetails(booking));
 
             bookingsList.addView(row);
 
@@ -328,6 +364,30 @@ public class VendorBookingsFragment extends Fragment {
                 bookingsList.addView(divider);
             }
         }
+    }
+
+    private void openBookingDetails(Booking booking) {
+        if (booking == null || getActivity() == null) {
+            return;
+        }
+        Intent intent = new Intent(getActivity(), VendorBookingDetailsActivity.class);
+        intent.putExtra("booking_id", booking.getId());
+        intent.putExtra("booking_date", booking.getDate());
+        intent.putExtra("booking_start", booking.getStartTime());
+        intent.putExtra("booking_end", booking.getEndTime());
+        intent.putExtra("booking_status", booking.getStatus());
+        intent.putExtra("booking_payment_status", booking.getPaymentStatus());
+        intent.putExtra("booking_payment_method", booking.getPayment());
+        intent.putExtra("booking_notes", booking.getNotes());
+        intent.putExtra("customer_name", getBookingName(booking));
+        intent.putExtra("customer_phone", getBookingPhone(booking));
+        if (booking.getCourt() != null) {
+            intent.putExtra("court_name", booking.getCourt().getCourtName());
+            intent.putExtra("court_location", booking.getCourt().getLocation());
+            intent.putExtra("court_price", booking.getCourt().getPrice());
+            intent.putExtra("court_image", booking.getCourt().getImage());
+        }
+        startActivity(intent);
     }
 
     private String getBookingName(Booking booking) {
@@ -350,12 +410,50 @@ public class VendorBookingsFragment extends Fragment {
         return "-";
     }
 
-    private String getStatusText(Booking booking) {
-        if (booking.getPaymentStatus() != null && !booking.getPaymentStatus().isEmpty()) {
-            return booking.getPaymentStatus().toUpperCase(Locale.US);
-        }
-        if (booking.getStatus() != null) {
+    private String getBookingStatusText(Booking booking) {
+        if (booking.getStatus() != null && !booking.getStatus().trim().isEmpty()) {
             return booking.getStatus().toUpperCase(Locale.US);
+        }
+        return "PENDING";
+    }
+
+    private void applyBookingStatusIcon(@Nullable View container, @Nullable ImageView icon, @Nullable String rawStatus) {
+        if (container == null || icon == null) return;
+
+        String status = rawStatus != null ? rawStatus.trim().toUpperCase(Locale.US) : "PENDING";
+        if (status.isEmpty()) status = "PENDING";
+
+        int iconRes = R.drawable.ic_hourglass;
+        int bgColor = Color.parseColor("#40FACC15"); // default: pending (yellow, 25% alpha)
+        int fgColor = Color.parseColor("#FACC15");
+
+        if (status.contains("CONFIRM")) {
+            iconRes = R.drawable.ic_check;
+            bgColor = Color.parseColor("#4022C55E");
+            fgColor = Color.parseColor("#22C55E");
+        } else if (status.contains("PEND")) {
+            iconRes = R.drawable.ic_hourglass;
+            bgColor = Color.parseColor("#40FACC15");
+            fgColor = Color.parseColor("#FACC15");
+        } else if (status.contains("REJECT")) {
+            iconRes = R.drawable.ic_close;
+            bgColor = Color.parseColor("#40EF4444");
+            fgColor = Color.parseColor("#EF4444");
+        } else if (status.contains("CANCEL")) {
+            iconRes = R.drawable.ic_close;
+            bgColor = Color.parseColor("#401E293B");
+            fgColor = requireContext().getColor(R.color.text_grey);
+        }
+
+        icon.setImageResource(iconRes);
+        icon.setImageTintList(ColorStateList.valueOf(fgColor));
+        container.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+        icon.setContentDescription("Booking status: " + status);
+    }
+
+    private String getPaymentStatusText(Booking booking) {
+        if (booking.getPaymentStatus() != null && !booking.getPaymentStatus().trim().isEmpty()) {
+            return booking.getPaymentStatus().toUpperCase(Locale.US);
         }
         return "PENDING";
     }
@@ -371,16 +469,10 @@ public class VendorBookingsFragment extends Fragment {
         popup.getMenuInflater().inflate(R.menu.vendor_booking_action_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_approve) {
-                booking.setPaymentStatus("PAID");
-                booking.setStatus("CONFIRMED");
-                applyFilters();
-                Toast.makeText(getContext(), "Booking approved", Toast.LENGTH_SHORT).show();
+                vendorApproveBooking(booking);
                 return true;
             } else if (item.getItemId() == R.id.action_reject) {
-                booking.setPaymentStatus("REJECTED");
-                booking.setStatus("REJECTED");
-                applyFilters();
-                Toast.makeText(getContext(), "Booking rejected", Toast.LENGTH_SHORT).show();
+                vendorRejectBooking(booking);
                 return true;
             }
             return false;
@@ -388,18 +480,107 @@ public class VendorBookingsFragment extends Fragment {
         popup.show();
     }
 
+    private void vendorApproveBooking(Booking booking) {
+        if (booking == null || booking.getId() <= 0) {
+            Toast.makeText(getContext(), "Invalid booking", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(getContext(), "Please login again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RetrofitClient.getInstance().getApiService().vendorApproveBooking(token, booking.getId())
+                .enqueue(new Callback<ViewBookingResponse>() {
+                    @Override
+                    public void onResponse(Call<ViewBookingResponse> call, Response<ViewBookingResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Toast.makeText(getContext(), response.body() != null ? response.body().getMessage() : "Failed to approve booking", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ViewBookingResponse body = response.body();
+                        if ("success".equalsIgnoreCase(body.getStatus()) && body.getBooking() != null) {
+                            int idx = indexOfBookingById(body.getBooking().getId());
+                            if (idx >= 0) {
+                                allBookings.set(idx, body.getBooking());
+                            }
+                            applyFilters();
+                            Toast.makeText(getContext(), "Booking approved", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), body.getMessage() != null ? body.getMessage() : "Failed to approve", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ViewBookingResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void vendorRejectBooking(Booking booking) {
+        if (booking == null || booking.getId() <= 0) {
+            Toast.makeText(getContext(), "Invalid booking", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String token = tokenManager.getAuthHeader();
+        if (token == null) {
+            Toast.makeText(getContext(), "Please login again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RetrofitClient.getInstance().getApiService().vendorRejectBooking(token, booking.getId())
+                .enqueue(new Callback<ViewBookingResponse>() {
+                    @Override
+                    public void onResponse(Call<ViewBookingResponse> call, Response<ViewBookingResponse> response) {
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Toast.makeText(getContext(), response.body() != null ? response.body().getMessage() : "Failed to reject booking", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ViewBookingResponse body = response.body();
+                        if ("success".equalsIgnoreCase(body.getStatus()) && body.getBooking() != null) {
+                            int idx = indexOfBookingById(body.getBooking().getId());
+                            if (idx >= 0) {
+                                allBookings.set(idx, body.getBooking());
+                            }
+                            applyFilters();
+                            Toast.makeText(getContext(), "Booking rejected", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), body.getMessage() != null ? body.getMessage() : "Failed to reject", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ViewBookingResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private int indexOfBookingById(int id) {
+        for (int i = 0; i < allBookings.size(); i++) {
+            if (allBookings.get(i).getId() == id) return i;
+        }
+        return -1;
+    }
+
     private void applyStatusStyle(TextView tvStatus, String status) {
-        if (status.contains("PAID")) {
-            tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#4010B981")));
+        if (status == null) {
+            status = "";
+        }
+        String upper = status.toUpperCase(Locale.US);
+
+        // PAID -> green, UNPAID -> red, PENDING/others -> yellow
+        if (upper.contains("PAID") && !upper.contains("UNPAID")) {
+            // PAID
+            tvStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4010B981")));
             tvStatus.setTextColor(Color.parseColor("#10B981"));
-        } else if (status.contains("CONFIRMED")) {
-            tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#4022C55E")));
-            tvStatus.setTextColor(Color.parseColor("#22C55E"));
-        } else if (status.contains("REJECT")) {
-            tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#40EF4444")));
+        } else if (upper.contains("UNPAID")) {
+            // UNPAID
+            tvStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#40EF4444")));
             tvStatus.setTextColor(Color.parseColor("#EF4444"));
         } else {
-            tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#40FACC15")));
+            // PENDING or anything else -> yellow
+            tvStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#40FACC15")));
             tvStatus.setTextColor(Color.parseColor("#FACC15"));
         }
     }
@@ -426,6 +607,29 @@ public class VendorBookingsFragment extends Fragment {
             return Double.parseDouble(cleaned);
         } catch (NumberFormatException e) {
             return 0.0;
+        }
+    }
+
+    private String formatDateTimeRange(Booking booking) {
+        if (booking == null) {
+            return "-";
+        }
+
+        String date = booking.getDate();
+        String timeRange = formatTimeRange(booking.getStartTime(), booking.getEndTime());
+
+        if (date == null || date.isEmpty()) {
+            return timeRange != null ? timeRange : "-";
+        }
+
+        try {
+            java.text.SimpleDateFormat input = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            java.text.SimpleDateFormat output = new java.text.SimpleDateFormat("MMM dd", Locale.US);
+            java.util.Date parsed = input.parse(date);
+            String formattedDate = parsed != null ? output.format(parsed) : date;
+            return formattedDate + " • " + timeRange;
+        } catch (Exception e) {
+            return date + " • " + timeRange;
         }
     }
 

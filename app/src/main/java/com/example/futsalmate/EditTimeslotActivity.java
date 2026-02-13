@@ -246,52 +246,15 @@ public class EditTimeslotActivity extends AppCompatActivity {
     }
 
     private void loadCourtOperatingHours() {
-        if (openingTime != null && closingTime != null) {
-            fetchBookedTimes(selectedDate != null ? selectedDate : LocalDate.now());
-            return;
-        }
-        if (courtId <= 0) {
-            Toast.makeText(this, "Missing court details", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String token = tokenManager.getAuthHeader();
-        if (token != null) {
-            RetrofitClient.getInstance().getApiService().showCourtDetail(token, courtId)
-                    .enqueue(new Callback<CourtDetailResponse>() {
-                        @Override
-                        public void onResponse(Call<CourtDetailResponse> call, Response<CourtDetailResponse> response) {
-                            if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
-                                Toast.makeText(EditTimeslotActivity.this, "Failed to load operating hours", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            applyOperatingHours(response.body().getData());
-                        }
-
-                        @Override
-                        public void onFailure(Call<CourtDetailResponse> call, Throwable t) {
-                            Toast.makeText(EditTimeslotActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        // We now rely on openingTime/closingTime passed via Intent (from booking details).
+        // If they are missing, we can't safely construct slots, so just warn and return.
+        if (openingTime == null || closingTime == null) {
+            Toast.makeText(this, "Missing court operating hours.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        RetrofitClient.getInstance().getApiService().showCourtDetailPublic(courtId)
-                .enqueue(new Callback<CourtDetailResponse>() {
-                    @Override
-                    public void onResponse(Call<CourtDetailResponse> call, Response<CourtDetailResponse> response) {
-                        if (!response.isSuccessful() || response.body() == null || response.body().getData() == null) {
-                            Toast.makeText(EditTimeslotActivity.this, "Failed to load operating hours", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        applyOperatingHours(response.body().getData());
-                    }
-
-                    @Override
-                    public void onFailure(Call<CourtDetailResponse> call, Throwable t) {
-                        Toast.makeText(EditTimeslotActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Only fetch booked times for the selected date; no need to call /court-detail.
+        fetchBookedTimes(selectedDate != null ? selectedDate : LocalDate.now());
     }
 
     private void applyOperatingHours(CourtDetail detail) {
@@ -379,7 +342,7 @@ public class EditTimeslotActivity extends AppCompatActivity {
     }
 
     private String formatSlot(LocalTime start, LocalTime end) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault());
         return start.format(formatter) + " - " + end.format(formatter);
     }
 
@@ -466,8 +429,11 @@ public class EditTimeslotActivity extends AppCompatActivity {
             return courtPrice;
         }
         try {
-            LocalTime start = LocalTime.parse(selectedStartTime, DateTimeFormatter.ofPattern("HH:mm"));
-            LocalTime end = LocalTime.parse(selectedEndTime, DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime start = parseLocalTime(selectedStartTime);
+            LocalTime end = parseLocalTime(selectedEndTime);
+            if (start == null || end == null) {
+                return courtPrice;
+            }
             long minutes = Duration.between(start, end).toMinutes();
             if (minutes <= 0) {
                 return courtPrice;
@@ -537,11 +503,11 @@ public class EditTimeslotActivity extends AppCompatActivity {
         if (localTime == null) {
             return time;
         }
-        return localTime.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()));
+        return localTime.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()));
     }
 
     private String formatLocalTime(LocalTime time) {
         if (time == null) return "";
-        return time.format(DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault()));
+        return time.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()));
     }
 }

@@ -16,6 +16,9 @@ public class User {
     
     @SerializedName("email_verified_at")
     private String emailVerifiedAt;
+
+    @SerializedName("profile_photo_url")
+    private String profilePhotoUrl;
     
     @SerializedName("created_at")
     private String createdAt;
@@ -70,6 +73,14 @@ public class User {
 
     public void setEmailVerifiedAt(String emailVerifiedAt) {
         this.emailVerifiedAt = emailVerifiedAt;
+    }
+
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 
     public String getCreatedAt() {

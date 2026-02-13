@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/bg_vendor_card"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvCourtLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PITCH 1"
+        android:textColor="#4B5563"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCourtStatusBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_vendor_input"
+        android:backgroundTint="#111827"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="2dp"
+        android:text="AVAILABLE"
+        android:textColor="#FACC15"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Occupied: label + player name -->
+    <TextView
+        android:id="@+id/lblStatusRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="CURRENT PLAYER"
+        android:textColor="#4B5563"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCourtLabel" />
+
+    <TextView
+        android:id="@+id/tvStatusValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="—"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblStatusRow" />
+
+    <LinearLayout
+        android:id="@+id/llStatusExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStatusValue">
+
+        <ImageView
+            android:id="@+id/iconStatusExtra"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_check"
+            app:tint="#4B5563" />
+
+        <TextView
+            android:id="@+id/tvStatusExtra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Open Slot"
+            android:textColor="#4B5563"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

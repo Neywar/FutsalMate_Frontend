@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -21,18 +21,18 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="320dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <ImageView
-                    android:id="@+id/ivCourtHeader"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpCourtImages"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_court_one" />
+                    android:layout_height="match_parent" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="top"
                     android:background="@drawable/bg_splash_gradient"
                     android:rotation="180" />
@@ -50,34 +50,43 @@
                         android:backgroundTint="#40000000"
                         android:src="@drawable/ic_arrow_back"
                         app:tint="@color/white" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:orientation="horizontal"/>
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tvPhotoCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:layout_margin="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginEnd="12dp"
                     android:background="@drawable/bg_otp_box_inactive"
                     android:backgroundTint="#80000000"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
-                    android:text="1/8 PHOTOS"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </FrameLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Courts Details"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -85,7 +94,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -105,7 +114,7 @@
                     android:id="@+id/tvCourtTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ProKick Arena"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -129,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="Downtown Sports Complex, Sector 4"
+                        android:text=""
                         android:textColor="@color/text_grey"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -153,7 +162,6 @@
                         android:id="@+id/ivManager"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/ic_1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -178,7 +186,7 @@
                             android:id="@+id/tvManagerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Alex Rodriguez"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -220,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:lineSpacingExtra="4dp"
-                android:text="Experience world-class futsal at ProKick Arena. Featuring high-grade FIFA-approved synthetic turf, professional stadium lighting, and climate-controlled indoor environment..."
+                android:text=""
                 android:textColor="@color/text_grey"
                 android:textSize="13sp" />
 
@@ -246,7 +254,7 @@
                     android:id="@+id/tvPriceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rs.1200"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -269,31 +277,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Stats -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_bg"
-                    app:cardCornerRadius="12dp"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_bg"
-                    app:cardCornerRadius="12dp"/>
-            </LinearLayout>
-
-            <!-- Amenities -->
+            <!-- Facilities -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

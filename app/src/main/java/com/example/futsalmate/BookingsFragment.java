@@ -284,6 +284,11 @@ public class BookingsFragment extends Fragment {
         }
         Intent intent = new Intent(getActivity(), BookedDetailsActivity.class);
         intent.putExtra("booking_id", booking.getId());
+        if (booking.getCourt() != null) {
+            intent.putExtra("court_id", booking.getCourt().getId());
+            intent.putExtra("opening_time", booking.getCourt().getOpeningTime());
+            intent.putExtra("closing_time", booking.getCourt().getClosingTime());
+        }
         intent.putExtra("booking_date", booking.getDate());
         intent.putExtra("booking_start", booking.getStartTime());
         intent.putExtra("booking_end", booking.getEndTime());
@@ -293,6 +298,7 @@ public class BookingsFragment extends Fragment {
             intent.putExtra("court_name", booking.getCourt().getCourtName());
             intent.putExtra("court_location", booking.getCourt().getLocation());
             intent.putExtra("court_price", booking.getCourt().getPrice());
+            intent.putExtra("court_image", booking.getCourt().getImage());
         }
         intent.putExtra("booking_filter", currentFilter.name());
         startActivity(intent);

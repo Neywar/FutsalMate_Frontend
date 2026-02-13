@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        // Use default system window insets handling so UI is not zoomed/under status bar
         setContentView(R.layout.activity_main);
 
         initViews();

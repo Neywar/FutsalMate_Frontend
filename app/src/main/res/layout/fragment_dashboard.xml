@@ -24,16 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/bg_otp_box_active"
-            android:backgroundTint="@color/bright_green"
-            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
-            app:layout_constraintEnd_toEndOf="@id/ivProfile" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +46,6 @@
                 android:id="@+id/tvGreetingName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alex Johnson"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -124,12 +113,13 @@
                 android:id="@+id/activeBookingHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Next Match"
+                    android:text="Active Match"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -152,6 +142,7 @@
                 android:id="@+id/activeBookingCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/card_bg"
                 app:cardCornerRadius="16dp"
                 app:strokeColor="@color/card_bg_light"
@@ -232,6 +223,90 @@
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="6dp"
                         android:text="Details"
+                        android:textColor="@color/bright_green"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Active Booking Empty State -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/activeBookingEmptyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/card_bg_light"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <View
+                        android:id="@+id/iconEmptyBg"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_otp_box_inactive"
+                        android:backgroundTint="#064E3B"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_add"
+                        app:layout_constraintBottom_toBottomOf="@id/iconEmptyBg"
+                        app:layout_constraintEnd_toEndOf="@id/iconEmptyBg"
+                        app:layout_constraintStart_toStartOf="@id/iconEmptyBg"
+                        app:layout_constraintTop_toTopOf="@id/iconEmptyBg"
+                        app:tint="@color/bright_green" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@id/iconEmptyBg"
+                        app:layout_constraintEnd_toStartOf="@id/btnBookNow"
+                        app:layout_constraintStart_toEndOf="@id/iconEmptyBg"
+                        app:layout_constraintTop_toTopOf="@id/iconEmptyBg">
+
+                        <TextView
+                            android:id="@+id/tvActiveBookingEmptyTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No upcoming match"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvActiveBookingEmptySubtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Book a court to get started"
+                            android:textColor="@color/text_grey"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/btnBookNow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_otp_box_inactive"
+                        android:backgroundTint="#064E3B"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp"
+                        android:text="Book"
                         android:textColor="@color/bright_green"
                         android:textSize="12sp"
                         android:textStyle="bold"

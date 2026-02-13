@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingVertical="12dp">
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="4dp">
 
     <ImageView
         android:id="@+id/ivFacilityIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_otp_box_inactive"
-        android:backgroundTint="@color/card_bg"
-        android:padding="10dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_vendor_input"
+        android:backgroundTint="@color/card_bg_light"
+        android:padding="8dp"
         android:src="@drawable/ic_bookings"
         app:tint="@color/bright_green" />
 
@@ -21,9 +22,12 @@
         android:id="@+id/tvFacilityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
         android:text="Facility"
         android:textColor="@color/text_grey"
-        android:textSize="8sp"
+        android:textSize="9sp"
         android:textStyle="bold" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import com.example.futsalmate.api.models.BookedTimesResponse;
 import com.example.futsalmate.api.models.CommunityTeam;
 import com.example.futsalmate.api.models.ManualBookingRequest;
 import com.example.futsalmate.api.models.RegisterTeamRequest;
+import com.example.futsalmate.api.models.EditTeamRequest;
 import com.example.futsalmate.api.models.ShowTeamsResponse;
 import com.example.futsalmate.api.models.VendorBookingsData;
 import com.example.futsalmate.api.models.Vendor;
@@ -18,6 +19,7 @@ import com.example.futsalmate.api.models.CourtDetail;
 import com.example.futsalmate.api.models.CourtDetailResponse;
 import com.example.futsalmate.api.models.EditBookingRequest;
 import com.example.futsalmate.api.models.EditProfileRequest;
+import com.example.futsalmate.api.models.ProfilePhotoResponse;
 import com.example.futsalmate.api.models.PastBookingsResponse;
 import com.example.futsalmate.api.models.ShowCourtsResponse;
 import com.example.futsalmate.api.models.UpcomingBookingsResponse;
@@ -29,6 +31,7 @@ import com.example.futsalmate.api.models.ResendOtpRequest;
 import com.example.futsalmate.api.models.SignupRequest;
 import com.example.futsalmate.api.models.User;
 import com.example.futsalmate.api.models.VendorDashboardResponse;
+import com.example.futsalmate.api.models.VendorEditProfileRequest;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -42,6 +45,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import com.example.futsalmate.api.models.ViewBookingResponse;
+import com.example.futsalmate.api.models.Booking;
+import com.example.futsalmate.api.models.ApiResponse;
 
 public interface ApiService {
     
@@ -66,6 +71,25 @@ public interface ApiService {
     Call<ApiResponse<User>> editProfile(
             @Header("Authorization") String token,
             @Body EditProfileRequest request
+    );
+
+    @POST("profile/change-password")
+    Call<ApiResponse<Void>> changePassword(
+            @Header("Authorization") String token,
+            @Body com.google.gson.JsonObject body
+    );
+
+    @Multipart
+    @POST("profile/photo")
+    Call<ProfilePhotoResponse> uploadProfilePhoto(
+            @Header("Authorization") String token,
+            @Part MultipartBody.Part profile_photo
+    );
+
+    @PUT("vendor/profile")
+    Call<ApiResponse<Vendor>> vendorEditProfile(
+            @Header("Authorization") String token,
+            @Body VendorEditProfileRequest request
     );
     
     @POST("email/verify/otp")
@@ -162,6 +186,25 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
+    @POST("vendor/bookings/{id}/approve")
+    Call<ViewBookingResponse> vendorApproveBooking(
+            @Header("Authorization") String token,
+            @retrofit2.http.Path("id") int bookingId
+    );
+
+    @POST("vendor/bookings/{id}/reject")
+    Call<ViewBookingResponse> vendorRejectBooking(
+            @Header("Authorization") String token,
+            @retrofit2.http.Path("id") int bookingId
+    );
+
+    @retrofit2.http.HTTP(method = "PATCH", path = "vendor/bookings/{id}/payment-status", hasBody = true)
+    Call<ViewBookingResponse> vendorUpdatePaymentStatus(
+            @Header("Authorization") String token,
+            @retrofit2.http.Path("id") int bookingId,
+            @retrofit2.http.Body com.example.futsalmate.api.models.UpdatePaymentStatusRequest body
+    );
+
     @GET("vendor/view-customers")
     Call<ApiResponse<VendorCustomersResponse>> viewVendorCustomers(
             @Header("Authorization") String token
@@ -208,6 +251,13 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
+    // eSewa callbacks (invoked by backend / for future use)
+    @GET("book/esewa/success")
+    Call<ApiResponse<Booking>> esewaSuccess(
+            @Header("Authorization") String token,
+            @Query("data") String encodedData
+    );
+
     @POST("community/register-team")
     Call<ApiResponse<CommunityTeam>> registerTeam(
             @Header("Authorization") String token,
@@ -219,8 +269,20 @@ public interface ApiService {
             @Header("Authorization") String token
     );
 
+    @GET("community/other-teams")
+    Call<ShowTeamsResponse> showOtherTeams(
+            @Header("Authorization") String token
+    );
+
     @GET("community/available-courts")
     Call<AvailableCourtsResponse> availableCourts(
             @Header("Authorization") String token
+    );
+
+    @PUT("community/edit-team/{id}")
+    Call<ApiResponse<CommunityTeam>> editTeam(
+            @Header("Authorization") String token,
+            @retrofit2.http.Path("id") int teamId,
+            @Body EditTeamRequest request
     );
 }

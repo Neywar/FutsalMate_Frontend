@@ -2,15 +2,20 @@ package com.example.futsalmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.futsalmate.api.RetrofitClient;
 import com.example.futsalmate.api.models.ApiResponse;
 import com.example.futsalmate.api.models.Booking;
@@ -36,26 +41,11 @@ import retrofit2.Response;
 public class VendorUsersFragment extends Fragment {
 
     private TokenManager tokenManager;
-    private TextView tvTopCustomerName1;
-    private TextView tvTopCustomerName2;
-    private TextView tvTopCustomerName3;
-    private TextView tvTopCustomerName4;
-
-    private View customer1;
-    private View customer2;
-    private View customer3;
-    private View customer4;
-
-    private View cardRecent1;
-    private View cardRecent2;
-    private TextView tvUserName1;
-    private TextView tvUserName2;
-    private TextView tvPitch1;
-    private TextView tvPitch2;
-    private TextView tvDate1;
-    private TextView tvDate2;
-    private TextView tvStatus1;
-    private TextView tvStatus2;
+    private LinearLayout topCustomersContainer;
+    private LinearLayout recentActivityContainer;
+    private TextView tvEmptyTopCustomers;
+    private TextView tvEmptyRecentActivity;
+    private EditText etSearchCustomers;
 
     private final List<VendorCustomer> customers = new ArrayList<>();
 
@@ -66,26 +56,11 @@ public class VendorUsersFragment extends Fragment {
 
         tokenManager = new TokenManager(requireContext());
 
-        customer1 = view.findViewById(R.id.customer1);
-        customer2 = view.findViewById(R.id.customer2);
-        customer3 = view.findViewById(R.id.customer3);
-        customer4 = view.findViewById(R.id.customer4);
-
-        tvTopCustomerName1 = view.findViewById(R.id.tvTopCustomerName1);
-        tvTopCustomerName2 = view.findViewById(R.id.tvTopCustomerName2);
-        tvTopCustomerName3 = view.findViewById(R.id.tvTopCustomerName3);
-        tvTopCustomerName4 = view.findViewById(R.id.tvTopCustomerName4);
-
-        cardRecent1 = view.findViewById(R.id.cardRecent1);
-        cardRecent2 = view.findViewById(R.id.cardRecent2);
-        tvUserName1 = view.findViewById(R.id.tvUserName1);
-        tvUserName2 = view.findViewById(R.id.tvUserName2);
-        tvPitch1 = view.findViewById(R.id.tvPitch1);
-        tvPitch2 = view.findViewById(R.id.tvPitch2);
-        tvDate1 = view.findViewById(R.id.tvDate1);
-        tvDate2 = view.findViewById(R.id.tvDate2);
-        tvStatus1 = view.findViewById(R.id.tvStatus1);
-        tvStatus2 = view.findViewById(R.id.tvStatus2);
+        topCustomersContainer = view.findViewById(R.id.topCustomersContainer);
+        recentActivityContainer = view.findViewById(R.id.recentActivityContainer);
+        tvEmptyTopCustomers = view.findViewById(R.id.tvEmptyTopCustomers);
+        tvEmptyRecentActivity = view.findViewById(R.id.tvEmptyRecentActivity);
+        etSearchCustomers = view.findViewById(R.id.etSearchCustomers);
 
         // Back button -> Redirects to Dashboard
         View btnBack = view.findViewById(R.id.btnBack);
@@ -97,25 +72,30 @@ public class VendorUsersFragment extends Fragment {
             });
         }
 
-        // Click listener for "View History" on Recent Activity Card 1
-        view.findViewById(R.id.btnViewHistory1).setOnClickListener(v -> openCustomerHistory(0));
+        // Search filter
+        if (etSearchCustomers != null) {
+            etSearchCustomers.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        // Click listener for "View History" on Recent Activity Card 2
-        view.findViewById(R.id.btnViewHistory2).setOnClickListener(v -> openCustomerHistory(1));
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    renderTopCustomers();
+                    renderRecentActivity();
+                }
 
-        // "See all" top customers
-        view.findViewById(R.id.tvSeeAll).setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Showing all customers", Toast.LENGTH_SHORT).show();
-        });
-
-        // Filter button
-        view.findViewById(R.id.btnFilter).setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Opening filters", Toast.LENGTH_SHORT).show();
-        });
-
-        viewVendorCustomers();
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewVendorCustomers();
     }
 
     private void viewVendorCustomers() {
@@ -195,6 +175,8 @@ public class VendorUsersFragment extends Fragment {
                                     customer.setFullName(user.getFullName());
                                     customer.setEmail(user.getEmail());
                                     customer.setPhone(user.getPhone());
+                                    customer.setProfilePhoto(user.getProfilePhotoUrl());
+                                    customer.setEmailVerifiedAt(user.getEmailVerifiedAt());
                                 } else {
                                     customer.setFullName(booking.getCustomerName());
                                     customer.setPhone(booking.getCustomerPhone());
@@ -259,47 +241,139 @@ public class VendorUsersFragment extends Fragment {
         return null;
     }
 
-    private void renderTopCustomers() {
-        updateTopCustomerSlot(customer1, tvTopCustomerName1, 0, true);
-        updateTopCustomerSlot(customer2, tvTopCustomerName2, 1, false);
-        updateTopCustomerSlot(customer3, tvTopCustomerName3, 2, false);
-        updateTopCustomerSlot(customer4, tvTopCustomerName4, 3, false);
+    private List<VendorCustomer> getFilteredCustomers() {
+        String query = etSearchCustomers != null ? etSearchCustomers.getText().toString().trim().toLowerCase(Locale.US) : "";
+        if (query.isEmpty()) return new ArrayList<>(customers);
+        List<VendorCustomer> out = new ArrayList<>();
+        for (VendorCustomer c : customers) {
+            if (getCustomerName(c).toLowerCase(Locale.US).contains(query)) out.add(c);
+        }
+        return out;
     }
 
-    private void updateTopCustomerSlot(View slot, TextView nameView, int index, boolean highlight) {
-        if (slot == null || nameView == null) return;
-        slot.setVisibility(View.VISIBLE);
-        if (index < customers.size()) {
-            VendorCustomer customer = customers.get(index);
+    private void renderTopCustomers() {
+        if (topCustomersContainer == null) return;
+        topCustomersContainer.removeAllViews();
+        List<VendorCustomer> filtered = getFilteredCustomers();
+
+        if (tvEmptyTopCustomers != null) {
+            tvEmptyTopCustomers.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        for (int i = 0; i < filtered.size(); i++) {
+            VendorCustomer customer = filtered.get(i);
+            View item = inflater.inflate(R.layout.item_vendor_top_customer, topCustomersContainer, false);
+            TextView nameView = item.findViewById(R.id.tvTopCustomerName);
+            de.hdodenhof.circleimageview.CircleImageView avatar = item.findViewById(R.id.ivTopCustomer);
             nameView.setText(getCustomerName(customer));
+            boolean highlight = (i == 0);
             nameView.setTextColor(getResources().getColor(highlight ? R.color.white : R.color.gray_text));
             nameView.setTypeface(nameView.getTypeface(), highlight ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+            if (avatar != null) {
+                String photo = getCustomerProfilePhoto(customer);
+                if (photo != null && !photo.trim().isEmpty()) {
+                    String url = resolveImageUrl(photo);
+                    com.bumptech.glide.Glide.with(avatar.getContext())
+                            .load(url)
+                            .placeholder(R.drawable.ic_person)
+                            .error(R.drawable.ic_person)
+                            .centerCrop()
+                            .into(avatar);
+                } else {
+                    avatar.setImageResource(R.drawable.ic_person);
+                }
+                if (highlight) {
+                    avatar.setBorderColor(android.graphics.Color.parseColor("#FACC15"));
+                    avatar.setBorderWidth(2);
+                }
+            }
+            final int index = customers.indexOf(customer);
+            item.setOnClickListener(v -> openCustomerHistory(index));
+            topCustomersContainer.addView(item);
         }
     }
 
     private void renderRecentActivity() {
-        bindRecentCard(cardRecent1, tvUserName1, tvPitch1, tvDate1, tvStatus1, 0);
-        bindRecentCard(cardRecent2, tvUserName2, tvPitch2, tvDate2, tvStatus2, 1);
-    }
+        if (recentActivityContainer == null) return;
+        recentActivityContainer.removeAllViews();
+        List<VendorCustomer> filtered = getFilteredCustomers();
 
-    private void bindRecentCard(View card, TextView nameView, TextView pitchView, TextView dateView, TextView statusView, int index) {
-        if (card == null || nameView == null || pitchView == null || dateView == null || statusView == null) return;
-        card.setVisibility(View.VISIBLE);
-        if (index < customers.size()) {
-            VendorCustomer customer = customers.get(index);
+        if (tvEmptyRecentActivity != null) {
+            tvEmptyRecentActivity.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        for (int i = 0; i < filtered.size(); i++) {
+            VendorCustomer customer = filtered.get(i);
+            final int index = customers.indexOf(customer);
+            View card = inflater.inflate(R.layout.item_vendor_recent_activity, recentActivityContainer, false);
+
+            de.hdodenhof.circleimageview.CircleImageView ivUser = card.findViewById(R.id.ivUser);
+            TextView tvUserName = card.findViewById(R.id.tvUserName);
+            TextView tvPitch = card.findViewById(R.id.tvPitch);
+            TextView tvDate = card.findViewById(R.id.tvDate);
+            TextView tvStatus = card.findViewById(R.id.tvStatus);
+
             VendorCustomerStats stats = customer.getStatistics();
-            nameView.setText(getCustomerName(customer));
+            tvUserName.setText(getCustomerName(customer));
+
+            if (ivUser != null) {
+                String photo = getCustomerProfilePhoto(customer);
+                if (photo != null && !photo.trim().isEmpty()) {
+                    String url = resolveImageUrl(photo);
+                    com.bumptech.glide.Glide.with(ivUser.getContext())
+                            .load(url)
+                            .placeholder(R.drawable.ic_person)
+                            .error(R.drawable.ic_person)
+                            .centerCrop()
+                            .into(ivUser);
+                } else {
+                    ivUser.setImageResource(R.drawable.ic_person);
+                }
+            }
 
             String totalSpent = stats != null ? stats.getTotalSpent() : null;
             String totalBookings = stats != null ? String.valueOf(stats.getTotalBookings()) : "0";
-            pitchView.setText("Total spent: Rs. " + (totalSpent != null ? totalSpent : "0.00") + " • Bookings: " + totalBookings);
+            tvPitch.setText("Total spent: Rs. " + (totalSpent != null ? totalSpent : "0.00") + " • Bookings: " + totalBookings);
 
             String lastDate = stats != null ? stats.getLastBookingDate() : null;
-            dateView.setText(formatDateLabel(lastDate));
+            tvDate.setText(formatDateLabel(lastDate));
 
             boolean paid = stats != null && (stats.getConfirmedBookings() > 0 || isPositiveAmount(totalSpent));
-            applyStatusBadgeStyle(statusView, paid);
+            applyStatusBadgeStyle(tvStatus, paid);
+
+            // Whole card opens user details; "View History" opens history screen.
+            card.setOnClickListener(v -> openCustomerDetails(index));
+            card.findViewById(R.id.btnViewHistory).setOnClickListener(v -> openCustomerHistory(index));
+            recentActivityContainer.addView(card);
         }
+    }
+
+    private void openCustomerDetails(int index) {
+        if (getActivity() == null) return;
+        Intent intent = new Intent(getActivity(), VendorUserDetailsActivity.class);
+        if (index >= 0 && index < customers.size()) {
+            VendorCustomer customer = customers.get(index);
+            VendorCustomerStats stats = customer.getStatistics();
+            intent.putExtra("customer_id", customer.getId());
+            intent.putExtra("customer_name", getCustomerName(customer));
+            intent.putExtra("customer_phone", customer.getPhone());
+            intent.putExtra("customer_email", customer.getEmail());
+            intent.putExtra("customer_profile_photo", getCustomerProfilePhoto(customer));
+            boolean emailVerified = customer.getEmailVerifiedAt() != null && !customer.getEmailVerifiedAt().trim().isEmpty();
+            intent.putExtra("is_email_verified", emailVerified);
+            if (customer.getEmailVerifiedAt() != null) {
+                intent.putExtra("email_verified_at", customer.getEmailVerifiedAt());
+            }
+            if (stats != null) {
+                intent.putExtra("total_bookings", stats.getTotalBookings());
+                intent.putExtra("confirmed_bookings", stats.getConfirmedBookings());
+                intent.putExtra("total_spent", stats.getTotalSpent());
+                intent.putExtra("last_booking_date", stats.getLastBookingDate());
+            }
+        }
+        startActivity(intent);
     }
 
     private String getCustomerName(VendorCustomer customer) {
@@ -356,6 +430,7 @@ public class VendorUsersFragment extends Fragment {
     }
 
     private void applyStatusBadgeStyle(TextView statusView, boolean paid) {
+        if (statusView == null) return;
         if (paid) {
             statusView.setBackgroundResource(R.drawable.bg_vendor_button);
             statusView.setTextColor(getResources().getColor(R.color.black));
@@ -368,12 +443,44 @@ public class VendorUsersFragment extends Fragment {
         }
     }
 
+    private String getCustomerProfilePhoto(VendorCustomer customer) {
+        if (customer == null) {
+            return null;
+        }
+        String photo = customer.getProfilePhoto();
+        return (photo != null && !photo.trim().isEmpty()) ? photo : null;
+    }
+
+    private String resolveImageUrl(String image) {
+        if (image == null || image.trim().isEmpty()) {
+            return null;
+        }
+        String cleaned = image.trim();
+        if (cleaned.startsWith("http://") || cleaned.startsWith("https://")) {
+            return cleaned;
+        }
+        return "https://futsalmateapp.sameem.in.net/" + cleaned.replaceFirst("^/+", "");
+    }
+
     private void openCustomerHistory(int index) {
         Intent intent = new Intent(getActivity(), VendorUserHistoryActivity.class);
-        if (index < customers.size()) {
+        if (index >= 0 && index < customers.size()) {
             VendorCustomer customer = customers.get(index);
+            VendorCustomerStats stats = customer.getStatistics();
             intent.putExtra("customer_id", customer.getId());
             intent.putExtra("customer_name", getCustomerName(customer));
+            intent.putExtra("customer_phone", customer.getPhone());
+            intent.putExtra("customer_email", customer.getEmail());
+            intent.putExtra("customer_profile_photo", getCustomerProfilePhoto(customer));
+            intent.putExtra("is_email_verified",
+                    customer.getEmailVerifiedAt() != null && !customer.getEmailVerifiedAt().trim().isEmpty());
+            if (customer.getEmailVerifiedAt() != null) {
+                intent.putExtra("email_verified_at", customer.getEmailVerifiedAt());
+            }
+            if (stats != null) {
+                intent.putExtra("total_bookings", stats.getTotalBookings());
+                intent.putExtra("total_spent", stats.getTotalSpent());
+            }
         }
         startActivity(intent);
     }
