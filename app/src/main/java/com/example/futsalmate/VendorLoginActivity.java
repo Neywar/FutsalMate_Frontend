@@ -1,5 +1,6 @@
 package com.example.futsalmate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -32,7 +33,7 @@ public class VendorLoginActivity extends AppCompatActivity {
 
     private EditText edtVendorEmail, edtVendorPassword;
     private MaterialButton btnVendorLogin;
-    private TextView txtVendorForgotPassword, txtPlayerClick, txtVendorSignUp;
+    private TextView txtVendorForgotPassword, txtPlayerClick;
     private ImageView btnVendorPasswordToggle;
     private boolean isPasswordVisible = false;
     private TokenManager tokenManager;
@@ -42,7 +43,7 @@ public class VendorLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_login);
 
-        tokenManager = new TokenManager(this);
+        tokenManager = new TokenManager(getApplicationContext());
 
         // Initialize views
         edtVendorEmail = findViewById(R.id.edtVendorEmail);
@@ -50,7 +51,6 @@ public class VendorLoginActivity extends AppCompatActivity {
         btnVendorLogin = findViewById(R.id.btnVendorLogin);
         txtVendorForgotPassword = findViewById(R.id.txtVendorForgotPassword);
         txtPlayerClick = findViewById(R.id.txtPlayerClick);
-        txtVendorSignUp = findViewById(R.id.txtVendorSignUp);
         btnVendorPasswordToggle = findViewById(R.id.btnVendorPasswordToggle);
 
         // Password visibility toggle
@@ -104,15 +104,6 @@ public class VendorLoginActivity extends AppCompatActivity {
             startActivity(new Intent(VendorLoginActivity.this, LoginActivity.class));
             finish();
         });
-
-        // Placeholder for Vendor Sign Up
-        if (txtVendorSignUp != null) {
-            txtVendorSignUp.setOnClickListener(v -> {
-                Intent intent = new Intent(VendorLoginActivity.this, SignUpActivity.class);
-                intent.putExtra("SIGNUP_TYPE", "vendor");
-                startActivity(intent);
-            });
-        }
     }
 
     private void performVendorLogin(String email, String password, String fcmToken) {
